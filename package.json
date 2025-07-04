@@ -11,7 +11,9 @@
     "build:watch": "tsc --watch",
     "dev": "tsx --watch src/cli.tsx",
     "start": "node dist/cli.js",
-    "prepublishOnly": "npm run build"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +27,9 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "husky": "^9.1.7",
     "tsx": "^4.20.3"
   }
 }
