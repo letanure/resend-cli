@@ -32,6 +32,11 @@
     "format": "biome format --write .",
     "check": "biome check .",
     "check:fix": "biome check --write --unsafe .",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "prepublishOnly": "npm run build",
     "prepare": "husky"
   },
@@ -61,8 +66,13 @@
     "@commitlint/config-conventional": "^19.8.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
+    "@types/react-dom": "^19.1.6",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
     "husky": "^9.1.7",
+    "ink-testing-library": "^4.0.0",
     "semantic-release": "^24.2.6",
-    "tsx": "^4.20.3"
+    "tsx": "^4.20.3",
+    "vitest": "^3.2.4"
   }
 }

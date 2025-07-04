@@ -37,14 +37,39 @@ npm run build:watch
 npm start
 ```
 
+### Testing
+
+```bash
+# Run tests once
+npm run test:run
+
+# Run tests in watch mode
+npm test
+
+# Run tests with UI
+npm run test:ui
+
+# Run tests with coverage
+npm run test:coverage
+
+# Type checking
+npm run typecheck
+
+# Linting and formatting
+npm run lint
+npm run format
+```
+
 ## Project Structure
 
 ```
 src/
-├── cli.tsx    # CLI entry point
-└── app.tsx    # Main Ink component
+├── cli.tsx        # CLI entry point
+├── app.tsx        # Main Ink component
+├── app.test.tsx   # Tests for app component
+└── commands/      # Future CLI commands (with co-located tests)
 
-dist/          # Compiled output (generated)
+dist/              # Compiled output (generated)
 ```
 
 ## Local Testing
