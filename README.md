@@ -59,17 +59,19 @@ resend-cli
 
 ## Publishing
 
-To publish a new release:
+Publishing is fully automated! When you push to the `main` branch, semantic-release will:
 
-1. Update version in `package.json`
-2. Update CHANGELOG.md
-3. Commit changes: `git commit -m "chore: release v0.x.x"`
-4. Create tag: `git tag -a v0.x.x -m "Release version 0.x.x"`
-5. Push with tag: `git push origin main --tags`
+1. Analyze commit messages since last release
+2. Determine version bump:
+   - `fix:` commits = patch release (0.0.X)
+   - `feat:` commits = minor release (0.X.0)
+   - `BREAKING CHANGE:` = major release (X.0.0)
+3. Update package.json version
+4. Generate/update CHANGELOG.md
+5. Create git tag and GitHub release
+6. Publish to npm
 
-The GitHub Action will automatically:
-- Create a GitHub release
-- Publish to npm (requires NPM_TOKEN secret)
+**No manual steps required!** Just push your commits to main and the release happens automatically.
 
 ## Contributing
 
