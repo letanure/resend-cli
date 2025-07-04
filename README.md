@@ -1,8 +1,21 @@
-# Resend CLI
+# @letanure/resend-cli
 
 A TypeScript CLI wrapper for the Resend API.
 
-## Setup
+## Quick Start
+
+```bash
+# Run without installing
+npx @letanure/resend-cli
+```
+
+## Installation
+
+```bash
+npm install -g @letanure/resend-cli
+```
+
+## Setup (Development)
 
 ```bash
 npm install
@@ -43,6 +56,20 @@ npm link
 # Use the CLI
 resend-cli
 ```
+
+## Publishing
+
+To publish a new release:
+
+1. Update version in `package.json`
+2. Update CHANGELOG.md
+3. Commit changes: `git commit -m "chore: release v0.x.x"`
+4. Create tag: `git tag -a v0.x.x -m "Release version 0.x.x"`
+5. Push with tag: `git push origin main --tags`
+
+The GitHub Action will automatically:
+- Create a GitHub release
+- Publish to npm (requires NPM_TOKEN secret)
 
 ## Contributing
 

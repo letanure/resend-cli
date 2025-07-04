@@ -1,13 +1,28 @@
 {
-  "name": "resend-cli",
-  "version": "0.1.0",
-  "description": "",
-  "main": "dist/cli.js",
+  "name": "@letanure/resend-cli",
+  "version": "0.1.2",
+  "description": "A command-line interface for Resend email API",
+  "main": "dist/src/cli.js",
   "bin": {
-    "resend-cli": "./dist/cli.js"
+    "resend-cli": "./dist/src/cli.js"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/letanure/resend-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/letanure/resend-cli/issues"
+  },
+  "homepage": "https://github.com/letanure/resend-cli#readme",
   "scripts": {
     "build": "tsc",
+    "postbuild": "chmod +x dist/src/cli.js",
     "build:watch": "tsc --watch",
     "dev": "tsx --watch src/cli.tsx",
     "start": "node dist/cli.js",
@@ -20,9 +35,18 @@
     "prepublishOnly": "npm run build",
     "prepare": "husky"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "resend",
+    "email",
+    "cli",
+    "command-line",
+    "api",
+    "typescript",
+    "ink",
+    "react"
+  ],
+  "author": "letanure",
+  "license": "MIT",
   "type": "module",
   "dependencies": {
     "@types/node": "^24.0.10",
