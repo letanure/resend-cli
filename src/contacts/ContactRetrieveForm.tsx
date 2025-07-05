@@ -1,6 +1,7 @@
 import { Alert } from '@inkjs/ui';
 import { Text, useInput } from 'ink';
 import { Layout } from '../components/ui/layout.js';
+import { config } from '../config.js';
 
 interface ContactRetrieveFormProps {
 	onExit: () => void;
@@ -14,7 +15,7 @@ export const ContactRetrieveForm = ({ onExit }: ContactRetrieveFormProps) => {
 	});
 
 	return (
-		<Layout headerText="👤 Resend CLI - Retrieve Contact">
+		<Layout headerText={`${config.baseTitle} - Contacts - Retrieve`}>
 			<Alert variant="warning">ContactRetrieveForm is not implemented yet.</Alert>
 			<Text>
 				Use <Text color="yellow">Esc</Text> or <Text color="yellow">q</Text> to go back.

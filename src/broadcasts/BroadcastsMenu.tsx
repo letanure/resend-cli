@@ -1,4 +1,6 @@
+import { Layout } from '../components/ui/layout.js';
 import { Menu, type MenuItem } from '../components/ui/Menu.js';
+import { config } from '../config.js';
 
 export enum BroadcastsMenuState {
 	create = 'create',
@@ -49,15 +51,16 @@ interface BroadcastsMenuProps {
 
 export const BroadcastsMenu = ({ onExit, onSelect }: BroadcastsMenuProps) => {
 	return (
-		<Menu
-			menuItems={BROADCASTS_MENU_ITEMS}
-			title="📡 Resend CLI - Broadcasts Menu"
-			onSelect={(menuId) => {
-				onSelect(menuId);
-			}}
-			onExit={() => {
-				onExit();
-			}}
-		/>
+		<Layout headerText={`${config.baseTitle} - Broadcasts`} showNavigationInstructions={true}>
+			<Menu
+				menuItems={BROADCASTS_MENU_ITEMS}
+				onSelect={(menuId) => {
+					onSelect(menuId);
+				}}
+				onExit={() => {
+					onExit();
+				}}
+			/>
+		</Layout>
 	);
 };

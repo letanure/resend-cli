@@ -1,4 +1,6 @@
+import { Layout } from '../components/ui/layout.js';
 import { Menu, type MenuItem } from '../components/ui/Menu.js';
+import { config } from '../config.js';
 
 export enum EmailsMenuState {
 	send = 'send',
@@ -43,15 +45,16 @@ interface EmailsMenuProps {
 
 export const EmailsMenu = ({ onExit, onSelect }: EmailsMenuProps) => {
 	return (
-		<Menu
-			menuItems={MAIN_MENU_ITEMS}
-			title="📧 Resend CLI - Emails Menu"
-			onSelect={(menuId) => {
-				onSelect(menuId);
-			}}
-			onExit={() => {
-				onExit();
-			}}
-		/>
+		<Layout headerText={`${config.baseTitle} - Emails`} showNavigationInstructions={true}>
+			<Menu
+				menuItems={MAIN_MENU_ITEMS}
+				onSelect={(menuId) => {
+					onSelect(menuId);
+				}}
+				onExit={() => {
+					onExit();
+				}}
+			/>
+		</Layout>
 	);
 };

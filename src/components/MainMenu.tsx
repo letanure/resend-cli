@@ -1,4 +1,6 @@
+import { Layout } from '../components/ui/layout.js';
 import { Menu, type MenuItem } from '../components/ui/Menu.js';
+import { config } from '../config.js';
 import { AppState } from '../types.js';
 
 interface MainMenuProps {
@@ -41,13 +43,14 @@ const MENU_ITEMS: Array<MenuItem<AppState>> = [
 
 export const MainMenu = ({ onSelect, onExit }: MainMenuProps) => {
 	return (
-		<Menu
-			menuItems={MENU_ITEMS}
-			title="📧 Resend CLI - Main Menu"
-			onSelect={(menuId) => {
-				onSelect(menuId);
-			}}
-			onExit={onExit}
-		/>
+		<Layout headerText={`${config.baseTitle}`} showNavigationInstructions={true}>
+			<Menu
+				menuItems={MENU_ITEMS}
+				onSelect={(menuId) => {
+					onSelect(menuId);
+				}}
+				onExit={onExit}
+			/>
+		</Layout>
 	);
 };

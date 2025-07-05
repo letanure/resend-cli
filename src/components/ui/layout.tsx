@@ -17,17 +17,20 @@ export const Layout: React.FC<DomainsMenuProps> = ({
 	return (
 		<Box flexDirection="column" padding={1}>
 			<Text bold={true} color="blue">
-				{`🌐 Resend CLI ${headerText}`}
+				{headerText}
 			</Text>
-			{showNavigationInstructions && (
-				<Box marginBottom={1}>
-					<Text dimColor={true}>Use ↑/↓ to navigate, Enter to select, 'q' to go back</Text>
-				</Box>
-			)}
 
 			{children}
 
 			<Box marginTop={1}>
+				{showNavigationInstructions && (
+					<Box marginBottom={1}>
+						<Text dimColor={true}>
+							Use <Text color="yellow">↑/↓</Text> to navigate, <Text color="yellow">Enter</Text> to select{' '}
+							<Text color="yellow">q</Text> or <Text color="yellow">ESC</Text> to go back
+						</Text>
+					</Box>
+				)}
 				<Text dimColor={true}>{footerText}</Text>
 			</Box>
 		</Box>

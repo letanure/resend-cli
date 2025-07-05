@@ -5,7 +5,7 @@ import { AppAudiences } from './audiences/AppAudiences.js';
 import { AppBroadcasts } from './broadcasts/AppBroadcasts.js';
 import { MainMenu } from './components/MainMenu.js';
 import { AppContacts } from './contacts/AppContacts.js';
-import { DomainsMenu } from './domains/DomainsMenu.js';
+import { AppDomains } from './domains/AppDomains.js';
 import { AppEmail } from './emails/AppEmail.js';
 import { AppState } from './types.js';
 
@@ -17,7 +17,7 @@ export const Main = () => {
 		<>
 			{screenState === AppState.main && <MainMenu onSelect={(menuId) => setScreenState(menuId)} onExit={exit} />}
 			{screenState === AppState.email && <AppEmail onExit={() => setScreenState(AppState.main)} />}
-			{screenState === AppState.domains && <DomainsMenu onExit={() => setScreenState(AppState.main)} />}
+			{screenState === AppState.domains && <AppDomains onExit={() => setScreenState(AppState.main)} />}
 			{screenState === AppState.apiKeys && <AppApiKey onExit={() => setScreenState(AppState.main)} />}
 			{screenState === AppState.audiences && <AppAudiences onExit={() => setScreenState(AppState.main)} />}
 			{screenState === AppState.broadcasts && <AppBroadcasts onExit={() => setScreenState(AppState.main)} />}

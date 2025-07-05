@@ -12,16 +12,9 @@ interface MainMenuProps<T extends string> {
 	onSelect: (menuId: T) => void;
 	onExit: () => void;
 	title?: string;
-	showInstructions?: boolean;
 }
 
-export const Menu = <T extends string>({
-	menuItems,
-	title,
-	showInstructions = true,
-	onSelect,
-	onExit,
-}: MainMenuProps<T>) => {
+export const Menu = <T extends string>({ menuItems, onSelect, onExit }: MainMenuProps<T>) => {
 	const [selectedIndex, setSelectedIndex] = useState(0);
 
 	useInput((input, key) => {
@@ -47,17 +40,6 @@ export const Menu = <T extends string>({
 
 	return (
 		<Box flexDirection="column" padding={1}>
-			{title && (
-				<Text bold={true} color="blue">
-					{title}
-				</Text>
-			)}
-			{showInstructions && (
-				<Box marginBottom={1}>
-					<Text dimColor={true}>Use ↑/↓ to navigate, Enter to select, 'q' to quit</Text>
-				</Box>
-			)}
-
 			{menuItems.map((item, index) => (
 				<Box key={item.id} marginBottom={1}>
 					<Box width={3}>
@@ -73,10 +55,6 @@ export const Menu = <T extends string>({
 					</Box>
 				</Box>
 			))}
-
-			<Box marginTop={1}>
-				<Text dimColor={true}>Current: {menuItems[selectedIndex]?.label || 'None'}</Text>
-			</Box>
 		</Box>
 	);
 };

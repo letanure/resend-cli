@@ -1,4 +1,6 @@
+import { Layout } from '../components/ui/layout.js';
 import { Menu, type MenuItem } from '../components/ui/Menu.js';
+import { config } from '../config.js';
 
 export enum ApiKeysMenuState {
 	create = 'create',
@@ -31,15 +33,16 @@ interface ApiKeysMenuProps {
 
 export const ApiKeysMenu = ({ onExit, onSelect }: ApiKeysMenuProps) => {
 	return (
-		<Menu
-			menuItems={API_KEYS_MENU_ITEMS}
-			title="🔑 Resend CLI - API Keys Menu"
-			onSelect={(menuId) => {
-				onSelect(menuId);
-			}}
-			onExit={() => {
-				onExit();
-			}}
-		/>
+		<Layout headerText={`${config.baseTitle} - API Keys`} showNavigationInstructions={true}>
+			<Menu
+				menuItems={API_KEYS_MENU_ITEMS}
+				onSelect={(menuId) => {
+					onSelect(menuId);
+				}}
+				onExit={() => {
+					onExit();
+				}}
+			/>
+		</Layout>
 	);
 };

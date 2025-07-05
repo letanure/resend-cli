@@ -12,7 +12,7 @@ describe('App Component', () => {
 		const { lastFrame } = render(<Main />);
 		const output = lastFrame() ?? '';
 
-		expect(output).toContain('📧 Resend CLI - Main Menu');
+		expect(output).toContain('📧 Resend CLI');
 	});
 
 	it('shows menu options', () => {

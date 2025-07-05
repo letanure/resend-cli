@@ -1,6 +1,7 @@
 import { Alert } from '@inkjs/ui';
 import { Text, useInput } from 'ink';
 import { Layout } from '../components/ui/layout.js';
+import { config } from '../config.js';
 
 interface BroadcastDeleteFormProps {
 	onExit: () => void;
@@ -14,7 +15,7 @@ export const BroadcastDeleteForm = ({ onExit }: BroadcastDeleteFormProps) => {
 	});
 
 	return (
-		<Layout headerText="📡 Resend CLI - Delete Broadcast">
+		<Layout headerText={`${config.baseTitle} - Broadcasts - Delete`}>
 			<Alert variant="warning">BroadcastDeleteForm is not implemented yet.</Alert>
 			<Text>
 				Use <Text color="yellow">Esc</Text> or <Text color="yellow">q</Text> to go back.

@@ -1,4 +1,6 @@
+import { Layout } from '../components/ui/layout.js';
 import { Menu, type MenuItem } from '../components/ui/Menu.js';
+import { config } from '../config.js';
 
 export enum ContactsMenuState {
 	create = 'create',
@@ -43,15 +45,16 @@ interface ContactsMenuProps {
 
 export const ContactsMenu = ({ onExit, onSelect }: ContactsMenuProps) => {
 	return (
-		<Menu
-			menuItems={CONTACTS_MENU_ITEMS}
-			title="👤 Resend CLI - Contacts Menu"
-			onSelect={(menuId) => {
-				onSelect(menuId);
-			}}
-			onExit={() => {
-				onExit();
-			}}
-		/>
+		<Layout headerText={`${config.baseTitle} - Contacts`} showNavigationInstructions={true}>
+			<Menu
+				menuItems={CONTACTS_MENU_ITEMS}
+				onSelect={(menuId) => {
+					onSelect(menuId);
+				}}
+				onExit={() => {
+					onExit();
+				}}
+			/>
+		</Layout>
 	);
 };

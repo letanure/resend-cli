@@ -1,4 +1,6 @@
+import { Layout } from '../components/ui/layout.js';
 import { Menu, type MenuItem } from '../components/ui/Menu.js';
+import { config } from '../config.js';
 
 export enum DomainsMenuState {
 	create = 'create',
@@ -49,15 +51,16 @@ interface DomainsMenuProps {
 
 export const DomainsMenu = ({ onExit, onSelect }: DomainsMenuProps) => {
 	return (
-		<Menu
-			menuItems={DOMAINS_MENU_ITEMS}
-			title="🌍 Resend CLI - Domains Menu"
-			onSelect={(menuId) => {
-				onSelect(menuId);
-			}}
-			onExit={() => {
-				onExit();
-			}}
-		/>
+		<Layout headerText={`${config.baseTitle} - Domains`} showNavigationInstructions={true}>
+			<Menu
+				menuItems={DOMAINS_MENU_ITEMS}
+				onSelect={(menuId) => {
+					onSelect(menuId);
+				}}
+				onExit={() => {
+					onExit();
+				}}
+			/>
+		</Layout>
 	);
 };
