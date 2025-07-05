@@ -12,7 +12,7 @@ export const ApiKeyDeleteForm = ({ onExit }: ApiKeyDeleteFormProps) => {
 			onExit();
 		}
 	});
-	
+
 	return (
 		<Layout headerText="🔑 Resend CLI - Delete API Key">
 			<Alert variant="warning">ApiKeyDeleteForm is not implemented yet.</Alert>

@@ -12,7 +12,7 @@ export const ApiKeyCreateForm = ({ onExit }: ApiKeyCreateFormProps) => {
 			onExit();
 		}
 	});
-	
+
 	return (
 		<Layout headerText="🔑 Resend CLI - Create API Key">
 			<Alert variant="warning">ApiKeyCreateForm is not implemented yet.</Alert>

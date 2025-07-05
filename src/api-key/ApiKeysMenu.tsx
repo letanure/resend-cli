@@ -30,7 +30,6 @@ interface ApiKeysMenuProps {
 }
 
 export const ApiKeysMenu = ({ onExit, onSelect }: ApiKeysMenuProps) => {
-
 	return (
 		<Menu
 			menuItems={API_KEYS_MENU_ITEMS}
