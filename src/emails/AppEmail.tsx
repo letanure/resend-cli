@@ -22,8 +22,8 @@ export const AppEmail = ({ onExit }: AppEmailProps) => {
 		<>
 			{screenState === 'menu' && <EmailsMenu onSelect={handleMenuSelect} onExit={() => onExit()} />}
 			{screenState === 'batch' && <EmailBatchForm onExit={() => setScreenState('menu')} />}
-			{screenState === 'cancel' && <EmailCancelForm onExit={() => setScreenState('menu')}/>}
-			{screenState === 'retrieve' && <EmailRetrieveForm onExit={() => setScreenState('menu')}/>}
+			{screenState === 'cancel' && <EmailCancelForm onExit={() => setScreenState('menu')} />}
+			{screenState === 'retrieve' && <EmailRetrieveForm onExit={() => setScreenState('menu')} />}
 			{screenState === 'send' && <EmailSendForm onExit={() => setScreenState('menu')} />}
 			{screenState === 'update' && <EmailUpdateForm onExit={() => setScreenState('menu')} />}
 		</>

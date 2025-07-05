@@ -26,19 +26,17 @@ const API_KEYS_MENU_ITEMS: Array<MenuItem<ApiKeysMenuState>> = [
 
 interface ApiKeysMenuProps {
 	onExit: () => void;
+	onSelect: (menuId: ApiKeysMenuState) => void;
 }
 
-export const ApiKeysMenu = ({ onExit }: ApiKeysMenuProps) => {
-	const handleMenuSelect = (menuId: ApiKeysMenuState) => {
-		console.log(`Selected menu: ${menuId}`);
-	};
+export const ApiKeysMenu = ({ onExit, onSelect }: ApiKeysMenuProps) => {
 
 	return (
 		<Menu
 			menuItems={API_KEYS_MENU_ITEMS}
-			title="📧 Resend CLI - API Keys Menu"
+			title="🔑 Resend CLI - API Keys Menu"
 			onSelect={(menuId) => {
-				handleMenuSelect(menuId);
+				onSelect(menuId);
 			}}
 			onExit={() => {
 				onExit();
