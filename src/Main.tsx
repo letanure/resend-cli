@@ -4,7 +4,7 @@ import { AppApiKey } from './api-key/AppApiKey.js';
 import { AppAudiences } from './audiences/AppAudiences.js';
 import { AppBroadcasts } from './broadcasts/AppBroadcasts.js';
 import { MainMenu } from './components/MainMenu.js';
-import { ContactsMenu } from './contacts/ContactsMenu.js';
+import { AppContacts } from './contacts/AppContacts.js';
 import { DomainsMenu } from './domains/DomainsMenu.js';
 import { AppEmail } from './emails/AppEmail.js';
 import { AppState } from './types.js';
@@ -21,7 +21,7 @@ export const Main = () => {
 			{screenState === AppState.apiKeys && <AppApiKey onExit={() => setScreenState(AppState.main)} />}
 			{screenState === AppState.audiences && <AppAudiences onExit={() => setScreenState(AppState.main)} />}
 			{screenState === AppState.broadcasts && <AppBroadcasts onExit={() => setScreenState(AppState.main)} />}
-			{screenState === AppState.contacts && <ContactsMenu onExit={() => setScreenState(AppState.main)} />}
+			{screenState === AppState.contacts && <AppContacts onExit={() => setScreenState(AppState.main)} />}
 		</>
 	);
 };

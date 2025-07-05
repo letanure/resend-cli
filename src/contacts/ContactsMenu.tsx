@@ -38,19 +38,16 @@ const CONTACTS_MENU_ITEMS: Array<MenuItem<ContactsMenuState>> = [
 
 interface ContactsMenuProps {
 	onExit: () => void;
+	onSelect: (menuId: ContactsMenuState) => void;
 }
 
-export const ContactsMenu = ({ onExit }: ContactsMenuProps) => {
-	const handleMenuSelect = (menuId: ContactsMenuState) => {
-		console.log(`Selected menu: ${menuId}`);
-	};
-
+export const ContactsMenu = ({ onExit, onSelect }: ContactsMenuProps) => {
 	return (
 		<Menu
 			menuItems={CONTACTS_MENU_ITEMS}
-			title="📧 Resend CLI - Contacts Menu"
+			title="👤 Resend CLI - Contacts Menu"
 			onSelect={(menuId) => {
-				handleMenuSelect(menuId);
+				onSelect(menuId);
 			}}
 			onExit={() => {
 				onExit();
