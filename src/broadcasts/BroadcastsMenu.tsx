@@ -44,19 +44,16 @@ const BROADCASTS_MENU_ITEMS: Array<MenuItem<BroadcastsMenuState>> = [
 
 interface BroadcastsMenuProps {
 	onExit: () => void;
+	onSelect: (menuId: BroadcastsMenuState) => void;
 }
 
-export const BroadcastsMenu = ({ onExit }: BroadcastsMenuProps) => {
-	const handleMenuSelect = (menuId: BroadcastsMenuState) => {
-		console.log(`Selected menu: ${menuId}`);
-	};
-
+export const BroadcastsMenu = ({ onExit, onSelect }: BroadcastsMenuProps) => {
 	return (
 		<Menu
 			menuItems={BROADCASTS_MENU_ITEMS}
-			title="📧 Resend CLI - Broadcasts Menu"
+			title="📡 Resend CLI - Broadcasts Menu"
 			onSelect={(menuId) => {
-				handleMenuSelect(menuId);
+				onSelect(menuId);
 			}}
 			onExit={() => {
 				onExit();
