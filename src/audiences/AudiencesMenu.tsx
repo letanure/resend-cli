@@ -32,19 +32,16 @@ const AUDIENCES_MENU_ITEMS: Array<MenuItem<AudiencesMenuState>> = [
 
 interface AudiencesMenuProps {
 	onExit: () => void;
+	onSelect: (menuId: AudiencesMenuState) => void;
 }
 
-export const AudiencesMenu = ({ onExit }: AudiencesMenuProps) => {
-	const handleMenuSelect = (menuId: AudiencesMenuState) => {
-		console.log(`Selected menu: ${menuId}`);
-	};
-
+export const AudiencesMenu = ({ onExit, onSelect }: AudiencesMenuProps) => {
 	return (
 		<Menu
 			menuItems={AUDIENCES_MENU_ITEMS}
-			title="📧 Resend CLI - Audiences Menu"
+			title="👥 Resend CLI - Audiences Menu"
 			onSelect={(menuId) => {
-				handleMenuSelect(menuId);
+				onSelect(menuId);
 			}}
 			onExit={() => {
 				onExit();
