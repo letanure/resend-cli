@@ -44,19 +44,16 @@ const DOMAINS_MENU_ITEMS: Array<MenuItem<DomainsMenuState>> = [
 
 interface DomainsMenuProps {
 	onExit: () => void;
+	onSelect: (menuId: DomainsMenuState) => void;
 }
 
-export const DomainsMenu = ({ onExit }: DomainsMenuProps) => {
-	const handleMenuSelect = (menuId: DomainsMenuState) => {
-		console.log(`Selected menu: ${menuId}`);
-	};
-
+export const DomainsMenu = ({ onExit, onSelect }: DomainsMenuProps) => {
 	return (
 		<Menu
 			menuItems={DOMAINS_MENU_ITEMS}
-			title="📧 Resend CLI - Domains Menu"
+			title="🌍 Resend CLI - Domains Menu"
 			onSelect={(menuId) => {
-				handleMenuSelect(menuId);
+				onSelect(menuId);
 			}}
 			onExit={() => {
 				onExit();
