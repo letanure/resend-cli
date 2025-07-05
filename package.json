@@ -54,10 +54,13 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "@inkjs/ui": "^2.0.0",
     "@types/node": "^24.0.10",
     "@types/react": "^19.1.8",
     "ink": "^6.0.1",
+    "meow": "^13.2.0",
     "react": "^19.1.0",
+    "resend": "^4.6.0",
     "typescript": "^5.8.3"
   },
   "devDependencies": {

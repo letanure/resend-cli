@@ -38,19 +38,16 @@ const MAIN_MENU_ITEMS: Array<MenuItem<EmailsMenuState>> = [
 
 interface EmailsMenuProps {
 	onExit: () => void;
+	onSelect: (menuId: EmailsMenuState) => void;
 }
 
-export const EmailsMenu = ({ onExit }: EmailsMenuProps) => {
-	const handleMenuSelect = (menuId: EmailsMenuState) => {
-		console.log(`Selected menu: ${menuId}`);
-	};
-
+export const EmailsMenu = ({ onExit, onSelect }: EmailsMenuProps) => {
 	return (
 		<Menu
 			menuItems={MAIN_MENU_ITEMS}
 			title="📧 Resend CLI - Emails Menu"
 			onSelect={(menuId) => {
-				handleMenuSelect(menuId);
+				onSelect(menuId);
 			}}
 			onExit={() => {
 				onExit();
