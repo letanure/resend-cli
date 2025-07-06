@@ -1,6 +1,6 @@
 import { useApp } from 'ink';
 import { useState } from 'react';
-import { AppApiKey } from './api-key/AppApiKey.js';
+import { AppApiKey } from '@/modules/api-key/AppApiKey.js';
 import { AppAudiences } from './audiences/AppAudiences.js';
 import { AppBroadcasts } from './broadcasts/AppBroadcasts.js';
 import { MainMenu } from './components/MainMenu.js';
