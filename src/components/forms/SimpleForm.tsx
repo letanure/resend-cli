@@ -1,5 +1,6 @@
 import { Box, Text, useInput } from 'ink';
 import { useState } from 'react';
+import type { z } from 'zod';
 import { TextInput } from './TextInput.js';
 
 export interface FormField {
@@ -15,9 +16,10 @@ interface SimpleFormProps {
 	fields: Array<FormField>;
 	onSubmit: (data: Record<string, string>) => void;
 	onCancel: () => void;
+	validateWith?: z.ZodSchema<any>;
 }
 
-export const SimpleForm = ({ fields, onSubmit, onCancel }: SimpleFormProps) => {
+export const SimpleForm = ({ fields, onSubmit, onCancel, validateWith }: SimpleFormProps) => {
 	// Initialize form with empty values for all fields
 	const [formData, setFormData] = useState<Record<string, string>>(() => {
 		const initial: Record<string, string> = {};
@@ -33,32 +35,27 @@ export const SimpleForm = ({ fields, onSubmit, onCancel }: SimpleFormProps) => {
 	// Store validation errors to show user feedback
 	const [errors, setErrors] = useState<Record<string, string>>({});
 
-	// Handle keyboard navigation and form submission
+	// Handle keyboard navigation and form submission (refactored with config-based approach)
 	useInput((_input, key) => {
-		// Allow immediate exit without validation
-		if (key.escape) {
-			onCancel();
-			return;
-		}
+		const keyHandlers: Record<string, () => void> = {
+			escape: onCancel,
+			tab: () => setCurrentField(Math.min(currentField + 1, fields.length - 1)),
+			downArrow: () => setCurrentField(Math.min(currentField + 1, fields.length - 1)),
+			upArrow: () => setCurrentField(Math.max(currentField - 1, 0)),
+			return: handleFormSubmission,
+		};
 
-		// Navigate to next field (wrapping disabled to prevent confusion)
-		if (key.tab || key.downArrow) {
-			const nextField = Math.min(currentField + 1, fields.length - 1);
-			setCurrentField(nextField);
-		}
-		// Navigate to previous field (wrapping disabled to prevent confusion)
-		else if (key.upArrow) {
-			const prevField = Math.max(currentField - 1, 0);
-			setCurrentField(prevField);
-		}
-		// Submit form with validation
-		else if (key.return) {
-			handleFormSubmission();
+		for (const [k, handler] of Object.entries(keyHandlers)) {
+			if ((key as any)[k]) {
+				handler();
+				break;
+			}
 		}
 	});
 
 	// Validate all fields and return errors object
 	const validateForm = (): Record<string, string> => {
+		console.log('Validating form data:', formData);
 		const validationErrors: Record<string, string> = {};
 
 		for (const field of fields) {
@@ -84,7 +81,27 @@ export const SimpleForm = ({ fields, onSubmit, onCancel }: SimpleFormProps) => {
 
 	// Process form submission with validation
 	const handleFormSubmission = () => {
-		const validationErrors = validateForm();
+		let validationErrors: Record<string, string> = {};
+
+		if (validateWith) {
+			const cleanedData: Record<string, string | undefined> = {};
+			for (const [key, value] of Object.entries(formData)) {
+				cleanedData[key] = value.trim() === '' ? undefined : value.trim();
+			}
+			const result = validateWith.safeParse(cleanedData);
+			if (!result.success) {
+				result.error.issues.forEach((issue) => {
+					const field = issue.path[0];
+					if (typeof field === 'string') {
+						validationErrors[field] = issue.message;
+					}
+				});
+			}
+		} else {
+			validationErrors = validateForm();
+		}
+
+		console.log('Validation errors:', validationErrors);
 
 		if (Object.keys(validationErrors).length === 0) {
 			// Clean data by trimming whitespace before submission

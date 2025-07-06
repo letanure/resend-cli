@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { EmailBatchForm } from './EmailBatchForm.js';
 import { EmailCancelForm } from './EmailCancelForm.js';
 import { EmailRetrieveForm } from './EmailRetrieveForm.js';
-import { EmailSendForm } from './EmailSendForm.js';
 import { EmailsMenu, type EmailsMenuState } from './EmailsMenu.js';
 import { EmailUpdateForm } from './EmailUpdateForm.js';
+import { EmailSendForm } from './send/EmailSendForm.js';
 
 type EmailsMenuStateWithMenu = 'menu' | EmailsMenuState;
 

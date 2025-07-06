@@ -1,7 +1,8 @@
-import { FormLayout } from '../components/forms/FormLayout.js';
-import { type FormField, SimpleForm } from '../components/forms/SimpleForm.js';
-import { Layout } from '../components/ui/layout.js';
-import { config } from '../config.js';
+import { FormLayout } from '../../components/forms/FormLayout.js';
+import { type FormField, SimpleForm } from '../../components/forms/SimpleForm.js';
+import { Layout } from '../../components/ui/layout.js';
+import { config } from '../../config.js';
+import { CreateEmailOptionsSchema } from './schema.js';
 
 interface EmailSendFormProps {
 	onExit: () => void;
@@ -75,15 +76,11 @@ const emailFields: Array<FormField> = [
 ];
 
 export const EmailSendForm = ({ onExit }: EmailSendFormProps) => {
+	console.log('📧 EmailSendForm initialized');
 	const handleSubmit = (data: Record<string, string>) => {
-		// Additional validation: at least one of HTML or text is required
-		if (!data.html && !data.text) {
-			console.error('❌ Error: Either HTML or plain text content is required');
-			return;
-		}
-
-		// Transform comma-separated values to arrays for multiple recipients
-		const processedData = {
+		console.log('📧 EmailSendForm:', JSON.stringify(data, null, 2));
+		// transform comma-separated fields to arrays
+		const transformed = {
 			...data,
 			to: data.to?.includes(',') ? data.to.split(',').map((s) => s.trim()) : data.to,
 			cc: data.cc?.includes(',') ? data.cc.split(',').map((s) => s.trim()) : data.cc,
@@ -91,23 +88,62 @@ export const EmailSendForm = ({ onExit }: EmailSendFormProps) => {
 			reply_to: data.reply_to?.includes(',') ? data.reply_to.split(',').map((s) => s.trim()) : data.reply_to,
 		};
 
-		// Remove empty optional fields
-		Object.keys(processedData).forEach((key) => {
-			const value = processedData[key as keyof typeof processedData];
+		// remove empty optional fields
+		Object.keys(transformed).forEach((key) => {
+			const value = transformed[key as keyof typeof transformed];
 			if (!value || value === '') {
-				delete processedData[key as keyof typeof processedData];
+				delete transformed[key as keyof typeof transformed];
 			}
 		});
 
-		console.log('📧 Email Send Data:', JSON.stringify(processedData, null, 2));
-		// TODO: Integrate with sendEmailAction
-		onExit();
+		// validate with zod
+		const result = CreateEmailOptionsSchema.safeParse(transformed);
+
+		if (!result.success) {
+			console.error('❌ Validation errors:');
+			console.error(result.error.format());
+			return;
+		}
+
+		console.log('📧 Validated email data:', result.data);
+
+		// Additional validation: at least one of HTML or text is required
+		// if (!data.html && !data.text) {
+		// 	console.error('❌ Error: Either HTML or plain text content is required');
+		// 	return;
+		// }
+
+		// // Transform comma-separated values to arrays for multiple recipients
+		// const processedData = {
+		// 	...data,
+		// 	to: data.to?.includes(',') ? data.to.split(',').map((s) => s.trim()) : data.to,
+		// 	cc: data.cc?.includes(',') ? data.cc.split(',').map((s) => s.trim()) : data.cc,
+		// 	bcc: data.bcc?.includes(',') ? data.bcc.split(',').map((s) => s.trim()) : data.bcc,
+		// 	reply_to: data.reply_to?.includes(',') ? data.reply_to.split(',').map((s) => s.trim()) : data.reply_to,
+		// };
+
+		// // Remove empty optional fields
+		// Object.keys(processedData).forEach((key) => {
+		// 	const value = processedData[key as keyof typeof processedData];
+		// 	if (!value || value === '') {
+		// 		delete processedData[key as keyof typeof processedData];
+		// 	}
+		// });
+
+		// console.log('📧 Email Send Data:', JSON.stringify(processedData, null, 2));
+		// // TODO: Integrate with sendEmailAction
+		// onExit();
 	};
 
 	return (
 		<Layout headerText={`${config.baseTitle} - Emails - Send`}>
 			<FormLayout title="📧 Send Email 0" description="Send an email through the Resend API">
-				<SimpleForm fields={emailFields} onSubmit={handleSubmit} onCancel={onExit} />
+				<SimpleForm
+					fields={emailFields}
+					validateWith={CreateEmailOptionsSchema}
+					onSubmit={handleSubmit}
+					onCancel={onExit}
+				/>
 			</FormLayout>
 		</Layout>
 	);
