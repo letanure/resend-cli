@@ -2,7 +2,7 @@ import { useApp } from 'ink';
 import { useState } from 'react';
 import { AppApiKey } from '@/modules/api-key/AppApiKey.js';
 import { AppAudiences } from '@/modules/audiences/AppAudiences.js';
-import { AppBroadcasts } from './broadcasts/AppBroadcasts.js';
+import { AppBroadcasts } from '@/modules/broadcasts/AppBroadcasts.js';
 import { MainMenu } from './components/MainMenu.js';
 import { AppContacts } from './contacts/AppContacts.js';
 import { ResendProvider } from './contexts/ResendProvider.js';
