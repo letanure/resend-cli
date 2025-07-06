@@ -20,3 +20,16 @@ export interface ApiResult<T = unknown> {
 		response?: unknown;
 	};
 }
+
+/**
+ * Standard field configuration for forms and CLI arguments
+ */
+export interface Field {
+	name: string;
+	label: string;
+	placeholder: string;
+	helpText: string;
+	type?: 'text' | 'textarea';
+	cliFlag: string;
+	cliShortFlag: string;
+}

@@ -34,7 +34,7 @@
       "@/config": ["src/config/*"],
       "@/contexts/*": ["src/contexts/*"],
       "@/modules/*": ["src/modules/*"],
-      "@/types": ["src/types"],
+      "@/types": ["src/types.ts"],
       "@/utils/*": ["src/utils/*"]
     }
   },
