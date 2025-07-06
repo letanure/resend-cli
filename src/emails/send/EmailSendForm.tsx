@@ -76,9 +76,7 @@ const emailFields: Array<FormField> = [
 ];
 
 export const EmailSendForm = ({ onExit }: EmailSendFormProps) => {
-	console.log('📧 EmailSendForm initialized');
 	const handleSubmit = (data: Record<string, string>) => {
-		console.log('📧 EmailSendForm:', JSON.stringify(data, null, 2));
 		// transform comma-separated fields to arrays
 		const transformed = {
 			...data,
@@ -137,7 +135,7 @@ export const EmailSendForm = ({ onExit }: EmailSendFormProps) => {
 
 	return (
 		<Layout headerText={`${config.baseTitle} - Emails - Send`}>
-			<FormLayout title="📧 Send Email 0" description="Send an email through the Resend API">
+			<FormLayout title="Send Email" description="Send an email through the Resend API">
 				<SimpleForm
 					fields={emailFields}
 					validateWith={CreateEmailOptionsSchema}

@@ -47,32 +47,87 @@ export const TextInput = ({
 	const displayValue = value || placeholder;
 	const showCursor = isFocused;
 
+	const borderColor = error ? 'red' : isFocused ? 'cyan' : 'gray';
+	const dimBorder = !!(error && !isFocused);
+
 	return (
-		<Box marginBottom={1}>
-			<Box minWidth={15}>
-				<Text bold={true} color={isFocused ? 'cyan' : 'white'}>
-					{label}:
-				</Text>
-			</Box>
-			<Box flexGrow={1}>
-				<Text color={value ? 'white' : 'gray'}>
-					{showCursor && cursorPosition === 0 && '│'}
-					{displayValue.split('').map((char, i) => (
-						<Text key={`char-${i}-${char}`}>
-							{char}
-							{showCursor && i === cursorPosition - 1 && '│'}
-						</Text>
-					))}
-					{showCursor && cursorPosition === displayValue.length && '│'}
-				</Text>
-				{error && <Text color="red"> {error}</Text>}
-				{!error && helpText && isFocused && (
-					<Text dimColor={true} color="gray">
-						{' '}
-						- {helpText}
+		<Box flexDirection="column">
+			<Box>
+				<Box width={15} flexDirection="row" justifyContent="flex-end" alignItems="center" height={3}>
+					<Text bold={true} color={isFocused ? 'cyan' : 'white'}>
+						{label}
 					</Text>
-				)}
+					<Text> </Text>
+				</Box>
+				<Box flexDirection="column">
+					<Box>
+						<Text color={borderColor} dimColor={dimBorder}>
+							┌─
+						</Text>
+						<Text color={borderColor} dimColor={dimBorder}>
+							{'─'.repeat(60)}
+						</Text>
+						<Text color={borderColor} dimColor={dimBorder}>
+							─┐
+						</Text>
+					</Box>
+					<Box>
+						<Text color={borderColor} dimColor={dimBorder}>
+							│{' '}
+						</Text>
+						<Box width={60}>
+							{Array.from({ length: 60 }).map((_, i) => {
+								const uniqueKey = `input-${label}-pos-${i}`;
+								if (showCursor && i === cursorPosition) {
+									return (
+										<Text key={uniqueKey} color="white">
+											│
+										</Text>
+									);
+								}
+								if (i < displayValue.length) {
+									return (
+										<Text key={uniqueKey} color={value ? 'white' : 'gray'}>
+											{displayValue[i]}
+										</Text>
+									);
+								}
+								return <Text key={uniqueKey}> </Text>;
+							})}
+						</Box>
+						<Text color={borderColor} dimColor={dimBorder}>
+							{' '}
+							│
+						</Text>
+					</Box>
+					<Box>
+						<Text color={borderColor} dimColor={dimBorder}>
+							└─
+						</Text>
+						<Text color={borderColor} dimColor={dimBorder}>
+							{'─'.repeat(60)}
+						</Text>
+						<Text color={borderColor} dimColor={dimBorder}>
+							─┘
+						</Text>
+					</Box>
+				</Box>
 			</Box>
+
+			{!error && helpText && isFocused && (
+				<Box marginLeft={15}>
+					<Text dimColor={true} color="gray">
+						{helpText}
+					</Text>
+				</Box>
+			)}
+
+			{error && (
+				<Box marginLeft={15}>
+					<Text color="red">{error}</Text>
+				</Box>
+			)}
+			{!error && !(helpText && isFocused) && <Box marginBottom={1} />}
 		</Box>
 	);
 };
