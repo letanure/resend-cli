@@ -5,6 +5,7 @@ import { AppAudiences } from './audiences/AppAudiences.js';
 import { AppBroadcasts } from './broadcasts/AppBroadcasts.js';
 import { MainMenu } from './components/MainMenu.js';
 import { AppContacts } from './contacts/AppContacts.js';
+import { ResendProvider } from './contexts/ResendProvider.js';
 import { AppDomains } from './domains/AppDomains.js';
 import { AppEmail } from './emails/AppEmail.js';
 import { AppState } from './types.js';
@@ -15,7 +16,7 @@ export const AppMain = () => {
 	const [lastSelectedMainMenuItem, setLastSelectedMainMenuItem] = useState<AppState>();
 
 	return (
-		<>
+		<ResendProvider>
 			{screenState === AppState.main && (
 				<MainMenu
 					onSelect={(menuId) => setScreenState(menuId)}
@@ -71,6 +72,6 @@ export const AppMain = () => {
 					}}
 				/>
 			)}
-		</>
+		</ResendProvider>
 	);
 };

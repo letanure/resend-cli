@@ -1,30 +1,14 @@
+import type { ErrorResponse } from 'resend';
+
 /**
  * Resend API error types and handling
  * Based on official Resend documentation
  */
 
-export type ResendErrorType =
-	| 'invalid_idempotency_key'
-	| 'validation_error'
-	| 'missing_api_key'
-	| 'restricted_api_key'
-	| 'invalid_api_key'
-	| 'not_found'
-	| 'method_not_allowed'
-	| 'invalid_idempotent_request'
-	| 'concurrent_idempotent_requests'
-	| 'invalid_attachment'
-	| 'invalid_from_address'
-	| 'invalid_access'
-	| 'invalid_parameter'
-	| 'invalid_region'
-	| 'missing_required_field'
-	| 'daily_quota_exceeded'
-	| 'rate_limit_exceeded'
-	| 'security_error'
-	| 'application_error'
-	| 'internal_server_error'
-	| 'unknown_error';
+/**
+ * Resend's official error types plus our custom fallback
+ */
+export type ResendErrorType = ErrorResponse['name'] | 'unknown_error';
 
 export interface ResendErrorInfo {
 	status: number;
@@ -34,47 +18,17 @@ export interface ResendErrorInfo {
 }
 
 export const RESEND_ERROR_CODES: Record<ResendErrorType, ResendErrorInfo> = {
+	missing_required_field: {
+		status: 422,
+		type: 'missing_required_field',
+		message: 'The request body is missing one or more required fields.',
+		suggestion: 'Check the error details to see the list of missing fields.',
+	},
 	invalid_idempotency_key: {
 		status: 400,
 		type: 'invalid_idempotency_key',
 		message: 'The key must be between 1-256 chars.',
 		suggestion: 'Retry with a valid idempotency key.',
-	},
-	validation_error: {
-		status: 400,
-		type: 'validation_error',
-		message: 'We found an error with one or more fields in the request.',
-		suggestion: 'The message will contain more details about what field and error were found.',
-	},
-	missing_api_key: {
-		status: 401,
-		type: 'missing_api_key',
-		message: 'Missing API key in the authorization header.',
-		suggestion: 'Include the following header in the request: Authorization: Bearer YOUR_API_KEY.',
-	},
-	restricted_api_key: {
-		status: 401,
-		type: 'restricted_api_key',
-		message: 'This API key is restricted to only send emails.',
-		suggestion: 'Make sure the API key has Full access to perform actions other than sending emails.',
-	},
-	invalid_api_key: {
-		status: 403,
-		type: 'invalid_api_key',
-		message: 'API key is invalid.',
-		suggestion: 'Make sure the API key is correct or generate a new API key in the Resend dashboard.',
-	},
-	not_found: {
-		status: 404,
-		type: 'not_found',
-		message: 'The requested endpoint does not exist.',
-		suggestion: 'Check your request URL to match a valid API endpoint.',
-	},
-	method_not_allowed: {
-		status: 405,
-		type: 'method_not_allowed',
-		message: 'Method is not allowed for the requested path.',
-		suggestion: 'Change your API endpoint to use a valid method.',
 	},
 	invalid_idempotent_request: {
 		status: 409,
@@ -87,18 +41,6 @@ export const RESEND_ERROR_CODES: Record<ResendErrorType, ResendErrorInfo> = {
 		type: 'concurrent_idempotent_requests',
 		message: 'Same idempotency key used while original request is still in progress.',
 		suggestion: 'Try the request again later.',
-	},
-	invalid_attachment: {
-		status: 422,
-		type: 'invalid_attachment',
-		message: 'Attachment must have either a content or path.',
-		suggestion: 'Attachments must either have content (strings, Buffer, or Stream) or path to a remote resource.',
-	},
-	invalid_from_address: {
-		status: 422,
-		type: 'invalid_from_address',
-		message: 'Invalid from field.',
-		suggestion: 'Make sure the from field follows the email@example.com or Name <email@example.com> format.',
 	},
 	invalid_access: {
 		status: 422,
@@ -118,30 +60,47 @@ export const RESEND_ERROR_CODES: Record<ResendErrorType, ResendErrorInfo> = {
 		message: 'Region must be "us-east-1" | "eu-west-1" | "sa-east-1".',
 		suggestion: 'Make sure the correct region is selected.',
 	},
-	missing_required_field: {
-		status: 422,
-		type: 'missing_required_field',
-		message: 'The request body is missing one or more required fields.',
-		suggestion: 'Check the error details to see the list of missing fields.',
-	},
-	daily_quota_exceeded: {
-		status: 429,
-		type: 'daily_quota_exceeded',
-		message: 'You have reached your daily email sending quota.',
-		suggestion:
-			'Upgrade your plan to remove the daily quota limit or wait until 24 hours have passed to continue sending.',
-	},
 	rate_limit_exceeded: {
 		status: 429,
 		type: 'rate_limit_exceeded',
 		message: 'Too many requests. Please limit the number of requests per second.',
 		suggestion: 'Reduce the rate at which you request the API or contact support to increase rate limit.',
 	},
-	security_error: {
-		status: 451,
-		type: 'security_error',
-		message: 'We may have found a security issue with the request.',
-		suggestion: 'Contact support for more information about this security issue.',
+	missing_api_key: {
+		status: 401,
+		type: 'missing_api_key',
+		message: 'Missing API key in the authorization header.',
+		suggestion: 'Include the following header in the request: Authorization: Bearer YOUR_API_KEY.',
+	},
+	invalid_api_Key: {
+		status: 403,
+		type: 'invalid_api_Key',
+		message: 'API key is invalid.',
+		suggestion: 'Make sure the API key is correct or generate a new API key in the Resend dashboard.',
+	},
+	invalid_from_address: {
+		status: 403,
+		type: 'invalid_from_address',
+		message: 'Invalid from field.',
+		suggestion: 'Make sure the from field follows the email@example.com or Name <email@example.com> format.',
+	},
+	validation_error: {
+		status: 403,
+		type: 'validation_error',
+		message: 'We found an error with one or more fields in the request.',
+		suggestion: 'The message will contain more details about what field and error were found.',
+	},
+	not_found: {
+		status: 404,
+		type: 'not_found',
+		message: 'The requested endpoint does not exist.',
+		suggestion: 'Check your request URL to match a valid API endpoint.',
+	},
+	method_not_allowed: {
+		status: 405,
+		type: 'method_not_allowed',
+		message: 'Method is not allowed for the requested path.',
+		suggestion: 'Change your API endpoint to use a valid method.',
 	},
 	application_error: {
 		status: 500,
@@ -166,13 +125,28 @@ export const RESEND_ERROR_CODES: Record<ResendErrorType, ResendErrorInfo> = {
 /**
  * Formats a user-friendly error message from Resend error response
  */
-export function formatResendError(error: unknown, action: string, requestData?: unknown): string {
-	// Try to extract error type from Resend response
+export function formatResendError(error: ErrorResponse | unknown, action: string, requestData?: unknown): string {
+	if (error && typeof error === 'object' && 'name' in error && 'message' in error) {
+		const resendError = error as ErrorResponse;
+		const errorInfo = RESEND_ERROR_CODES[resendError.name as ResendErrorType] || RESEND_ERROR_CODES.unknown_error;
+
+		let result = `Failed to ${action}\n\n${resendError.message}\n\nSuggestion: ${errorInfo.suggestion}`;
+
+		if (requestData) {
+			result += `\n\nRequest data:\n${JSON.stringify(requestData, null, 2)}`;
+		}
+
+		result += `\n\nRequest response, with HTTP Code: ${errorInfo.status}\n${JSON.stringify(error, null, 2)}`;
+
+		return result;
+	}
+
+	// Fallback for non-Resend errors
 	const errorObj = error as Record<string, unknown>;
 	const errorType = errorObj?.name || errorObj?.type || 'unknown_error';
 	const errorInfo = RESEND_ERROR_CODES[errorType as ResendErrorType] || RESEND_ERROR_CODES.unknown_error;
 
-	// Use actual error message if available, otherwise use our mapped message
+	// Use error message if available, or custom
 	const message = (errorObj?.message as string) || errorInfo.message;
 	const httpStatus = (errorObj?.statusCode as number) || (errorObj?.status as number) || errorInfo.status || 'Unknown';
 

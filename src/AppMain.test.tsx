@@ -1,11 +1,6 @@
 import { render } from 'ink-testing-library';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { AppMain } from './AppMain.js';
-
-// Mock the send command that EmailForm uses
-vi.mock('./commands/send.js', () => ({
-	sendCommand: vi.fn(),
-}));
 
 describe('App Component', () => {
 	it('renders main menu interface', () => {

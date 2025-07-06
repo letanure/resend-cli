@@ -2,6 +2,7 @@ import type { CreateEmailOptions } from 'resend';
 import { type FormField, SimpleForm } from '../../components/forms/SimpleForm.js';
 import { Layout } from '../../components/ui/layout.js';
 import { config } from '../../config.js';
+import { useResend } from '../../contexts/ResendProvider.js';
 import { sendEmailAction } from './action.js';
 import { CreateEmailOptionsSchema, type CreateEmailOptionsType } from './schema.js';
 
@@ -79,10 +80,12 @@ const emailFields: Array<FormField> = [
 ];
 
 export const EmailSendForm = ({ onExit, onEmailSent, onEmailError }: EmailSendFormProps) => {
+	const { apiKey } = useResend();
+
 	const handleSubmit = async (validatedData: CreateEmailOptionsType) => {
 		// Data is already validated and transformed by SimpleForm + Zod schema
 		// Type assertion is safe here because Zod validation ensures compatibility
-		const result = await sendEmailAction(validatedData as CreateEmailOptions);
+		const result = await sendEmailAction(validatedData as CreateEmailOptions, apiKey);
 
 		if (result.success && result.data?.id) {
 			if (onEmailSent) {
