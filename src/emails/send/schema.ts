@@ -1,6 +1,11 @@
 import { z } from 'zod';
 import { validateScheduledAt } from '../../utils/validations.js';
-import { removeEmptyFields, createEmailRecipientsSchema, createEmailSenderSchema, createTextFieldSchema } from '../../utils/zodTransforms.js';
+import {
+	createEmailRecipientsSchema,
+	createEmailSenderSchema,
+	createTextFieldSchema,
+	removeEmptyFields,
+} from '../../utils/zodTransforms.js';
 
 export const CreateEmailOptionsSchema = z
 	.object({

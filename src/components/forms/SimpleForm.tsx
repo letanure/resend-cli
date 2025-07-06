@@ -13,14 +13,19 @@ export interface FormField {
 	type?: 'text' | 'email' | 'textarea';
 }
 
-interface SimpleFormProps {
+interface SimpleFormProps<T = Record<string, unknown>> {
 	fields: Array<FormField>;
-	onSubmit: (data: Record<string, string>) => void;
+	onSubmit: (data: T) => void;
 	onCancel: () => void;
-	validateWith?: z.ZodSchema<unknown>;
+	validateWith?: z.ZodType<T, z.ZodTypeDef, unknown>;
 }
 
-export const SimpleForm = ({ fields, onSubmit, onCancel, validateWith }: SimpleFormProps) => {
+export const SimpleForm = <T = Record<string, unknown>>({
+	fields,
+	onSubmit,
+	onCancel,
+	validateWith,
+}: SimpleFormProps<T>) => {
 	const [formData, setFormData] = useState<Record<string, string>>(() => {
 		const initial: Record<string, string> = {};
 		for (const field of fields) {
@@ -54,6 +59,8 @@ export const SimpleForm = ({ fields, onSubmit, onCancel, validateWith }: SimpleF
 	});
 	const handleFormSubmission = () => {
 		const validationErrors: Record<string, string> = {};
+		let validatedData: unknown = null;
+		let currentFormError = '';
 
 		if (validateWith) {
 			const cleanedData: Record<string, string | undefined> = {};
@@ -61,28 +68,37 @@ export const SimpleForm = ({ fields, onSubmit, onCancel, validateWith }: SimpleF
 				cleanedData[key] = value.trim() === '' ? undefined : value.trim();
 			}
 			const result = validateWith.safeParse(cleanedData);
-			if (!result.success) {
+			if (result.success) {
+				validatedData = result.data;
+			} else {
 				result.error.issues.forEach((issue) => {
 					const field = issue.path[0];
 					if (typeof field === 'string') {
 						validationErrors[field] = issue.message;
 					} else {
 						// Form-level error (no specific field)
-						setFormError(issue.message);
+						currentFormError = issue.message;
 					}
 				});
 			}
 		}
 
-		if (Object.keys(validationErrors).length === 0 && !formError) {
-			const cleanData: Record<string, string> = {};
-			for (const [key, value] of Object.entries(formData)) {
-				cleanData[key] = value.trim();
-			}
+		if (Object.keys(validationErrors).length === 0 && !currentFormError) {
 			setFormError('');
-			onSubmit(cleanData);
+			if (validatedData) {
+				// Pass validated, transformed data from schema
+				onSubmit(validatedData as T);
+			} else {
+				// Fallback to cleaned raw data if no schema
+				const cleanData: Record<string, string> = {};
+				for (const [key, value] of Object.entries(formData)) {
+					cleanData[key] = value.trim();
+				}
+				onSubmit(cleanData as T);
+			}
 		} else {
 			setErrors(validationErrors);
+			setFormError(currentFormError);
 		}
 	};
 

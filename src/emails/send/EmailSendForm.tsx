@@ -1,7 +1,7 @@
 import { type FormField, SimpleForm } from '../../components/forms/SimpleForm.js';
 import { Layout } from '../../components/ui/layout.js';
 import { config } from '../../config.js';
-import { CreateEmailOptionsSchema } from './schema.js';
+import { CreateEmailOptionsSchema, type CreateEmailOptionsType } from './schema.js';
 
 interface EmailSendFormProps {
 	onExit: () => void;
@@ -75,57 +75,18 @@ const emailFields: Array<FormField> = [
 ];
 
 export const EmailSendForm = ({ onExit }: EmailSendFormProps) => {
-	const handleSubmit = (data: Record<string, string>) => {
-		// transform comma-separated fields to arrays
-		const transformed = {
-			...data,
-			to: data.to?.includes(',') ? data.to.split(',').map((s) => s.trim()) : data.to,
-			cc: data.cc?.includes(',') ? data.cc.split(',').map((s) => s.trim()) : data.cc,
-			bcc: data.bcc?.includes(',') ? data.bcc.split(',').map((s) => s.trim()) : data.bcc,
-			reply_to: data.reply_to?.includes(',') ? data.reply_to.split(',').map((s) => s.trim()) : data.reply_to,
-		};
+	const handleSubmit = (validatedData: CreateEmailOptionsType) => {
+		// Data is already validated and transformed by SimpleForm + Zod schema
+		console.log('📧 Validated email data:', validatedData);
 
-		// remove empty optional fields
-		Object.keys(transformed).forEach((key) => {
-			const value = transformed[key as keyof typeof transformed];
-			if (!value || value === '') {
-				delete transformed[key as keyof typeof transformed];
-			}
-		});
-
-		console.log('📧 Validated email data:', transformed);
-
-		// Additional validation: at least one of HTML or text is required
-		// if (!data.html && !data.text) {
-		// 	console.error('❌ Error: Either HTML or plain text content is required');
-		// 	return;
-		// }
-
-		// // Transform comma-separated values to arrays for multiple recipients
-		// const processedData = {
-		// 	...data,
-		// 	to: data.to?.includes(',') ? data.to.split(',').map((s) => s.trim()) : data.to,
-		// 	cc: data.cc?.includes(',') ? data.cc.split(',').map((s) => s.trim()) : data.cc,
-		// 	bcc: data.bcc?.includes(',') ? data.bcc.split(',').map((s) => s.trim()) : data.bcc,
-		// 	reply_to: data.reply_to?.includes(',') ? data.reply_to.split(',').map((s) => s.trim()) : data.reply_to,
-		// };
-
-		// // Remove empty optional fields
-		// Object.keys(processedData).forEach((key) => {
-		// 	const value = processedData[key as keyof typeof processedData];
-		// 	if (!value || value === '') {
-		// 		delete processedData[key as keyof typeof processedData];
-		// 	}
-		// });
-
-		// console.log('📧 Email Send Data:', JSON.stringify(processedData, null, 2));
-		// // TODO: Integrate with sendEmailAction
+		// TODO: Integrate with sendEmailAction
+		// sendEmailAction(validatedData);
 		// onExit();
 	};
 
 	return (
 		<Layout headerText={`${config.baseTitle} - Emails - Send`}>
-			<SimpleForm
+			<SimpleForm<CreateEmailOptionsType>
 				fields={emailFields}
 				validateWith={CreateEmailOptionsSchema}
 				onSubmit={handleSubmit}
