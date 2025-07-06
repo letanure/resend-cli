@@ -6,7 +6,7 @@ import { useResend } from '@/contexts/ResendProvider.js';
 import { sendEmailAction } from './action.js';
 import { CreateEmailOptionsSchema, type CreateEmailOptionsType } from './schema.js';
 
-interface EmailSendFormProps {
+interface FormProps {
 	onExit: () => void;
 	onEmailSent?: (emailId: string) => void;
 	onEmailError?: (error: string) => void;
@@ -79,7 +79,7 @@ const emailFields: Array<FormField> = [
 	// tags array Custom data passed in key/value pairs.
 ];
 
-export const EmailSendForm = ({ onExit, onEmailSent, onEmailError }: EmailSendFormProps) => {
+export const Form = ({ onExit, onEmailSent, onEmailError }: FormProps) => {
 	const { apiKey } = useResend();
 
 	const handleSubmit = async (validatedData: CreateEmailOptionsType) => {

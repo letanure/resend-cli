@@ -6,7 +6,7 @@ import { EmailCancelForm } from './EmailCancelForm.js';
 import { EmailRetrieveForm } from './EmailRetrieveForm.js';
 import { EmailsMenu, EmailsMenuState, type EmailsMenuState as EmailsMenuStateType } from './EmailsMenu.js';
 import { EmailUpdateForm } from './EmailUpdateForm.js';
-import { EmailSendForm } from './send/EmailSendForm.js';
+import { Form as FormEmail } from './send/Form.js';
 
 type EmailsMenuStateWithMenu = 'menu' | EmailsMenuStateType;
 
@@ -66,7 +66,7 @@ export const AppEmail = ({ onExit }: AppEmailProps) => {
 				/>
 			) : null}
 			{!result && screenState === 'send' && (
-				<EmailSendForm
+				<FormEmail
 					onExit={() => {
 						setLastSelectedEmailMenuItem(EmailsMenuState.send);
 						setScreenState('menu');
