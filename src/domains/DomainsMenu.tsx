@@ -1,6 +1,6 @@
-import { Layout } from '../components/ui/layout.js';
-import { Menu, type MenuItem } from '../components/ui/Menu.js';
-import { config } from '../config.js';
+import { Layout } from '@/components/ui/layout.js';
+import { Menu, type MenuItem } from '@/components/ui/Menu.js';
+import { config } from '@/config/config.js';
 
 export enum DomainsMenuState {
 	create = 'create',

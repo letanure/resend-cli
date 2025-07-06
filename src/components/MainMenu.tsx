@@ -1,7 +1,7 @@
-import { Layout } from '../components/ui/layout.js';
-import { Menu, type MenuItem } from '../components/ui/Menu.js';
-import { config } from '../config.js';
-import { AppState } from '../types.js';
+import { Layout } from '@/components/ui/layout.js';
+import { Menu, type MenuItem } from '@/components/ui/Menu.js';
+import { config } from '@/config/config.js';
+import { AppState } from '@/types.js';
 
 interface MainMenuProps {
 	onSelect: (menuId: AppState) => void;

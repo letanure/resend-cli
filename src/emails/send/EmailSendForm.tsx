@@ -1,8 +1,8 @@
 import type { CreateEmailOptions } from 'resend';
-import { type FormField, SimpleForm } from '../../components/forms/SimpleForm.js';
-import { Layout } from '../../components/ui/layout.js';
-import { config } from '../../config.js';
-import { useResend } from '../../contexts/ResendProvider.js';
+import { type FormField, SimpleForm } from '@/components/forms/SimpleForm.js';
+import { Layout } from '@/components/ui/layout.js';
+import { config } from '@/config/config.js';
+import { useResend } from '@/contexts/ResendProvider.js';
 import { sendEmailAction } from './action.js';
 import { CreateEmailOptionsSchema, type CreateEmailOptionsType } from './schema.js';
 

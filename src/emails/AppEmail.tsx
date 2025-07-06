@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { ResultScreen, type ResultType } from '../components/ui/ResultScreen.js';
-import { config } from '../config.js';
+import { ResultScreen, type ResultType } from '@/components/ui/ResultScreen.js';
+import { config } from '@/config/config.js';
 import { EmailBatchForm } from './EmailBatchForm.js';
 import { EmailCancelForm } from './EmailCancelForm.js';
 import { EmailRetrieveForm } from './EmailRetrieveForm.js';

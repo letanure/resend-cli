@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { validateScheduledAt } from '../../utils/validations.js';
+import { validateScheduledAt } from '@/utils/validations.js';
 import {
 	createEmailRecipientsSchema,
 	createEmailSenderSchema,

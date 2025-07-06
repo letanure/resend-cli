@@ -1,7 +1,7 @@
 import { Alert } from '@inkjs/ui';
 import { Text, useInput } from 'ink';
-import { Layout } from '../components/ui/layout.js';
-import { config } from '../config.js';
+import { Layout } from '@/components/ui/layout.js';
+import { config } from '@/config/config.js';
 
 interface AudienceDeleteFormProps {
 	onExit: () => void;

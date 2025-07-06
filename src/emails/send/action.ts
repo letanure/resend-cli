@@ -1,7 +1,7 @@
 import type { CreateEmailOptions, CreateEmailResponseSuccess } from 'resend';
 import { Resend } from 'resend';
-import type { ApiResult } from '../../types.js';
-import { formatResendError } from '../../utils/resendErrors.js';
+import type { ApiResult } from '@/types.js';
+import { formatResendError } from '@/utils/resendErrors.js';
 
 /**
  * Sends an email using the Resend API
