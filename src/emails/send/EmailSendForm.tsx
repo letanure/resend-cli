@@ -1,4 +1,3 @@
-import { FormLayout } from '../../components/forms/FormLayout.js';
 import { type FormField, SimpleForm } from '../../components/forms/SimpleForm.js';
 import { Layout } from '../../components/ui/layout.js';
 import { config } from '../../config.js';
@@ -94,16 +93,7 @@ export const EmailSendForm = ({ onExit }: EmailSendFormProps) => {
 			}
 		});
 
-		// validate with zod
-		const result = CreateEmailOptionsSchema.safeParse(transformed);
-
-		if (!result.success) {
-			console.error('❌ Validation errors:');
-			console.error(result.error.format());
-			return;
-		}
-
-		console.log('📧 Validated email data:', result.data);
+		console.log('📧 Validated email data:', transformed);
 
 		// Additional validation: at least one of HTML or text is required
 		// if (!data.html && !data.text) {
@@ -135,14 +125,12 @@ export const EmailSendForm = ({ onExit }: EmailSendFormProps) => {
 
 	return (
 		<Layout headerText={`${config.baseTitle} - Emails - Send`}>
-			<FormLayout title="Send Email" description="Send an email through the Resend API">
-				<SimpleForm
-					fields={emailFields}
-					validateWith={CreateEmailOptionsSchema}
-					onSubmit={handleSubmit}
-					onCancel={onExit}
-				/>
-			</FormLayout>
+			<SimpleForm
+				fields={emailFields}
+				validateWith={CreateEmailOptionsSchema}
+				onSubmit={handleSubmit}
+				onCancel={onExit}
+			/>
 		</Layout>
 	);
 };

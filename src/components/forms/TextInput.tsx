@@ -52,29 +52,14 @@ export const TextInput = ({
 
 	return (
 		<Box flexDirection="column">
-			<Box>
-				<Box width={15} flexDirection="row" justifyContent="flex-end" alignItems="center" height={3}>
+			<Box flexDirection="row">
+				<Box width={15} justifyContent="flex-start" alignItems="center">
 					<Text bold={true} color={isFocused ? 'cyan' : 'white'}>
 						{label}
 					</Text>
-					<Text> </Text>
 				</Box>
 				<Box flexDirection="column">
 					<Box>
-						<Text color={borderColor} dimColor={dimBorder}>
-							┌─
-						</Text>
-						<Text color={borderColor} dimColor={dimBorder}>
-							{'─'.repeat(60)}
-						</Text>
-						<Text color={borderColor} dimColor={dimBorder}>
-							─┐
-						</Text>
-					</Box>
-					<Box>
-						<Text color={borderColor} dimColor={dimBorder}>
-							│{' '}
-						</Text>
 						<Box width={60}>
 							{Array.from({ length: 60 }).map((_, i) => {
 								const uniqueKey = `input-${label}-pos-${i}`;
@@ -95,20 +80,10 @@ export const TextInput = ({
 								return <Text key={uniqueKey}> </Text>;
 							})}
 						</Box>
-						<Text color={borderColor} dimColor={dimBorder}>
-							{' '}
-							│
-						</Text>
 					</Box>
 					<Box>
 						<Text color={borderColor} dimColor={dimBorder}>
-							└─
-						</Text>
-						<Text color={borderColor} dimColor={dimBorder}>
 							{'─'.repeat(60)}
-						</Text>
-						<Text color={borderColor} dimColor={dimBorder}>
-							─┘
 						</Text>
 					</Box>
 				</Box>

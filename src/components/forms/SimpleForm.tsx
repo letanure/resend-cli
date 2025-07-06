@@ -1,4 +1,5 @@
 import { Box, Text, useInput } from 'ink';
+import { Alert } from '@inkjs/ui';
 import { useState } from 'react';
 import type { z } from 'zod';
 import { TextInput } from './TextInput.js';
@@ -30,6 +31,7 @@ export const SimpleForm = ({ fields, onSubmit, onCancel, validateWith }: SimpleF
 
 	const [currentField, setCurrentField] = useState(0);
 	const [errors, setErrors] = useState<Record<string, string>>({});
+	const [formError, setFormError] = useState<string>('');
 	useInput((_input, key) => {
 		const keyHandlers: Array<{ condition: () => boolean; action: () => void }> = [
 			{ condition: () => key.escape, action: onCancel },
@@ -64,16 +66,20 @@ export const SimpleForm = ({ fields, onSubmit, onCancel, validateWith }: SimpleF
 					const field = issue.path[0];
 					if (typeof field === 'string') {
 						validationErrors[field] = issue.message;
+					} else {
+						// Form-level error (no specific field)
+						setFormError(issue.message);
 					}
 				});
 			}
 		}
 
-		if (Object.keys(validationErrors).length === 0) {
+		if (Object.keys(validationErrors).length === 0 && !formError) {
 			const cleanData: Record<string, string> = {};
 			for (const [key, value] of Object.entries(formData)) {
 				cleanData[key] = value.trim();
 			}
+			setFormError('');
 			onSubmit(cleanData);
 		} else {
 			setErrors(validationErrors);
@@ -87,10 +93,20 @@ export const SimpleForm = ({ fields, onSubmit, onCancel, validateWith }: SimpleF
 		if (errors[fieldName]) {
 			setErrors((prev) => ({ ...prev, [fieldName]: '' }));
 		}
+
+		// Clear form-level error when user starts typing
+		if (formError) {
+			setFormError('');
+		}
 	};
 
 	return (
-		<Box flexDirection="column">
+		<Box flexDirection="column" marginTop={1}>
+			{formError && (
+				<Box marginBottom={1}>
+					<Alert variant="error">{formError}</Alert>
+				</Box>
+			)}
 			{fields.map((field, index) => (
 				<TextInput
 					key={field.name}
