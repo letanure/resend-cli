@@ -9,7 +9,7 @@ import { AppDomains } from './domains/AppDomains.js';
 import { AppEmail } from './emails/AppEmail.js';
 import { AppState } from './types.js';
 
-export const Main = () => {
+export const AppMain = () => {
 	const { exit } = useApp();
 	const [screenState, setScreenState] = useState<AppState>(AppState.main);
 

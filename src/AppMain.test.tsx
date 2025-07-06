@@ -1,6 +1,6 @@
 import { render } from 'ink-testing-library';
 import { describe, expect, it, vi } from 'vitest';
-import { Main } from './Main.js';
+import { AppMain } from './AppMain.js';
 
 // Mock the send command that EmailForm uses
 vi.mock('./commands/send.js', () => ({
@@ -9,25 +9,34 @@ vi.mock('./commands/send.js', () => ({
 
 describe('App Component', () => {
 	it('renders main menu interface', () => {
-		const { lastFrame } = render(<Main />);
+		const { lastFrame } = render(<AppMain />);
 		const output = lastFrame() ?? '';
 
 		expect(output).toContain('📧 Resend CLI');
 	});
 
-	it('shows menu options', () => {
-		const { lastFrame } = render(<Main />);
+	it('shows all menu options', () => {
+		const { lastFrame } = render(<AppMain />);
 		const output = lastFrame() ?? '';
 
+		// Check all menu items
 		expect(output).toContain('Email');
+
 		expect(output).toContain('Domains');
-		expect(output).toContain('Send, retrieve, update, and cancel emails');
+
+		expect(output).toContain('API Keys');
+
+		expect(output).toContain('Broadcasts');
+
+		expect(output).toContain('Audiences');
+
+		expect(output).toContain('Contacts');
 	});
 
 	it('shows navigation instructions', () => {
-		const { lastFrame } = render(<Main />);
+		const { lastFrame } = render(<AppMain />);
 		const output = lastFrame() ?? '';
 
-		expect(output).toContain('Use ↑/↓ to navigate');
+		expect(output).toContain('Use ↑/↓ to navigate, Enter to select q or ESC to go back');
 	});
 });
