@@ -5,7 +5,7 @@ import {
 	createEmailSenderSchema,
 	createTextFieldSchema,
 	removeEmptyFields,
-} from '../../utils/zodTransforms.js';
+} from '@/utils/zodTransforms.js';
 
 export const CreateEmailOptionsSchema = z
 	.object({

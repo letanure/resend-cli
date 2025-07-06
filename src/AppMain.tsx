@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { AppApiKey } from '@/modules/api-key/AppApiKey.js';
 import { AppAudiences } from '@/modules/audiences/AppAudiences.js';
 import { AppBroadcasts } from '@/modules/broadcasts/AppBroadcasts.js';
+import { AppContacts } from '@/modules/contacts/AppContacts.js';
+import { AppDomains } from '@/modules/domains/AppDomains.js';
+import { AppEmail } from '@/modules/emails/AppEmail.js';
 import { MainMenu } from './components/MainMenu.js';
-import { AppContacts } from './contacts/AppContacts.js';
 import { ResendProvider } from './contexts/ResendProvider.js';
-import { AppDomains } from './domains/AppDomains.js';
-import { AppEmail } from './emails/AppEmail.js';
 import { AppState } from './types.js';
 
 export const AppMain = () => {
