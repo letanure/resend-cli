@@ -1,70 +1,75 @@
 import type { CreateEmailOptions } from 'resend';
 import { Resend } from 'resend';
+import { formatResendError } from '../../utils/resendErrors.js';
 
-export interface SendEmailArgs {
-	from: string;
-	to: string | Array<string>;
-	subject: string;
-	html?: string;
-	text?: string;
-	apiKey?: string;
-}
-
-export interface SendEmailResult {
+/**
+ * Standard API result format used across all endpoints
+ */
+export interface ApiResult<T = unknown> {
 	success: boolean;
-	message?: string;
+	data?: T;
 	error?: string;
-	data?: {
-		id: string;
+	debug?: {
+		request?: unknown;
+		response?: unknown;
 	};
 }
 
-export async function sendEmailAction(args: SendEmailArgs): Promise<SendEmailResult> {
-	try {
-		// Get API key from args or environment
-		const apiKey = args.apiKey || process.env.RESEND_API_KEY;
+/**
+ * Successful email send response data
+ */
+export interface EmailSendData {
+	id: string;
+}
 
-		if (!apiKey) {
+/**
+ * Sends an email using the Resend API
+ *
+ * @param emailData - Email data matching Resend's CreateEmailOptions interface
+ * @param apiKey - Optional API key, falls back to RESEND_API_KEY environment variable
+ * @returns Promise<ApiResult<EmailSendData>> - Standard result format
+ */
+export async function sendEmailAction(
+	emailData: CreateEmailOptions,
+	apiKey?: string,
+): Promise<ApiResult<EmailSendData>> {
+	try {
+		const resolvedApiKey = apiKey || process.env.RESEND_API_KEY;
+
+		if (!resolvedApiKey) {
 			return {
 				success: false,
-				error: 'API key is required. Provide it via --apiKey flag or set RESEND_API_KEY environment variable.',
+				error: 'API key is required. Provide it via parameter or set RESEND_API_KEY environment variable.',
 			};
 		}
 
-		// Initialize Resend client
-		const resend = new Resend(apiKey);
-
-		// Prepare email options (using Resend's interface directly)
-		const emailOptions: CreateEmailOptions = {
-			from: args.from,
-			to: args.to,
-			subject: args.subject,
-			...(args.html && { html: args.html }),
-			...(args.text && { text: args.text }),
-		} as CreateEmailOptions;
-
-		// Send email
-		// biome-ignore lint/suspicious/noExplicitAny: Resend type compatibility issue
-		const { data, error } = await resend.emails.send(emailOptions as any);
+		const resend = new Resend(resolvedApiKey);
+		const { data, error } = await resend.emails.send(emailData);
 
 		if (error) {
 			return {
 				success: false,
-				error: `Failed to send email: ${error.message}`,
+				error: formatResendError(error, 'send email', emailData),
+			};
+		}
+
+		if (!data?.id) {
+			return {
+				success: false,
+				error: 'Email sent but no ID returned from Resend API',
 			};
 		}
 
 		return {
 			success: true,
-			message: 'Email sent successfully!',
 			data: {
-				id: data?.id || '',
+				id: data.id,
 			},
 		};
 	} catch (error) {
 		return {
 			success: false,
-			error: error instanceof Error ? error.message : 'Unknown error occurred',
+			error: formatResendError(error, 'send email', emailData),
 		};
 	}
 }

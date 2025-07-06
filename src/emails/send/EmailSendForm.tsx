@@ -1,10 +1,14 @@
+import type { CreateEmailOptions } from 'resend';
 import { type FormField, SimpleForm } from '../../components/forms/SimpleForm.js';
 import { Layout } from '../../components/ui/layout.js';
 import { config } from '../../config.js';
+import { sendEmailAction } from './action.js';
 import { CreateEmailOptionsSchema, type CreateEmailOptionsType } from './schema.js';
 
 interface EmailSendFormProps {
 	onExit: () => void;
+	onEmailSent?: (emailId: string) => void;
+	onEmailError?: (error: string) => void;
 }
 
 const emailFields: Array<FormField> = [
@@ -74,14 +78,28 @@ const emailFields: Array<FormField> = [
 	// tags array Custom data passed in key/value pairs.
 ];
 
-export const EmailSendForm = ({ onExit }: EmailSendFormProps) => {
-	const handleSubmit = (validatedData: CreateEmailOptionsType) => {
+export const EmailSendForm = ({ onExit, onEmailSent, onEmailError }: EmailSendFormProps) => {
+	const handleSubmit = async (validatedData: CreateEmailOptionsType) => {
 		// Data is already validated and transformed by SimpleForm + Zod schema
-		console.log('📧 Validated email data:', validatedData);
+		// Type assertion is safe here because Zod validation ensures compatibility
+		const result = await sendEmailAction(validatedData as CreateEmailOptions);
 
-		// TODO: Integrate with sendEmailAction
-		// sendEmailAction(validatedData);
-		// onExit();
+		if (result.success && result.data?.id) {
+			if (onEmailSent) {
+				onEmailSent(result.data.id);
+			} else {
+				console.log(`✅ Email sent successfully! ID: ${result.data.id}`);
+				onExit();
+			}
+			return;
+		}
+
+		if (onEmailError) {
+			const errorMessage = result.error || 'Unknown error occurred';
+			onEmailError(errorMessage);
+		} else {
+			console.error(`❌ Failed to send email: ${result.error}`);
+		}
 	};
 
 	return (
