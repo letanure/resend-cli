@@ -29,9 +29,10 @@ const API_KEYS_MENU_ITEMS: Array<MenuItem<ApiKeysMenuState>> = [
 interface ApiKeysMenuProps {
 	onExit: () => void;
 	onSelect: (menuId: ApiKeysMenuState) => void;
+	initialSelectedKey?: ApiKeysMenuState;
 }
 
-export const ApiKeysMenu = ({ onExit, onSelect }: ApiKeysMenuProps) => {
+export const ApiKeysMenu = ({ onExit, onSelect, initialSelectedKey }: ApiKeysMenuProps) => {
 	return (
 		<Layout headerText={`${config.baseTitle} - API Keys`} showNavigationInstructions={true}>
 			<Menu
@@ -42,6 +43,7 @@ export const ApiKeysMenu = ({ onExit, onSelect }: ApiKeysMenuProps) => {
 				onExit={() => {
 					onExit();
 				}}
+				initialSelectedKey={initialSelectedKey}
 			/>
 		</Layout>
 	);

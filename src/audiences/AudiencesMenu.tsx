@@ -35,9 +35,10 @@ const AUDIENCES_MENU_ITEMS: Array<MenuItem<AudiencesMenuState>> = [
 interface AudiencesMenuProps {
 	onExit: () => void;
 	onSelect: (menuId: AudiencesMenuState) => void;
+	initialSelectedKey?: AudiencesMenuState;
 }
 
-export const AudiencesMenu = ({ onExit, onSelect }: AudiencesMenuProps) => {
+export const AudiencesMenu = ({ onExit, onSelect, initialSelectedKey }: AudiencesMenuProps) => {
 	return (
 		<Layout headerText={`${config.baseTitle} - Audiences`} showNavigationInstructions={true}>
 			<Menu
@@ -48,6 +49,7 @@ export const AudiencesMenu = ({ onExit, onSelect }: AudiencesMenuProps) => {
 				onExit={() => {
 					onExit();
 				}}
+				initialSelectedKey={initialSelectedKey}
 			/>
 		</Layout>
 	);

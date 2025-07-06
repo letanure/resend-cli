@@ -41,9 +41,10 @@ const MAIN_MENU_ITEMS: Array<MenuItem<EmailsMenuState>> = [
 interface EmailsMenuProps {
 	onExit: () => void;
 	onSelect: (menuId: EmailsMenuState) => void;
+	initialSelectedKey?: EmailsMenuState;
 }
 
-export const EmailsMenu = ({ onExit, onSelect }: EmailsMenuProps) => {
+export const EmailsMenu = ({ onExit, onSelect, initialSelectedKey }: EmailsMenuProps) => {
 	return (
 		<Layout headerText={`${config.baseTitle} - Emails`} showNavigationInstructions={true}>
 			<Menu
@@ -54,6 +55,7 @@ export const EmailsMenu = ({ onExit, onSelect }: EmailsMenuProps) => {
 				onExit={() => {
 					onExit();
 				}}
+				initialSelectedKey={initialSelectedKey}
 			/>
 		</Layout>
 	);

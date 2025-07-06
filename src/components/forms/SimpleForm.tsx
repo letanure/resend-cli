@@ -1,5 +1,5 @@
-import { Box, Text, useInput } from 'ink';
 import { Alert } from '@inkjs/ui';
+import { Box, Text, useInput } from 'ink';
 import { useState } from 'react';
 import type { z } from 'zod';
 import { TextInput } from './TextInput.js';

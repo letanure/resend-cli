@@ -6,6 +6,7 @@ import { AppState } from '../types.js';
 interface MainMenuProps {
 	onSelect: (menuId: AppState) => void;
 	onExit: () => void;
+	initialSelectedKey?: AppState;
 }
 
 const MENU_ITEMS: Array<MenuItem<AppState>> = [
@@ -41,7 +42,7 @@ const MENU_ITEMS: Array<MenuItem<AppState>> = [
 	},
 ];
 
-export const MainMenu = ({ onSelect, onExit }: MainMenuProps) => {
+export const MainMenu = ({ onSelect, onExit, initialSelectedKey }: MainMenuProps) => {
 	return (
 		<Layout headerText={`${config.baseTitle}`} showNavigationInstructions={true}>
 			<Menu
@@ -49,7 +50,8 @@ export const MainMenu = ({ onSelect, onExit }: MainMenuProps) => {
 				onSelect={(menuId) => {
 					onSelect(menuId);
 				}}
-				onExit={onExit}
+				onExit={() => onExit()}
+				initialSelectedKey={initialSelectedKey}
 			/>
 		</Layout>
 	);

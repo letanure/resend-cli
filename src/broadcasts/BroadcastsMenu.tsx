@@ -47,9 +47,10 @@ const BROADCASTS_MENU_ITEMS: Array<MenuItem<BroadcastsMenuState>> = [
 interface BroadcastsMenuProps {
 	onExit: () => void;
 	onSelect: (menuId: BroadcastsMenuState) => void;
+	initialSelectedKey?: BroadcastsMenuState;
 }
 
-export const BroadcastsMenu = ({ onExit, onSelect }: BroadcastsMenuProps) => {
+export const BroadcastsMenu = ({ onExit, onSelect, initialSelectedKey }: BroadcastsMenuProps) => {
 	return (
 		<Layout headerText={`${config.baseTitle} - Broadcasts`} showNavigationInstructions={true}>
 			<Menu
@@ -60,6 +61,7 @@ export const BroadcastsMenu = ({ onExit, onSelect }: BroadcastsMenuProps) => {
 				onExit={() => {
 					onExit();
 				}}
+				initialSelectedKey={initialSelectedKey}
 			/>
 		</Layout>
 	);

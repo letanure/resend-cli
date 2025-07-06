@@ -47,9 +47,10 @@ const DOMAINS_MENU_ITEMS: Array<MenuItem<DomainsMenuState>> = [
 interface DomainsMenuProps {
 	onExit: () => void;
 	onSelect: (menuId: DomainsMenuState) => void;
+	initialSelectedKey?: DomainsMenuState;
 }
 
-export const DomainsMenu = ({ onExit, onSelect }: DomainsMenuProps) => {
+export const DomainsMenu = ({ onExit, onSelect, initialSelectedKey }: DomainsMenuProps) => {
 	return (
 		<Layout headerText={`${config.baseTitle} - Domains`} showNavigationInstructions={true}>
 			<Menu
@@ -60,6 +61,7 @@ export const DomainsMenu = ({ onExit, onSelect }: DomainsMenuProps) => {
 				onExit={() => {
 					onExit();
 				}}
+				initialSelectedKey={initialSelectedKey}
 			/>
 		</Layout>
 	);

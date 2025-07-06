@@ -41,9 +41,10 @@ const CONTACTS_MENU_ITEMS: Array<MenuItem<ContactsMenuState>> = [
 interface ContactsMenuProps {
 	onExit: () => void;
 	onSelect: (menuId: ContactsMenuState) => void;
+	initialSelectedKey?: ContactsMenuState;
 }
 
-export const ContactsMenu = ({ onExit, onSelect }: ContactsMenuProps) => {
+export const ContactsMenu = ({ onExit, onSelect, initialSelectedKey }: ContactsMenuProps) => {
 	return (
 		<Layout headerText={`${config.baseTitle} - Contacts`} showNavigationInstructions={true}>
 			<Menu
@@ -54,6 +55,7 @@ export const ContactsMenu = ({ onExit, onSelect }: ContactsMenuProps) => {
 				onExit={() => {
 					onExit();
 				}}
+				initialSelectedKey={initialSelectedKey}
 			/>
 		</Layout>
 	);

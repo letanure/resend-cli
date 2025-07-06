@@ -12,16 +12,65 @@ import { AppState } from './types.js';
 export const AppMain = () => {
 	const { exit } = useApp();
 	const [screenState, setScreenState] = useState<AppState>(AppState.main);
+	const [lastSelectedMainMenuItem, setLastSelectedMainMenuItem] = useState<AppState>();
 
 	return (
 		<>
-			{screenState === AppState.main && <MainMenu onSelect={(menuId) => setScreenState(menuId)} onExit={exit} />}
-			{screenState === AppState.email && <AppEmail onExit={() => setScreenState(AppState.main)} />}
-			{screenState === AppState.domains && <AppDomains onExit={() => setScreenState(AppState.main)} />}
-			{screenState === AppState.apiKeys && <AppApiKey onExit={() => setScreenState(AppState.main)} />}
-			{screenState === AppState.audiences && <AppAudiences onExit={() => setScreenState(AppState.main)} />}
-			{screenState === AppState.broadcasts && <AppBroadcasts onExit={() => setScreenState(AppState.main)} />}
-			{screenState === AppState.contacts && <AppContacts onExit={() => setScreenState(AppState.main)} />}
+			{screenState === AppState.main && (
+				<MainMenu
+					onSelect={(menuId) => setScreenState(menuId)}
+					onExit={exit}
+					initialSelectedKey={lastSelectedMainMenuItem}
+				/>
+			)}
+			{screenState === AppState.email && (
+				<AppEmail
+					onExit={() => {
+						setLastSelectedMainMenuItem(AppState.email);
+						setScreenState(AppState.main);
+					}}
+				/>
+			)}
+			{screenState === AppState.domains && (
+				<AppDomains
+					onExit={() => {
+						setLastSelectedMainMenuItem(AppState.domains);
+						setScreenState(AppState.main);
+					}}
+				/>
+			)}
+			{screenState === AppState.apiKeys && (
+				<AppApiKey
+					onExit={() => {
+						setLastSelectedMainMenuItem(AppState.apiKeys);
+						setScreenState(AppState.main);
+					}}
+				/>
+			)}
+			{screenState === AppState.audiences && (
+				<AppAudiences
+					onExit={() => {
+						setLastSelectedMainMenuItem(AppState.audiences);
+						setScreenState(AppState.main);
+					}}
+				/>
+			)}
+			{screenState === AppState.broadcasts && (
+				<AppBroadcasts
+					onExit={() => {
+						setLastSelectedMainMenuItem(AppState.broadcasts);
+						setScreenState(AppState.main);
+					}}
+				/>
+			)}
+			{screenState === AppState.contacts && (
+				<AppContacts
+					onExit={() => {
+						setLastSelectedMainMenuItem(AppState.contacts);
+						setScreenState(AppState.main);
+					}}
+				/>
+			)}
 		</>
 	);
 };

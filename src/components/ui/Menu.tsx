@@ -10,12 +10,14 @@ export interface MenuItem<T extends string> {
 interface MainMenuProps<T extends string> {
 	menuItems: Array<MenuItem<T>>;
 	onSelect: (menuId: T) => void;
-	onExit: () => void;
+	onExit: (lastSelectedKey?: T) => void;
 	title?: string;
+	initialSelectedKey?: T;
 }
 
-export const Menu = <T extends string>({ menuItems, onSelect, onExit }: MainMenuProps<T>) => {
-	const [selectedIndex, setSelectedIndex] = useState(0);
+export const Menu = <T extends string>({ menuItems, onSelect, onExit, initialSelectedKey }: MainMenuProps<T>) => {
+	const initialIndex = initialSelectedKey ? menuItems.findIndex((item) => item.id === initialSelectedKey) : 0;
+	const [selectedIndex, setSelectedIndex] = useState(Math.max(0, initialIndex));
 
 	useInput((input, key) => {
 		if (key.upArrow && selectedIndex > 0) {
@@ -34,7 +36,8 @@ export const Menu = <T extends string>({ menuItems, onSelect, onExit }: MainMenu
 		}
 
 		if (input === 'q' || key.escape) {
-			onExit();
+			const currentSelectedItem = menuItems[selectedIndex];
+			onExit(currentSelectedItem?.id);
 		}
 	});
 
