@@ -1,3 +1,10 @@
+## [0.9.2](https://github.com/letanure/resend-cli/compare/v0.9.1...v0.9.2) (2025-07-07)
+
+
+### Bug Fixes
+
+* update navigation  with arrow nav ([4e966c1](https://github.com/letanure/resend-cli/commit/4e966c142ce560c9aec3be633dcde3a218256fc9))
+
 ## [0.9.1](https://github.com/letanure/resend-cli/compare/v0.9.0...v0.9.1) (2025-07-07)
 
 
