@@ -8,6 +8,8 @@ To make changes, edit the template file and run: npm run docs:generate
 
 A command-line interface for the [Resend](https://resend.com) email API. Features both CLI commands and an interactive TUI (Text User Interface) for sending emails, managing domains, and more.
 
+> **⚠️ Disclaimer**: This is an **unofficial** CLI tool built on top of the [Resend Node.js SDK](https://github.com/resendlabs/resend-node). It is not affiliated with or endorsed by Resend. For official Resend tools and support, visit [resend.com](https://resend.com).
+
 Perfect for:
 - Testing email flows during development
 - Sending notifications from CI/CD pipelines
