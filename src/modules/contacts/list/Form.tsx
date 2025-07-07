@@ -9,7 +9,7 @@ import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
 import { listContacts } from './action.js';
-import { fields, displayFields } from './fields.js';
+import { displayFields, fields } from './fields.js';
 import { ListContactsOptionsSchema, type ListContactsOptionsType } from './schema.js';
 
 interface ContactListFormProps {
