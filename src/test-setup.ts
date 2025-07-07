@@ -42,3 +42,17 @@ vi.mock('./modules/emails/cancel/action.js', () => ({
 		}),
 	),
 }));
+
+// Mock the audience create action
+vi.mock('./modules/audiences/create/action.js', () => ({
+	createAudience: vi.fn(() =>
+		Promise.resolve({
+			success: true,
+			data: {
+				id: 'test-audience-id',
+				object: 'audience',
+				name: 'Test Audience',
+			},
+		}),
+	),
+}));

@@ -50,15 +50,15 @@ export const Menu = <T extends string>({ menuItems, onSelect, onExit, initialSel
 						<Text color={index === selectedIndex ? 'cyan' : 'gray'}>{index === selectedIndex ? '▶' : ' '}</Text>
 					</Box>
 					<Box flexDirection="column">
-						<Text 
-							color={item.disabled ? 'gray' : (index === selectedIndex ? 'cyan' : 'white')} 
+						<Text
+							color={item.disabled ? 'gray' : index === selectedIndex ? 'cyan' : 'white'}
 							bold={index === selectedIndex && !item.disabled}
 							dimColor={item.disabled}
 						>
 							{item.label}
 						</Text>
-						<Text 
-							color={item.disabled ? 'gray' : (index === selectedIndex ? 'gray' : 'darkGray')} 
+						<Text
+							color={item.disabled ? 'gray' : index === selectedIndex ? 'gray' : 'darkGray'}
 							dimColor={item.disabled || index !== selectedIndex}
 						>
 							{item.description}

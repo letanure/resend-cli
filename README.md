@@ -399,9 +399,9 @@ List all API keys
 
 Audience operations
 
-### audiences list
+### audiences create
 
-List all audiences
+[options]  Create a new audience via Resend API
 
 
 ## broadcasts

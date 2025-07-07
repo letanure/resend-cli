@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { AudienceCreateForm } from './AudienceCreateForm.js';
 import { AudienceDeleteForm } from './AudienceDeleteForm.js';
 import { AudienceListForm } from './AudienceListForm.js';
 import { AudienceRetrieveForm } from './AudienceRetrieveForm.js';
@@ -8,6 +7,7 @@ import {
 	AudiencesMenuState,
 	type AudiencesMenuState as AudiencesMenuStateType,
 } from './AudiencesMenu.js';
+import { AudienceCreateForm } from './create/Form.js';
 
 type AudiencesMenuStateWithMenu = 'menu' | AudiencesMenuStateType;
 
