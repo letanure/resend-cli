@@ -2,6 +2,7 @@ import type { CreateEmailOptions } from 'resend';
 import { type FormField, SimpleForm } from '@/components/forms/SimpleForm.js';
 import { Layout } from '@/components/ui/layout.js';
 import { config } from '@/config/config.js';
+import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
 import { sendEmailAction } from './action.js';
 import { fields } from './fields.js';
@@ -23,8 +24,18 @@ const tuiFields: Array<FormField> = fields.map((field) => ({
 
 export const Form = ({ onExit, onEmailSent, onEmailError }: FormProps) => {
 	const { apiKey } = useResend();
+	const { isDryRun } = useDryRun();
 
 	const handleSubmit = async (validatedData: CreateEmailOptionsType) => {
+		// In dry-run mode, just log the data and exit
+		if (isDryRun) {
+			console.log('🔍 DRY RUN - Email data validated:');
+			console.log(JSON.stringify(validatedData, null, 2));
+			console.log('✅ Validation successful! (Email not sent due to dry-run mode)');
+			onExit();
+			return;
+		}
+
 		// Data is already validated and transformed by SimpleForm + Zod schema
 		// Type assertion is safe here because Zod validation ensures compatibility
 		const result = await sendEmailAction(validatedData as CreateEmailOptions, apiKey);

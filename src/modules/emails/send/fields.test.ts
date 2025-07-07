@@ -32,7 +32,7 @@ describe('Email Send Fields', () => {
 			expect(field).toHaveProperty('helpText');
 			expect(field).toHaveProperty('cliFlag');
 			expect(field).toHaveProperty('cliShortFlag');
-			
+
 			expect(typeof field.name).toBe('string');
 			expect(typeof field.label).toBe('string');
 			expect(typeof field.placeholder).toBe('string');

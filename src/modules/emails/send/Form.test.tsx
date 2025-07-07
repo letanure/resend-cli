@@ -56,4 +56,14 @@ describe('Email Send Form', () => {
 		expect(output).not.toContain('DRY RUN MODE');
 		expect(output).toContain('From');
 	});
+
+	it('matches snapshot in normal mode', () => {
+		const { lastFrame } = renderWithProviders(<Form onExit={mockOnExit} />, { isDryRun: false });
+		expect(lastFrame()).toMatchSnapshot();
+	});
+
+	it('matches snapshot in dry-run mode', () => {
+		const { lastFrame } = renderWithProviders(<Form onExit={mockOnExit} />, { isDryRun: true });
+		expect(lastFrame()).toMatchSnapshot();
+	});
 });
