@@ -1,3 +1,13 @@
+# [0.3.0](https://github.com/letanure/resend-cli/compare/v0.2.0...v0.3.0) (2025-07-07)
+
+
+### Features
+
+* add displayResults ([38034c7](https://github.com/letanure/resend-cli/commit/38034c78360369dfc7acbc098063750ba4a95c95))
+* add Resend API key validation utilities ([11c050f](https://github.com/letanure/resend-cli/commit/11c050fc5e84541f8be6bad6e7c93b3d727d7d73))
+* add snapshot tests for email send form ([69ce335](https://github.com/letanure/resend-cli/commit/69ce3358bdb705ab97e130293f75180bad1cdeb5))
+* implement email sending functionality with improved result display ([f62d3d6](https://github.com/letanure/resend-cli/commit/f62d3d6aefd9c29ae5455a30b3c27474f144339d))
+
 # [0.2.0](https://github.com/letanure/resend-cli/compare/v0.1.0...v0.2.0) (2025-07-07)
 
 
