@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/letanure/resend-cli#readme",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "postbuild": "chmod +x dist/src/cli.js",
     "build:watch": "tsc --watch",
     "dev": "tsx --watch src/cli.tsx",
@@ -57,8 +57,8 @@
     "@inkjs/ui": "^2.0.0",
     "@types/node": "^24.0.10",
     "@types/react": "^19.1.8",
+    "commander": "^14.0.0",
     "ink": "^6.0.1",
-    "meow": "^13.2.0",
     "react": "^19.1.0",
     "resend": "^4.6.0",
     "typescript": "^5.8.3",
@@ -76,6 +76,7 @@
     "husky": "^9.1.7",
     "ink-testing-library": "^4.0.0",
     "semantic-release": "^24.2.6",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.20.3",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
