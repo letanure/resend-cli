@@ -8,6 +8,17 @@ To make changes, edit the template file and run: npm run docs:generate
 
 A command-line interface for the [Resend](https://resend.com) email API. Features both CLI commands and an interactive TUI (Text User Interface) for sending emails, managing domains, and more.
 
+Perfect for:
+- Testing email flows during development
+- Sending notifications from CI/CD pipelines
+- Quick email sending from scripts and automation
+- Local development without web interfaces
+
+## Requirements
+
+- Node.js 18+
+- Resend API key (get one at [resend.com](https://resend.com))
+
 ## Quick Start (TLDR)
 
 ### CLI Mode
@@ -40,6 +51,7 @@ Get your API key at: https://resend.com/docs/dashboard/api-keys/introduction
 
 ## Table of Contents
 
+- [Requirements](#requirements)
 - [Quick Start (TLDR)](#quick-start-tldr)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -75,18 +87,39 @@ npx resend-cli --help
 
 ## Configuration
 
-Set your Resend API key as an environment variable:
+### Environment Variables
 
+The CLI requires your Resend API key to be available as an environment variable.
+
+#### Setup Methods
+
+**Temporary (current session only):**
 ```bash
-# Export in your shell
-export RESEND_API_KEY="re_your_api_key_here"
-
-# Or add to your .bashrc/.zshrc
-echo 'export RESEND_API_KEY="re_your_api_key_here"' >> ~/.bashrc
-
-# Or use inline with commands
-RESEND_API_KEY="re_your_api_key_here" resend-cli email send ...
+export RESEND_API_KEY="re_xxxxxxxxxxxx"
 ```
+
+**Permanent (recommended):**
+```bash
+# Add to your shell profile
+echo 'export RESEND_API_KEY="re_xxxxxxxxxxxx"' >> ~/.bashrc
+source ~/.bashrc
+
+# Or for zsh users
+echo 'export RESEND_API_KEY="re_xxxxxxxxxxxx"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+**One-time usage:**
+```bash
+RESEND_API_KEY="re_xxxxxxxxxxxx" resend-cli email send --from="..." --to="..."
+```
+
+#### Getting Your API Key
+
+1. Sign up at [resend.com](https://resend.com)
+2. Go to [API Keys](https://resend.com/api-keys)
+3. Create a new API key
+4. Copy the key (starts with `re_`)
 
 ## CLI Commands
 
@@ -107,14 +140,15 @@ The CLI supports both human-readable and machine-readable output:
 ### Default (Human-readable)
 ```bash
 $ resend-cli email send --from="..." --to="..." --subject="..." --text="..."
-Parsed email data:
+Email sent successfully:
 From: Acme <onboarding@resend.dev>
 To: delivered@resend.dev
 Subject: Hello
 Plain Text: Hello World
 API Key: re_abc123...
+Email ID: 550e8400-e29b-41d4-a716-446655440000
 
-Command parsed successfully! (Email not sent - for testing)
+Email sent! ID: 550e8400-e29b-41d4-a716-446655440000
 ```
 
 ### JSON Output (for automation)
@@ -127,10 +161,23 @@ $ resend-cli email send --output json --from="..." --to="..." --subject="..." --
     "from": "Acme <onboarding@resend.dev>", 
     "subject": "Hello",
     "text": "Hello World",
-    "API Key": "re_abc123...",
-    "message": "Command parsed successfully! (Email not sent - for testing)"
+    "id": "550e8400-e29b-41d4-a716-446655440000"
   }
 }
+```
+
+### Dry-run Output (validation only)
+```bash
+$ resend-cli email send --dry-run --from="..." --to="..." --subject="..." --text="..."
+DRY RUN - Email data (validation only):
+From: Acme <onboarding@resend.dev>
+To: delivered@resend.dev
+Subject: Hello
+Plain Text: Hello World
+API Key: re_abc123...
+Dry Run: true
+
+Validation successful! (Email not sent due to --dry-run flag)
 ```
 
 ### Error Handling
