@@ -1,10 +1,10 @@
 import { useState } from 'react';
+import { EmailCancelForm } from './cancel/Form.js';
 import { EmailBatchForm } from './EmailBatchForm.js';
-import { EmailCancelForm } from './EmailCancelForm.js';
 import { EmailsMenu, EmailsMenuState, type EmailsMenuState as EmailsMenuStateType } from './EmailsMenu.js';
-import { EmailUpdateForm } from './update/Form.js';
 import { EmailRetrieveForm } from './retrieve/Form.js';
 import { Form as FormEmail } from './send/Form.js';
+import { EmailUpdateForm } from './update/Form.js';
 
 type EmailsMenuStateWithMenu = 'menu' | EmailsMenuStateType;
 

@@ -15,7 +15,7 @@ function transformCliOptions(options: Record<string, unknown>): Record<string, u
 	const transformed: Record<string, unknown> = {};
 	// System flags that should not be converted
 	const systemFlags = ['dryRun', 'output'];
-	
+
 	for (const [key, value] of Object.entries(options)) {
 		if (systemFlags.includes(key)) {
 			// Keep system flags as-is
@@ -32,8 +32,9 @@ function transformCliOptions(options: Record<string, unknown>): Record<string, u
 // Validate options using a Zod schema
 export function validateOptions<T>(options: unknown, schema: ZodSchema<T>, format: OutputFormat = 'text'): T {
 	// Transform camelCase keys to snake_case if options is an object
-	const transformedOptions = options && typeof options === 'object' ? transformCliOptions(options as Record<string, unknown>) : options;
-	
+	const transformedOptions =
+		options && typeof options === 'object' ? transformCliOptions(options as Record<string, unknown>) : options;
+
 	const validationResult = schema.safeParse(transformedOptions);
 
 	if (!validationResult.success) {

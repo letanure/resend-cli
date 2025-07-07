@@ -32,3 +32,13 @@ vi.mock('./modules/emails/update/action.js', () => ({
 		}),
 	),
 }));
+
+// Mock the email cancel action
+vi.mock('./modules/emails/cancel/action.js', () => ({
+	cancelEmail: vi.fn(() =>
+		Promise.resolve({
+			success: true,
+			data: { id: 'test-email-id', object: 'email' },
+		}),
+	),
+}));

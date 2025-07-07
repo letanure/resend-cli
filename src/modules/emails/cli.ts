@@ -1,4 +1,5 @@
 import type { Command } from 'commander';
+import { registerCancelCommand } from './cancel/cli.js';
 import { registerRetrieveCommand } from './retrieve/cli.js';
 import { registerSendCommand } from './send/cli.js';
 import { registerUpdateCommand } from './update/cli.js';
@@ -8,4 +9,5 @@ export function registerEmailCommands(emailCommand: Command) {
 	registerSendCommand(emailCommand);
 	registerRetrieveCommand(emailCommand);
 	registerUpdateCommand(emailCommand);
+	registerCancelCommand(emailCommand);
 }
