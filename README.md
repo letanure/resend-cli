@@ -433,7 +433,11 @@ Manage contacts in your audiences
 
 ### contacts create
 
-[options]  Create a contact in an audience via Resend API
+[options]    Create a contact in an audience via Resend API
+
+### contacts retrieve
+
+[options]  Retrieve a contact by ID or email from an audience
 
 
 ## domains
