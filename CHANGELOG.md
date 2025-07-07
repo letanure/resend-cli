@@ -1,3 +1,11 @@
+# [0.5.0](https://github.com/letanure/resend-cli/compare/v0.4.0...v0.5.0) (2025-07-07)
+
+
+### Features
+
+* implement email cancellation ([b978c09](https://github.com/letanure/resend-cli/commit/b978c09f0ca995f9724a9ea51ebd8e26ec3e1e14))
+* update menu item  to disable options, batch as disabled ([7509a87](https://github.com/letanure/resend-cli/commit/7509a87b641d962c6eba3814f1d305b837a2ecee))
+
 # [0.4.0](https://github.com/letanure/resend-cli/compare/v0.3.0...v0.4.0) (2025-07-07)
 
 
