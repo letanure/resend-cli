@@ -1,3 +1,10 @@
+# [0.8.0](https://github.com/letanure/resend-cli/compare/v0.7.0...v0.8.0) (2025-07-07)
+
+
+### Features
+
+* add audience listing ([ac12ce6](https://github.com/letanure/resend-cli/commit/ac12ce645fd5e3d3b4843b8608e8fcf9af7c72a2))
+
 # [0.7.0](https://github.com/letanure/resend-cli/compare/v0.6.0...v0.7.0) (2025-07-07)
 
 
