@@ -71,3 +71,17 @@ vi.mock('./modules/audiences/retrieve/action.js', () => ({
 		}),
 	),
 }));
+
+// Mock the audience delete action
+vi.mock('./modules/audiences/delete/action.js', () => ({
+	deleteAudience: vi.fn(() =>
+		Promise.resolve({
+			success: true,
+			data: {
+				id: 'test-audience-id',
+				object: 'audience',
+				deleted: true,
+			},
+		}),
+	),
+}));
