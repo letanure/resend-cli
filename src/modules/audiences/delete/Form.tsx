@@ -143,11 +143,6 @@ export const DeleteAudienceForm = ({ onExit }: AudienceDeleteFormProps) => {
 	return (
 		<Layout headerText={`${config.baseTitle} - Audiences - Delete`}>
 			<Box flexDirection="column">
-				<Box marginBottom={1}>
-					<Text bold={true} color="red">
-						⚠️ Warning: This action cannot be undone
-					</Text>
-				</Box>
 				<SimpleForm<DeleteAudienceOptionsType>
 					fields={fields}
 					onSubmit={handleSubmit}
