@@ -87,26 +87,7 @@ npx resend-cli --help
 ### CLI Mode (Command Line)
 Perfect for automation, CI/CD, and scripting:
 
-```bash
-$ resend-cli --help
-Usage: resend-cli [options] [command]
-
-Resend CLI - Send emails, manage domains, and more
-
-Options:
-  -V, --version   output the version number
-  -h, --help      display help for command
-
-Commands:
-  apiKeys         API key operations
-  audiences       Audience operations
-  broadcasts      Broadcast operations
-  contacts        Contact operations
-  domains         Domain operations
-  email           Email operations
-  help [command]  display help for command
-
-```
+{{CLI_HELP_MAIN}}
 
 ### TUI Mode (Interactive Interface)
 Launch without arguments for a user-friendly interface:
@@ -150,98 +131,19 @@ RESEND_API_KEY="re_your_api_key_here" resend-cli email send ...
 
 ### Main CLI Help
 
-```bash
-$ resend-cli --help
-Usage: resend-cli [options] [command]
-
-Resend CLI - Send emails, manage domains, and more
-
-Options:
-  -V, --version   output the version number
-  -h, --help      display help for command
-
-Commands:
-  apiKeys         API key operations
-  audiences       Audience operations
-  broadcasts      Broadcast operations
-  contacts        Contact operations
-  domains         Domain operations
-  email           Email operations
-  help [command]  display help for command
-
-```
+{{CLI_HELP_MAIN}}
 
 ### Email Commands
 
-```bash
-$ resend-cli email --help
-Usage: resend-cli email [options] [command]
-
-Email operations
-
-Options:
-  -h, --help      display help for command
-
-Commands:
-  send [options]  Send an email via Resend API
-
-```
+{{CLI_HELP_EMAIL}}
 
 ### Send Email Command
 
-```bash
-$ resend-cli email send --help
-Usage: email send [OPTIONS]
-
-Send an email via Resend API
-
-OPTIONS:
-  --from, -f <value>          Sender email address with optional name
-  --to, -t <value>            Recipient email(s) - comma separated for multiple (max 50)
-  --subject, -s <value>       Email subject line
-  --bcc, -b <value>           Blind carbon copy recipients - comma separated
-  --cc, -c <value>            Carbon copy recipients - comma separated for multiple
-  --scheduled-at, -a <value>  Natural language (in 1 min) or ISO 8601 format
-  --reply-to, -r <value>      Reply-to address(es) - comma separated
-  --html, -h <value>          HTML version of the message
-  --text, -x <value>          Plain text version
-
-EXAMPLES:
-  $ resend-cli email send --from="Acme <onboarding@resend.dev>" --to="user@example.com" --subject="Hello World" --html="<h1>it works!</h1>"
-  $ resend-cli email send -f onboarding@resend.dev -t user@example.com -s "Hello World" --text="it works!"
-  $ resend-cli email send --output json --from="..." --to="..." --subject="..." --html="..." | jq '.'
-  $ EMAIL_ID=$(resend-cli email send --output json ... | jq -r '.data.id')
-  $ RESEND_API_KEY="re_xxxxx" resend-cli email send --from="..." --to="..." --subject="..." --html="..."
-
-```
+{{CLI_HELP_EMAIL_SEND}}
 
 ## Examples
 
-### Send a simple email
-
-Send a basic text email
-
-```bash
-$ resend-cli email send --from="Acme <onboarding@resend.dev>" --to="delivered@resend.dev" --subject="Hello" --text="Hello World"
-```
-
-### Send HTML email
-
-Send an HTML email with formatted sender
-
-```bash
-$ resend-cli email send --from="Acme <onboarding@resend.dev>" --to="delivered@resend.dev" --subject="Welcome" --html="<h1>Welcome!</h1>"
-```
-
-### Get JSON output
-
-Send email and extract ID using jq for automation
-
-```bash
-$ resend-cli email send --output json --from="Acme <onboarding@resend.dev>" --to="delivered@resend.dev" --subject="Test" --text="Hello" | jq ".data.id"
-```
-
-
+{{CLI_EXAMPLES}}
 
 ## Output Formats
 
@@ -309,69 +211,7 @@ echo "Sent email with ID: $EMAIL_ID"
 
 ## Complete CLI Reference
 
-## Global Options
-
-Available for all commands:
-
-- `--output <format>` - Output format (text, json)
-- `--help, -h` - Display help for command
-- `--version, -V` - Output the version number
-
-## apiKeys
-
-API key operations
-
-### apiKeys list
-
-List all API keys
-
-
-## audiences
-
-Audience operations
-
-### audiences list
-
-List all audiences
-
-
-## broadcasts
-
-Broadcast operations
-
-### broadcasts list
-
-List all broadcasts
-
-
-## contacts
-
-Contact operations
-
-### contacts list
-
-List all contacts
-
-
-## domains
-
-Domain operations
-
-### domains list
-
-List all domains
-
-
-## email
-
-Email operations
-
-### email send
-
-[options]  Send an email via Resend API
-
-
-
+{{CLI_REFERENCE}}
 
 ## Troubleshooting
 
@@ -413,6 +253,6 @@ See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development setup.
 
 ---
 
-*Documentation last updated: 2025-07-07*
+*Documentation last updated: {{GENERATED_DATE}}*
 
 *CLI help content is auto-generated from actual CLI output to ensure accuracy.*

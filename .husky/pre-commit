@@ -1,1 +1,7 @@
 npm run typecheck && npm run check && npm run test:run
+
+# Auto-generate documentation from CLI help output
+npm run docs:generate
+
+# Add updated README to commit
+git add README.md

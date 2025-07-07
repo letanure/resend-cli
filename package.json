@@ -26,6 +26,7 @@
     "build:watch": "tsc --watch",
     "dev": "tsx --watch src/cli.tsx",
     "start": "node dist/cli.js",
+    "docs:generate": "node scripts/generate-docs.js",
     "typecheck": "tsc --noEmit",
     "lint": "biome lint .",
     "lint:fix": "biome lint --write .",
