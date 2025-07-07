@@ -17,11 +17,6 @@ const MAIN_MENU_ITEMS: Array<MenuItem<EmailsMenuState>> = [
 		description: 'Start sending emails through the Resend Email API.',
 	},
 	{
-		id: EmailsMenuState.batch,
-		label: 'Batch',
-		description: 'Trigger up to 100 batch emails at once.',
-	},
-	{
 		id: EmailsMenuState.retrieve,
 		label: 'Retrieve',
 		description: 'Retrieve a single email.',
@@ -35,6 +30,12 @@ const MAIN_MENU_ITEMS: Array<MenuItem<EmailsMenuState>> = [
 		id: EmailsMenuState.cancel,
 		label: 'Cancel',
 		description: 'Cancel a scheduled email.',
+	},
+	{
+		id: EmailsMenuState.batch,
+		label: 'Batch',
+		description: 'To be implemented - file-based batch email operations.',
+		disabled: true,
 	},
 ];
 

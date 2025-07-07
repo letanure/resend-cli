@@ -5,6 +5,7 @@ export interface MenuItem<T extends string> {
 	id: T;
 	label: string;
 	description: string;
+	disabled?: boolean;
 }
 
 interface MainMenuProps<T extends string> {
@@ -30,7 +31,7 @@ export const Menu = <T extends string>({ menuItems, onSelect, onExit, initialSel
 
 		if (key.return) {
 			const selectedItem = menuItems[selectedIndex];
-			if (selectedItem) {
+			if (selectedItem && !selectedItem.disabled) {
 				onSelect(selectedItem.id);
 			}
 		}
@@ -49,10 +50,17 @@ export const Menu = <T extends string>({ menuItems, onSelect, onExit, initialSel
 						<Text color={index === selectedIndex ? 'cyan' : 'gray'}>{index === selectedIndex ? '▶' : ' '}</Text>
 					</Box>
 					<Box flexDirection="column">
-						<Text color={index === selectedIndex ? 'cyan' : 'white'} bold={index === selectedIndex}>
+						<Text 
+							color={item.disabled ? 'gray' : (index === selectedIndex ? 'cyan' : 'white')} 
+							bold={index === selectedIndex && !item.disabled}
+							dimColor={item.disabled}
+						>
 							{item.label}
 						</Text>
-						<Text color={index === selectedIndex ? 'gray' : 'darkGray'} dimColor={index !== selectedIndex}>
+						<Text 
+							color={item.disabled ? 'gray' : (index === selectedIndex ? 'gray' : 'darkGray')} 
+							dimColor={item.disabled || index !== selectedIndex}
+						>
 							{item.description}
 						</Text>
 					</Box>
