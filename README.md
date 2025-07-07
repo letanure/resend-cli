@@ -413,6 +413,10 @@ Audience operations
 
 [options]    Delete an audience by ID from Resend API
 
+### audiences list
+
+[options]      List all audiences from Resend API
+
 
 ## broadcasts
 

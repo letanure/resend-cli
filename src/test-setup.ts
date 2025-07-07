@@ -85,3 +85,27 @@ vi.mock('./modules/audiences/delete/action.js', () => ({
 		}),
 	),
 }));
+
+// Mock the audience list action
+vi.mock('./modules/audiences/list/action.js', () => ({
+	listAudiences: vi.fn(() =>
+		Promise.resolve({
+			success: true,
+			data: {
+				object: 'list',
+				data: [
+					{
+						id: 'test-audience-1',
+						name: 'Test Audience 1',
+						created_at: '2023-10-06T22:59:55.977Z',
+					},
+					{
+						id: 'test-audience-2',
+						name: 'Test Audience 2',
+						created_at: '2023-10-07T10:30:12.123Z',
+					},
+				],
+			},
+		}),
+	),
+}));

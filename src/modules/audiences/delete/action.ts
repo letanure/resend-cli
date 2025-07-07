@@ -1,5 +1,5 @@
-import { Resend } from 'resend';
 import type { RemoveAudiencesResponseSuccess } from 'resend';
+import { Resend } from 'resend';
 import type { ApiResult } from '@/types/index.js';
 import { formatResendError } from '@/utils/resendErrors.js';
 import type { DeleteAudienceOptionsType } from './schema.js';
