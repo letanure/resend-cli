@@ -1,3 +1,11 @@
+# [0.7.0](https://github.com/letanure/resend-cli/compare/v0.6.0...v0.7.0) (2025-07-07)
+
+
+### Features
+
+* implement audience delete ([d2b7628](https://github.com/letanure/resend-cli/commit/d2b7628c374ee4c47f2a472228c54dbcbfb4630b))
+* implement audience retrieve ([0e7b821](https://github.com/letanure/resend-cli/commit/0e7b82180e0cb3b2522ad212fe1908c0a0fbe4b6))
+
 # [0.6.0](https://github.com/letanure/resend-cli/compare/v0.5.0...v0.6.0) (2025-07-07)
 
 
