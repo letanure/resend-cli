@@ -37,6 +37,13 @@ jobs:
       - name: Test
         run: npm run test:run
 
+      - name: Debug NPM Token
+        run: |
+          echo "NPM_TOKEN exists: ${{ secrets.NPM_TOKEN != '' }}"
+          echo "NPM_TOKEN length: ${#NPM_TOKEN}"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
