@@ -1,3 +1,11 @@
+# [0.6.0](https://github.com/letanure/resend-cli/compare/v0.5.0...v0.6.0) (2025-07-07)
+
+
+### Features
+
+* adddevelopment status of features to readme ([e5d67f7](https://github.com/letanure/resend-cli/commit/e5d67f7c9c975f7479bd8b0eecabcf2ebbed93b1))
+* implement create audience ([d123620](https://github.com/letanure/resend-cli/commit/d123620980c9bcbe087d82f16d5cc881a99dce34))
+
 # [0.5.0](https://github.com/letanure/resend-cli/compare/v0.4.0...v0.5.0) (2025-07-07)
 
 
