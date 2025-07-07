@@ -1,9 +1,10 @@
 import type { Command } from 'commander';
 import type { ZodSchema } from 'zod';
 import type { Field } from '@/types/index.js';
+import { type OutputFormat, outputSuccess, outputValidationErrors } from './output.js';
 
 // Validate options using a Zod schema
-export function validateOptions<T>(options: unknown, schema: ZodSchema<T>): T {
+export function validateOptions<T>(options: unknown, schema: ZodSchema<T>, format: OutputFormat = 'text'): T {
 	const validationResult = schema.safeParse(options);
 
 	if (!validationResult.success) {
@@ -11,7 +12,11 @@ export function validateOptions<T>(options: unknown, schema: ZodSchema<T>): T {
 			path: issue.path[0] || 'unknown',
 			message: issue.message,
 		}));
-		displayValidationErrors(errors);
+
+		outputValidationErrors(errors, format, () => {
+			displayValidationErrors(errors);
+		});
+
 		process.exit(1);
 	}
 
@@ -22,39 +27,57 @@ export function validateOptions<T>(options: unknown, schema: ZodSchema<T>): T {
 export function displayCLIResults(
 	data: Record<string, unknown>,
 	fields: Array<Field>,
+	format: OutputFormat = 'text',
 	title: string = 'Parsed data:',
 	additionalInfo?: Record<string, string | undefined>,
+	successMessage?: string,
 ): void {
-	console.log(title);
-
-	// Loop through fields to display the data
-	for (const field of fields) {
-		const value = data[field.name];
-
-		if (value !== undefined && value !== null && value !== '') {
-			const displayLabel = field.label || field.name;
-
-			// Handle array values
-			const displayValue = Array.isArray(value)
-				? value.join(', ')
-				: field.type === 'textarea' && typeof value === 'string' && value.length > 100
-					? `${value.substring(0, 100)}...`
-					: value;
-
-			console.log(`${displayLabel}:`, displayValue);
-		}
+	// Prepare result data including additional info
+	const resultData = { ...data };
+	if (additionalInfo) {
+		Object.assign(resultData, additionalInfo);
+	}
+	if (successMessage) {
+		resultData.message = successMessage;
 	}
 
-	// Display any additional info (like API key)
-	if (additionalInfo) {
-		for (const [key, value] of Object.entries(additionalInfo)) {
-			if (value) {
-				console.log(`${key}:`, value);
+	outputSuccess(resultData, format, () => {
+		console.log(title);
+
+		// Loop through fields to display the data
+		for (const field of fields) {
+			const value = data[field.name];
+
+			if (value !== undefined && value !== null && value !== '') {
+				const displayLabel = field.label || field.name;
+
+				// Handle array values
+				const displayValue = Array.isArray(value)
+					? value.join(', ')
+					: field.type === 'textarea' && typeof value === 'string' && value.length > 100
+						? `${value.substring(0, 100)}...`
+						: value;
+
+				console.log(`${displayLabel}:`, displayValue);
 			}
 		}
-	}
 
-	console.log('');
+		// Display any additional info (like API key)
+		if (additionalInfo) {
+			for (const [key, value] of Object.entries(additionalInfo)) {
+				if (value) {
+					console.log(`${key}:`, value);
+				}
+			}
+		}
+
+		if (successMessage) {
+			console.log('');
+			console.log(successMessage);
+		}
+
+		console.log('');
+	});
 }
 
 // Display validation errors
@@ -91,6 +114,10 @@ export function fieldToCommanderOption(field: Field): { flags: string; descripti
 
 // Register field options on a command
 export function registerFieldOptions(command: Command, fields: Array<Field>): void {
+	// Add output format option first
+	command.option('--output <format>', 'Output format (text, json)', 'text');
+
+	// Add field-specific options
 	for (const field of fields) {
 		const option = fieldToCommanderOption(field);
 		command.option(option.flags, option.description);
