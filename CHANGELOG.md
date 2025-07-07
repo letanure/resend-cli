@@ -1,3 +1,13 @@
+# [0.4.0](https://github.com/letanure/resend-cli/compare/v0.3.0...v0.4.0) (2025-07-07)
+
+
+### Features
+
+* add dry-run output utils ([39ae548](https://github.com/letanure/resend-cli/commit/39ae54833f415043dc7f8751e773e6eb3a90429d))
+* add update email ([13ccad6](https://github.com/letanure/resend-cli/commit/13ccad6a312d59d48ca39c058df44a4124db07aa))
+* implement email retrieval functionality ([ec70d59](https://github.com/letanure/resend-cli/commit/ec70d59e4e0f6653c83eb57b4fe06717afc9b34f))
+* update tests to register  commands ([6c4888a](https://github.com/letanure/resend-cli/commit/6c4888a8951fb40d04e0fa6b464b610bea79f736))
+
 # [0.3.0](https://github.com/letanure/resend-cli/compare/v0.2.0...v0.3.0) (2025-07-07)
 
 
