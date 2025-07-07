@@ -17,18 +17,24 @@ async function handleSendCommand(options: Record<string, unknown>): Promise<void
 		const outputFormat = (options.output as OutputFormat) || 'text';
 		const emailData = validateOptions<CreateEmailOptionsType>(options, CreateEmailOptionsSchema, outputFormat);
 
-		// Display the results
+		// Check if dry-run mode is enabled
+		// TODO: Fix global --dry-run flag not being passed to subcommands
+		const isDryRun = Boolean(options.dryRun);
+
+		// Display the results (the send action will handle dry-run logic internally)
 		displayCLIResults(
 			emailData as Record<string, unknown>,
 			fields,
 			outputFormat,
-			'Parsed email data:',
-			{ 'API Key': `${apiKey.substring(0, 10)}...` },
-			'Command parsed successfully! (Email not sent - for testing)',
+			isDryRun ? 'DRY RUN - Email data (validation only):' : 'Parsed email data:',
+			{
+				'API Key': `${apiKey.substring(0, 10)}...`,
+				'Dry Run': isDryRun ? 'true' : 'false',
+			},
+			isDryRun
+				? 'Validation successful! (Email not sent due to --dry-run flag)'
+				: 'Command parsed successfully! (Email not sent - for testing)',
 		);
-
-		// For now, just log the data instead of sending
-		// const result = await sendEmailAction(emailData, apiKey);
 	} catch (error) {
 		console.error('Unexpected error:', error instanceof Error ? error.message : error);
 		process.exit(1);

@@ -57,12 +57,15 @@ export function displayCLIResults(
 			if (value !== undefined && value !== null && value !== '') {
 				const displayLabel = field.label || field.name;
 
-				// Handle array values
-				const displayValue = Array.isArray(value)
-					? value.join(', ')
-					: field.type === 'textarea' && typeof value === 'string' && value.length > 100
-						? `${value.substring(0, 100)}...`
-						: value;
+				// Handle different field types
+				let displayValue: string | boolean | number | unknown;
+				if (Array.isArray(value)) {
+					displayValue = value.join(', ');
+				} else if (field.type === 'textarea' && typeof value === 'string' && value.length > 100) {
+					displayValue = `${value.substring(0, 100)}...`;
+				} else {
+					displayValue = value;
+				}
 
 				console.log(`${displayLabel}:`, displayValue);
 			}
@@ -128,8 +131,9 @@ function validateOutputFormat(value: string): OutputFormat {
 
 // Register field options on a command
 export function registerFieldOptions(command: Command, fields: Array<Field>): void {
-	// Add output format option first with validation
+	// Add global options first
 	command.option('--output <format>', 'Output format (text, json)', validateOutputFormat, 'text');
+	command.option('--dry-run', 'Validate and preview without sending');
 
 	// Add field-specific options
 	for (const field of fields) {

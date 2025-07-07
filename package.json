@@ -25,6 +25,7 @@
     "postbuild": "chmod +x dist/src/cli.js",
     "build:watch": "tsc --watch",
     "dev": "tsx --watch src/cli.tsx",
+    "dev:dry": "tsx --watch src/cli.tsx --dry-run",
     "start": "node dist/cli.js",
     "docs:generate": "node scripts/generate-docs.js",
     "typecheck": "tsc --noEmit",

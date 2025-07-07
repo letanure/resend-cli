@@ -24,6 +24,9 @@ npx @letanure/resend-cli email send \
 ```bash
 # Launch interactive interface
 npx @letanure/resend-cli
+
+# Launch in dry-run mode (validation only, no sending)
+npx @letanure/resend-cli --dry-run
 ```
 
 **Prerequisites:** Set your Resend API key as an environment variable:
@@ -182,6 +185,19 @@ $ EMAIL_ID=$(resend-cli email send --output json \
 $ echo "Email sent with ID: $EMAIL_ID"
 ```
 
+**Dry-run examples:**
+```bash
+# CLI dry-run mode
+$ resend-cli email send --dry-run \
+  --from="Acme <onboarding@resend.dev>" \
+  --to="delivered@resend.dev" \
+  --subject="Test" \
+  --text="Testing validation"
+
+# TUI dry-run mode
+$ resend-cli --dry-run
+```
+
 ## TUI Mode (Interactive Interface)
 
 Launch the interactive interface for a guided experience:
@@ -207,6 +223,11 @@ $ resend-cli
 **Navigation:**
 - **Arrow Keys / Enter**: Navigate and select options
 - **Escape**: Go back | **Ctrl+C**: Exit
+
+**Dry-Run Mode:**
+- **CLI**: Add `--dry-run` flag to any command for validation without sending
+- **TUI**: Start with `--dry-run` flag
+- **Warning**: Orange warning banner appears when dry-run mode is active
 
 ## CI/CD Integration
 

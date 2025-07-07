@@ -31,6 +31,9 @@ echo "RESEND_API_KEY=re_your_test_key_here" >> .env
 # Run with watch mode (auto-reload on changes)
 npm run dev
 
+# Run in dry-run mode with watch mode
+npm run dev:dry
+
 # Build TypeScript to JavaScript
 npm run build
 

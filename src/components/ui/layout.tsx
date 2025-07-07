@@ -1,24 +1,29 @@
+import { Alert } from '@inkjs/ui';
 import { Box, Text } from 'ink';
 import type React from 'react';
+import { useDryRun } from '@/contexts/DryRunProvider.js';
 
-interface DomainsMenuProps {
+interface LayoutProps {
 	children: React.ReactNode;
 	headerText?: string;
 	footerText?: string;
 	showNavigationInstructions?: boolean;
 }
 
-export const Layout: React.FC<DomainsMenuProps> = ({
-	headerText,
-	footerText,
-	showNavigationInstructions,
-	children,
-}) => {
+export const Layout: React.FC<LayoutProps> = ({ headerText, footerText, showNavigationInstructions, children }) => {
+	const { isDryRun } = useDryRun();
+
 	return (
 		<Box flexDirection="column" padding={1}>
 			<Text bold={true} color="blue">
 				{headerText}
 			</Text>
+
+			{isDryRun && (
+				<Box marginTop={1} marginBottom={1}>
+					<Alert variant="warning">DRY RUN MODE: Operations will be validated but not executed.</Alert>
+				</Box>
+			)}
 
 			{children}
 

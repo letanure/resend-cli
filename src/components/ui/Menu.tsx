@@ -42,7 +42,7 @@ export const Menu = <T extends string>({ menuItems, onSelect, onExit, initialSel
 	});
 
 	return (
-		<Box flexDirection="column" padding={1}>
+		<Box flexDirection="column">
 			{menuItems.map((item, index) => (
 				<Box key={item.id} marginBottom={1}>
 					<Box width={3}>

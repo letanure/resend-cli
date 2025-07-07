@@ -38,10 +38,19 @@ const registerModules = (program: Command, modules: Array<ModuleConfig>): void =
 
 // Entry point
 const main = (): void => {
-	if (process.argv.length === 2) {
-		render(<AppMain />);
+	// Check if only the binary name is provided, OR if --dry-run is the only flag
+	const args = process.argv.slice(2);
+	const isDryRunOnly = args.length === 1 && args[0] === '--dry-run';
+
+	if (process.argv.length === 2 || isDryRunOnly) {
+		// Pass dry-run flag to TUI
+		render(<AppMain isDryRun={isDryRunOnly} />);
 	} else {
 		const program = createRootCommand();
+
+		// Add global dry-run option to root command
+		program.option('--dry-run', 'Enable dry-run mode for all operations', false);
+
 		const moduleList = Object.values(modules);
 
 		registerModules(program, moduleList);
