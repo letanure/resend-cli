@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
 import type { Resend } from 'resend';
+import { describe, expect, it, vi } from 'vitest';
 import { createContact } from './action.js';
 
 // Mock the Resend SDK

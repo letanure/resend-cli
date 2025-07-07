@@ -1,5 +1,6 @@
 #!/usr/bin/env node --no-warnings
 import { createRequire } from 'node:module';
+import chalk from 'chalk';
 import { Command } from 'commander';
 import { render } from 'ink';
 import type { ModuleConfig } from '@/types/index.js';
@@ -22,15 +23,41 @@ const createRootCommand = (): Command => {
 		.version(getVersion());
 };
 
+// Handle unknown command errors consistently
+const handleUnknownCommand = (command: Command, unknownCmd: string, context?: string): void => {
+	const errorMsg = context
+		? chalk.red(`\nError: Unknown ${context} command '${unknownCmd}'\n\n`)
+		: chalk.red(`\nError: Unknown command '${unknownCmd}'\n\n`);
+
+	process.stderr.write(errorMsg);
+	command.outputHelp();
+	process.exit(1);
+};
+
 // each module register its own commands
 const registerModules = (program: Command, modules: Array<ModuleConfig>): void => {
 	for (const module of modules) {
 		const moduleCommand = program
 			.command(module.name)
 			.description(module.description)
+			.allowUnknownOption(false)
+			.allowExcessArguments(true)
 			.action(() => {
-				moduleCommand.help();
+				// Check if there are any arguments passed after the module command
+				const args = process.argv.slice(3); // Skip 'node', 'script', and module name
+
+				if (args.length > 0 && args[0] && !args[0].startsWith('-')) {
+					handleUnknownCommand(moduleCommand, args[0], module.name);
+				} else {
+					// No arguments, just show help
+					moduleCommand.help();
+				}
 			});
+
+		// Handle unknown subcommands
+		moduleCommand.on('command:*', () => {
+			handleUnknownCommand(moduleCommand, moduleCommand.args.join(' '), module.name);
+		});
 
 		module.registerCommands(moduleCommand);
 	}
@@ -54,6 +81,11 @@ const main = (): void => {
 		const moduleList = Object.values(modules);
 
 		registerModules(program, moduleList);
+
+		// Handle unknown commands
+		program.on('command:*', () => {
+			handleUnknownCommand(program, program.args.join(' '));
+		});
 
 		program.parse();
 	}

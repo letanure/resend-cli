@@ -128,19 +128,72 @@ RESEND_API_KEY="re_xxxxxxxxxxxx" resend-cli email send --from="..." --to="..."
 ## CLI Commands
 
 ```bash
-# Help not available for: 
+$ resend-cli --help
+Usage: resend-cli [options] [command]
+
+Resend CLI - Send emails, manage domains, and more
+
+Options:
+  -V, --version   output the version number
+  --dry-run       Enable dry-run mode for all operations (default: false)
+  -h, --help      display help for command
+
+Commands:
+  apiKeys         API key operations
+  audiences       Audience operations
+  broadcasts      Broadcast operations
+  contacts        Manage contacts in your audiences
+  domains         Domain operations
+  email           Email operations
+  help [command]  display help for command
+
 ```
 
 ### Email Commands
 
 ```bash
-# Help not available for: email
+$ resend-cli email --help
+Usage: resend-cli email [options] [command]
+
+Email operations
+
+Options:
+  -h, --help          display help for command
+
+Commands:
+  send [options]      Send an email via Resend API
+  retrieve [options]  Retrieve an email by ID from Resend API
+  update [options]    Update a scheduled email via Resend API
+  cancel [options]    Cancel a scheduled email via Resend API
+
 ```
 
 ### Send Email Command
 
 ```bash
-# Help not available for: email send
+$ resend-cli email send --help
+Usage: email send [OPTIONS]
+
+Send an email via Resend API
+
+OPTIONS:
+  --from, -f <value>          Sender email address with optional name
+  --to, -t <value>            Recipient email(s) - comma separated for multiple (max 50)
+  --subject, -s <value>       Email subject line
+  --bcc, -b <value>           Blind carbon copy recipients - comma separated
+  --cc, -c <value>            Carbon copy recipients - comma separated for multiple
+  --scheduled-at, -a <value>  Natural language (in 1 min) or ISO 8601 format
+  --reply-to, -r <value>      Reply-to address(es) - comma separated
+  --html, -h <value>          HTML version of the message
+  --text, -x <value>          Plain text version
+
+EXAMPLES:
+  $ resend-cli email send --from="Acme <onboarding@resend.dev>" --to="user@example.com" --subject="Hello World" --html="<h1>it works!</h1>"
+  $ resend-cli email send -f onboarding@resend.dev -t user@example.com -s "Hello World" --text="it works!"
+  $ resend-cli email send --output json --from="..." --to="..." --subject="..." --html="..." | jq '.'
+  $ EMAIL_ID=$(resend-cli email send --output json ... | jq -r '.data.id')
+  $ RESEND_API_KEY="re_xxxxx" resend-cli email send --from="..." --to="..." --subject="..." --html="..."
+
 ```
 
 ## Output Formats
@@ -334,6 +387,84 @@ Available for all commands:
 - `--output <format>` - Output format (text, json)
 - `--help, -h` - Display help for command
 - `--version, -V` - Output the version number
+
+## apiKeys
+
+API key operations
+
+### apiKeys list
+
+List all API keys
+
+
+## audiences
+
+Audience operations
+
+### audiences create
+
+[options]    Create a new audience via Resend API
+
+### audiences retrieve
+
+[options]  Retrieve an audience by ID from Resend API
+
+### audiences delete
+
+[options]    Delete an audience by ID from Resend API
+
+### audiences list
+
+[options]      List all audiences from Resend API
+
+
+## broadcasts
+
+Broadcast operations
+
+### broadcasts list
+
+List all broadcasts
+
+
+## contacts
+
+Manage contacts in your audiences
+
+### contacts create
+
+[options]  Create a contact in an audience via Resend API
+
+
+## domains
+
+Domain operations
+
+### domains list
+
+List all domains
+
+
+## email
+
+Email operations
+
+### email send
+
+[options]      Send an email via Resend API
+
+### email retrieve
+
+[options]  Retrieve an email by ID from Resend API
+
+### email update
+
+[options]    Update a scheduled email via Resend API
+
+### email cancel
+
+[options]    Cancel a scheduled email via Resend API
+
 
 
 

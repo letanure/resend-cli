@@ -125,7 +125,10 @@ export function validateEnvironmentVariable(varName: string, helpUrl?: string): 
 
 // Convert field configuration to Commander.js options
 export function fieldToCommanderOption(field: CliField): { flags: string; description: string } {
-	const flags = `--${field.cliFlag}, -${field.cliShortFlag} <value>`;
+	// Ensure we don't double up on dashes
+	const cliFlag = field.cliFlag.startsWith('--') ? field.cliFlag : `--${field.cliFlag}`;
+	const shortFlag = field.cliShortFlag.startsWith('-') ? field.cliShortFlag : `-${field.cliShortFlag}`;
+	const flags = `${cliFlag}, ${shortFlag} <value>`;
 	return {
 		flags,
 		description: field.helpText,
