@@ -51,17 +51,13 @@ export const RadioField = ({
 				</Box>
 			</Box>
 
-			{isActive && helpText && !errorMessage && (
-				<Box marginLeft={labelWidth} marginTop={0}>
-					<Text dimColor={true}>{helpText}</Text>
-				</Box>
-			)}
-
-			{errorMessage && (
-				<Box marginLeft={labelWidth} marginTop={0}>
-					<Text color="red">{errorMessage}</Text>
-				</Box>
-			)}
+			{/* Always reserve space for help text to prevent footer movement */}
+			<Box marginLeft={labelWidth} marginTop={0} minHeight={1}>
+				{isActive && helpText && !errorMessage && <Text dimColor={true}>{helpText}</Text>}
+				{errorMessage && <Text color="red">{errorMessage}</Text>}
+				{/* Reserve space when no help text is shown */}
+				{!isActive && !errorMessage && <Text> </Text>}
+			</Box>
 		</Box>
 	);
 };
