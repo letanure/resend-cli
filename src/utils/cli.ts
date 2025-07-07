@@ -112,10 +112,21 @@ export function fieldToCommanderOption(field: Field): { flags: string; descripti
 	};
 }
 
+// Validate output format
+function validateOutputFormat(value: string): OutputFormat {
+	const validFormats: Array<OutputFormat> = ['text', 'json'];
+	if (!validFormats.includes(value as OutputFormat)) {
+		console.error(`Invalid output format: '${value}'`);
+		console.error(`Valid options are: ${validFormats.join(', ')}`);
+		process.exit(1);
+	}
+	return value as OutputFormat;
+}
+
 // Register field options on a command
 export function registerFieldOptions(command: Command, fields: Array<Field>): void {
-	// Add output format option first
-	command.option('--output <format>', 'Output format (text, json)', 'text');
+	// Add output format option first with validation
+	command.option('--output <format>', 'Output format (text, json)', validateOutputFormat, 'text');
 
 	// Add field-specific options
 	for (const field of fields) {
