@@ -1,3 +1,10 @@
+## [0.9.3](https://github.com/letanure/resend-cli/compare/v0.9.2...v0.9.3) (2025-07-07)
+
+
+### Bug Fixes
+
+* remove warning message from delete audience form ([a73b28d](https://github.com/letanure/resend-cli/commit/a73b28d32cc7d05c7e6cc7a3b9279726ab57a856))
+
 ## [0.9.2](https://github.com/letanure/resend-cli/compare/v0.9.1...v0.9.2) (2025-07-07)
 
 
