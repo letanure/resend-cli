@@ -1,5 +1,5 @@
-import { Resend } from 'resend';
 import type { CreateAudienceResponseSuccess } from 'resend';
+import { Resend } from 'resend';
 import type { ApiResult } from '@/types/index.js';
 import { formatResendError } from '@/utils/resendErrors.js';
 import type { CreateAudienceOptionsType } from './schema.js';

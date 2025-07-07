@@ -56,3 +56,18 @@ vi.mock('./modules/audiences/create/action.js', () => ({
 		}),
 	),
 }));
+
+// Mock the audience retrieve action
+vi.mock('./modules/audiences/retrieve/action.js', () => ({
+	retrieveAudience: vi.fn(() =>
+		Promise.resolve({
+			success: true,
+			data: {
+				id: 'test-audience-id',
+				object: 'audience',
+				name: 'Test Audience',
+				created_at: '2023-10-06T22:59:55.977Z',
+			},
+		}),
+	),
+}));

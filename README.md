@@ -403,7 +403,11 @@ Audience operations
 
 ### audiences create
 
-[options]  Create a new audience via Resend API
+[options]    Create a new audience via Resend API
+
+### audiences retrieve
+
+[options]  Retrieve an audience by ID from Resend API
 
 
 ## broadcasts
