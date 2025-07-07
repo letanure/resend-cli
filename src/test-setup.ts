@@ -3,7 +3,12 @@ import { vi } from 'vitest';
 // Mock RESEND_API_KEY for all tests
 vi.stubEnv('RESEND_API_KEY', 'test-api-key');
 
-// Mock the send command that EmailForm uses
-vi.mock('./commands/send.js', () => ({
-	sendCommand: vi.fn(),
+// Mock the email send action
+vi.mock('./modules/emails/send/action.js', () => ({
+	sendEmailAction: vi.fn(() =>
+		Promise.resolve({
+			success: true,
+			data: { id: 'test-email-id' },
+		}),
+	),
 }));
