@@ -10,6 +10,8 @@ A command-line interface for the [Resend](https://resend.com) email API. Feature
 
 > **⚠️ Disclaimer**: This is an **unofficial** CLI tool built on top of the [Resend Node.js SDK](https://github.com/resendlabs/resend-node). It is not affiliated with or endorsed by Resend. For official Resend tools and support, visit [resend.com](https://resend.com).
 
+> **🚧 Development Status**: Some features (email update/cancel, audience management) are implemented but not yet released. They will be available in the next version.
+
 Perfect for:
 - Testing email flows during development
 - Sending notifications from CI/CD pipelines
