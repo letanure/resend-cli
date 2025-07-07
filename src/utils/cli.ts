@@ -1,6 +1,12 @@
 import type { Command } from 'commander';
 import type { ZodSchema } from 'zod';
 import type { Field } from '@/types/index.js';
+import {
+	displayInvalidOptionError,
+	displayMissingEnvError,
+	displayUnknownOptionError,
+	displayValidationError,
+} from './error-formatting.js';
 import { type OutputFormat, outputSuccess, outputValidationErrors } from './output.js';
 
 // Validate options using a Zod schema
@@ -82,23 +88,19 @@ export function displayCLIResults(
 
 // Display validation errors
 export function displayValidationErrors(errors: Array<{ path: string | number; message: string }>): void {
-	console.error('Validation errors:');
-	for (const error of errors) {
-		const field = error.path || 'unknown';
-		console.error(`  - ${field}: ${error.message}`);
-	}
-	console.error('\nUse --help for usage information');
+	displayValidationError(
+		errors.map((err) => ({
+			field: String(err.path) || 'unknown',
+			message: err.message,
+		})),
+	);
 }
 
 // Validate required environment variable
 export function validateEnvironmentVariable(varName: string, helpUrl?: string): string {
 	const value = process.env[varName];
 	if (!value) {
-		console.error(`Missing ${varName} environment variable.`);
-		if (helpUrl) {
-			console.error(`Get your API key at ${helpUrl}`);
-		}
-		process.exit(1);
+		displayMissingEnvError(varName, helpUrl, { exitCode: 1 });
 	}
 	return value;
 }
@@ -116,9 +118,10 @@ export function fieldToCommanderOption(field: Field): { flags: string; descripti
 function validateOutputFormat(value: string): OutputFormat {
 	const validFormats: Array<OutputFormat> = ['text', 'json'];
 	if (!validFormats.includes(value as OutputFormat)) {
-		console.error(`Invalid output format: '${value}'`);
-		console.error(`Valid options are: ${validFormats.join(', ')}`);
-		process.exit(1);
+		displayInvalidOptionError(`--output ${value}`, validFormats, {
+			title: 'Invalid Output Format',
+			exitCode: 1,
+		});
 	}
 	return value as OutputFormat;
 }
@@ -133,4 +136,21 @@ export function registerFieldOptions(command: Command, fields: Array<Field>): vo
 		const option = fieldToCommanderOption(field);
 		command.option(option.flags, option.description);
 	}
+
+	// Configure consistent error output for all commands
+	command.configureOutput({
+		writeErr: (str) => {
+			// Custom error formatting for unknown options
+			if (str.includes('unknown option')) {
+				const match = str.match(/unknown option '([^']+)'/);
+				if (match?.[1]) {
+					const invalidOption = match[1];
+					displayUnknownOptionError(invalidOption);
+					return;
+				}
+			}
+			// Default error output for other Commander.js errors
+			process.stderr.write(str);
+		},
+	});
 }

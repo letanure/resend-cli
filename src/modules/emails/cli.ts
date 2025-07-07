@@ -42,7 +42,7 @@ export function registerEmailCommands(emailCommand: Command) {
 		.description('Send an email via Resend API')
 		.action(handleSendCommand);
 
-	// Add all the field options to the send command
+	// Add all the field options to the send command (this now includes error handling)
 	registerFieldOptions(sendCommand, fields);
 
 	const examples = [
