@@ -10,9 +10,31 @@ import {
 } from './error-formatting.js';
 import { type OutputFormat, outputSuccess, outputValidationErrors } from './output.js';
 
+// Convert camelCase keys to snake_case for CLI compatibility
+function transformCliOptions(options: Record<string, unknown>): Record<string, unknown> {
+	const transformed: Record<string, unknown> = {};
+	// System flags that should not be converted
+	const systemFlags = ['dryRun', 'output'];
+	
+	for (const [key, value] of Object.entries(options)) {
+		if (systemFlags.includes(key)) {
+			// Keep system flags as-is
+			transformed[key] = value;
+		} else {
+			// Convert camelCase to snake_case for field names
+			const snakeKey = key.replace(/[A-Z]/g, (match) => `_${match.toLowerCase()}`);
+			transformed[snakeKey] = value;
+		}
+	}
+	return transformed;
+}
+
 // Validate options using a Zod schema
 export function validateOptions<T>(options: unknown, schema: ZodSchema<T>, format: OutputFormat = 'text'): T {
-	const validationResult = schema.safeParse(options);
+	// Transform camelCase keys to snake_case if options is an object
+	const transformedOptions = options && typeof options === 'object' ? transformCliOptions(options as Record<string, unknown>) : options;
+	
+	const validationResult = schema.safeParse(transformedOptions);
 
 	if (!validationResult.success) {
 		const errors = validationResult.error.issues.map((issue) => ({

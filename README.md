@@ -161,6 +161,7 @@ Options:
 Commands:
   send [options]      Send an email via Resend API
   retrieve [options]  Retrieve an email by ID from Resend API
+  update [options]    Update a scheduled email via Resend API
 
 ```
 
@@ -440,6 +441,10 @@ Email operations
 ### email retrieve
 
 [options]  Retrieve an email by ID from Resend API
+
+### email update
+
+[options]    Update a scheduled email via Resend API
 
 
 

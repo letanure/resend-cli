@@ -22,3 +22,13 @@ vi.mock('./modules/emails/retrieve/action.js', () => ({
 		}),
 	),
 }));
+
+// Mock the email update action
+vi.mock('./modules/emails/update/action.js', () => ({
+	updateEmail: vi.fn(() =>
+		Promise.resolve({
+			success: true,
+			data: { id: 'test-email-id', object: 'email' },
+		}),
+	),
+}));
