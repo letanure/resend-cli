@@ -156,10 +156,11 @@ Usage: resend-cli email [options] [command]
 Email operations
 
 Options:
-  -h, --help      display help for command
+  -h, --help          display help for command
 
 Commands:
-  send [options]  Send an email via Resend API
+  send [options]      Send an email via Resend API
+  retrieve [options]  Retrieve an email by ID from Resend API
 
 ```
 
@@ -434,7 +435,11 @@ Email operations
 
 ### email send
 
-[options]  Send an email via Resend API
+[options]      Send an email via Resend API
+
+### email retrieve
+
+[options]  Retrieve an email by ID from Resend API
 
 
 

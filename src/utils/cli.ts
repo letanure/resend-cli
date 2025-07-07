@@ -1,6 +1,7 @@
 import type { Command } from 'commander';
 import type { ZodSchema } from 'zod';
 import type { CliField } from '@/types/index.js';
+import { formatDataWithFields, formatForCLI } from '@/utils/display-formatter.js';
 import {
 	displayInvalidOptionError,
 	displayMissingEnvError,
@@ -37,46 +38,24 @@ function logCliResults(
 	fields: Array<CliField>,
 	title: string,
 	additionalInfo?: Record<string, string | undefined>,
-	successMessage?: string,
+	_successMessage?: string,
 ): void {
-	console.log(title);
+	// Format the main data using the shared formatter
+	const formattedFields = formatDataWithFields(data, fields);
 
-	// Loop through fields to display the data
-	for (const field of fields) {
-		const value = data[field.name];
-
-		if (value !== undefined && value !== null && value !== '') {
-			const displayLabel = field.label || field.name;
-
-			// Handle different field types
-			let displayValue: string | boolean | number | unknown;
-			if (Array.isArray(value)) {
-				displayValue = value.join(', ');
-			} else if (field.type === 'textarea' && typeof value === 'string' && value.length > 100) {
-				displayValue = `${value.substring(0, 100)}...`;
-			} else {
-				displayValue = value;
-			}
-
-			console.log(`${displayLabel}:`, displayValue);
-		}
-	}
-
-	// Display any additional info (like API key)
+	// Add additional info that's not already shown
 	if (additionalInfo) {
 		for (const [key, value] of Object.entries(additionalInfo)) {
-			if (value) {
-				console.log(`${key}:`, value);
+			if (value && key !== 'ID') {
+				// Skip ID since it's already shown as Email ID
+				formattedFields.push({ label: key, value });
 			}
 		}
 	}
 
-	if (successMessage) {
-		console.log('');
-		console.log(successMessage);
-	}
-
-	console.log('');
+	// Output using shared formatter
+	const output = formatForCLI(formattedFields, title);
+	console.log(output);
 }
 
 // Display parsed CLI data using field configuration
@@ -88,16 +67,16 @@ export function displayCLIResults(
 	additionalInfo?: Record<string, string | undefined>,
 	successMessage?: string,
 ): void {
-	// Prepare result data including additional info
-	const resultData = { ...data };
-	if (additionalInfo) {
-		Object.assign(resultData, additionalInfo);
-	}
-	if (successMessage) {
-		resultData.message = successMessage;
+	// For JSON output, show raw data without modifications
+	if (format === 'json') {
+		outputSuccess(data, format, () => {
+			// No text callback needed for JSON output
+		});
+		return;
 	}
 
-	outputSuccess(resultData, format, () => {
+	// For text output, use formatted display
+	outputSuccess(data, format, () => {
 		logCliResults(data, fields, title, additionalInfo, successMessage);
 	});
 }

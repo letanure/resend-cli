@@ -21,7 +21,9 @@
   },
   "homepage": "https://github.com/letanure/resend-cli#readme",
   "scripts": {
+    "clean": "rm -rf dist",
     "build": "tsc && tsc-alias",
+    "build:clean": "npm run clean && npm run build",
     "postbuild": "chmod +x dist/src/cli.js",
     "build:watch": "tsc --watch",
     "dev": "tsx --watch src/cli.tsx",

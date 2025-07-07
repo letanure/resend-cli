@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`EmailRetrieveForm > should match snapshot 1`] = `
+"
+ 📧 Resend CLI - Emails - Retrieve
+
+
+ Email ID       │02a4ef4-3bd0-43fe-8e12-f6142bd2bd0f
+                ────────────────────────────────────────────────────────────
+                The unique identifier of the email
+
+ Tab/↓ Next field · Shift+Tab/↑ Previous field
+ Enter Submit · Esc Cancel
+
+"
+`;

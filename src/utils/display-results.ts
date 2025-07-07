@@ -59,34 +59,18 @@ export function displayResults<T extends Record<string, unknown>>(options: Displ
 	}
 
 	if (result.success && result.data) {
-		// Success case
-		const successData = { ...data, ...result.data };
-		const metadata: Record<string, string> = {};
-
-		if (apiKey) {
-			metadata['API Key'] = `${apiKey.substring(0, 10)}...`;
-		}
-
-		// Add operation-specific metadata
-		if (result.data && typeof result.data === 'object' && 'id' in result.data) {
-			metadata.ID = String(result.data.id);
-		}
-
+		// Success case - only show the API response data, not input data
 		displayCLIResults(
-			successData,
+			result.data as Record<string, unknown>,
 			fields,
 			outputFormat,
 			operation.success.title,
-			metadata,
+			undefined, // No additional metadata
 			operation.success.message(result.data),
 		);
 	} else {
 		// Error case
 		const metadata: Record<string, string> = {};
-
-		if (apiKey) {
-			metadata['API Key'] = `${apiKey.substring(0, 10)}...`;
-		}
 
 		if (result.error) {
 			metadata.Error = result.error;

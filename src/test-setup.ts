@@ -12,3 +12,13 @@ vi.mock('./modules/emails/send/action.js', () => ({
 		}),
 	),
 }));
+
+// Mock the email retrieve action
+vi.mock('./modules/emails/retrieve/action.js', () => ({
+	getEmail: vi.fn(() =>
+		Promise.resolve({
+			success: true,
+			data: { id: 'test-email-id' },
+		}),
+	),
+}));

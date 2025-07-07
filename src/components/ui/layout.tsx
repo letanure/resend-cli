@@ -15,12 +15,14 @@ export const Layout: React.FC<LayoutProps> = ({ headerText, footerText, showNavi
 
 	return (
 		<Box flexDirection="column" padding={1}>
-			<Text bold={true} color="blue">
-				{headerText}
-			</Text>
+			<Box marginBottom={1}>
+				<Text bold={true} color="blue">
+					{headerText}
+				</Text>
+			</Box>
 
 			{isDryRun && (
-				<Box marginTop={1} marginBottom={1}>
+				<Box marginBottom={1}>
 					<Alert variant="warning">DRY RUN MODE: Operations will be validated but not executed.</Alert>
 				</Box>
 			)}

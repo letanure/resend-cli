@@ -13,7 +13,7 @@ describe('Email Send Form', () => {
 		expect(output).toContain('To');
 		expect(output).toContain('Subject');
 		expect(output).toContain('HTML Content');
-		expect(output).toContain('Plain Text');
+		expect(output).toContain('Text Content');
 	});
 
 	it('exits when ESC is pressed', async () => {

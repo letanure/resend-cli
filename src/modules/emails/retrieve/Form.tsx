@@ -1,7 +1,6 @@
 import { Spinner } from '@inkjs/ui';
 import { Box, Text, useInput } from 'ink';
 import { useState } from 'react';
-import type { CreateEmailOptions } from 'resend';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
 import { ErrorDisplay } from '@/components/ui/ErrorDisplay.js';
 import { Layout } from '@/components/ui/layout.js';
@@ -9,69 +8,61 @@ import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
 import { EmailDisplay } from '../shared/EmailDisplay.js';
-import { EMAIL_DETAIL_FIELDS } from '../shared/fields.js';
-import { sendEmail } from './action.js';
+import { EMAIL_FULL_FIELDS } from '../shared/fields.js';
+import { getEmail } from './action.js';
 import { fields } from './fields.js';
-import { CreateEmailOptionsSchema, type CreateEmailOptionsType } from './schema.js';
+import { GetEmailOptionsSchema, type GetEmailOptionsType } from './schema.js';
 
-interface FormProps {
+interface EmailRetrieveFormProps {
 	onExit: () => void;
 }
 
-export const Form = ({ onExit }: FormProps) => {
-	const { apiKey } = useResend();
+export const EmailRetrieveForm = ({ onExit }: EmailRetrieveFormProps) => {
 	const { isDryRun } = useDryRun();
+	const { apiKey } = useResend();
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [sentEmailData, setSentEmailData] = useState<Record<string, unknown> | null>(null);
+	const [emailData, setEmailData] = useState<Record<string, unknown> | null>(null);
 	const [showDryRunData, setShowDryRunData] = useState<Record<string, unknown> | null>(null);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
 
 	// Handle Esc key to go back from result screens
 	useInput(
 		(_input, key) => {
-			if (key.escape && (sentEmailData || showDryRunData || error)) {
-				setSentEmailData(null);
+			if (key.escape && (emailData || showDryRunData || error)) {
+				setEmailData(null);
 				setShowDryRunData(null);
 				setError(null);
 			}
 		},
-		{ isActive: !!(sentEmailData || showDryRunData || error) },
+		{ isActive: !!(emailData || showDryRunData || error) },
 	);
 
-	const handleSubmit = async (validatedData: CreateEmailOptionsType) => {
+	const handleSubmit = async (data: GetEmailOptionsType) => {
 		setIsSubmitting(true);
 		try {
-			// In dry-run mode, show validated data
 			if (isDryRun) {
 				setShowDryRunData({
-					...validatedData,
+					'Email ID': data.id,
 					'API Key': apiKey ? `${apiKey.substring(0, 10)}...` : 'Not set',
 					'Dry Run': 'true',
-					Status: 'Validation successful! (Email not sent due to dry-run mode)',
+					Status: 'Validation successful! (Email not retrieved due to dry-run mode)',
 				});
 			} else {
-				// Send the email
-				const result = await sendEmail(validatedData as CreateEmailOptions, apiKey);
+				const result = await getEmail(data.id, apiKey);
 
 				if (result.success && result.data) {
-					// Show the sent email data
-					setSentEmailData({
-						...validatedData,
-						id: result.data.id,
-						created_at: new Date().toISOString(),
-						last_event: 'sent',
-					});
+					setEmailData(result.data as unknown as Record<string, unknown>);
 				} else {
 					setError({
-						title: 'Email Send Failed',
+						title: 'Email Retrieval Failed',
 						message: result.error || 'Unknown error occurred',
-						suggestion: 'Check your API key, recipient email, and sender domain',
+						suggestion: 'Check the email ID and ensure it exists in your Resend account',
 					});
 				}
 			}
 		} catch (error) {
 			setError({
-				title: 'Email Send Error',
+				title: 'Email Retrieval Error',
 				message: error instanceof Error ? error.message : 'Unknown error',
 				suggestion: 'Please check your API key and network connection',
 			});
@@ -82,18 +73,18 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (isSubmitting) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Send`}>
-				<Spinner label="Sending email..." />
+			<Layout headerText={`${config.baseTitle} - Emails - Retrieve`}>
+				<Spinner label="Retrieving email..." />
 			</Layout>
 		);
 	}
 
-	if (sentEmailData) {
+	if (emailData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Send - Success`}>
+			<Layout headerText={`${config.baseTitle} - Emails - Retrieve - Success`}>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
-						<EmailDisplay data={sentEmailData} title="Email Sent Successfully" fieldsToShow={EMAIL_DETAIL_FIELDS} />
+						<EmailDisplay data={emailData} title="Email Retrieved Successfully" fieldsToShow={EMAIL_FULL_FIELDS} />
 					</Box>
 					<Box>
 						<Text dimColor={true}>Press Esc to go back</Text>
@@ -105,10 +96,10 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Send - Dry Run`}>
+			<Layout headerText={`${config.baseTitle} - Emails - Retrieve - Dry Run`}>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
-						<EmailDisplay data={showDryRunData} title="DRY RUN - Email send data (validation only)" />
+						<EmailDisplay data={showDryRunData} title="DRY RUN - Email retrieval data (validation only)" />
 					</Box>
 					<Box>
 						<Text dimColor={true}>Press Esc to go back</Text>
@@ -120,7 +111,7 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Send - Error`}>
+			<Layout headerText={`${config.baseTitle} - Emails - Retrieve - Error`}>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
@@ -134,12 +125,12 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Emails - Send`}>
-			<SimpleForm<CreateEmailOptionsType>
+		<Layout headerText={`${config.baseTitle} - Emails - Retrieve`}>
+			<SimpleForm<GetEmailOptionsType>
 				fields={fields}
-				validateWith={CreateEmailOptionsSchema}
 				onSubmit={handleSubmit}
 				onCancel={onExit}
+				validateWith={GetEmailOptionsSchema}
 			/>
 		</Layout>
 	);

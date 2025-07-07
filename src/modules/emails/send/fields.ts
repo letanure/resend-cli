@@ -1,78 +1,8 @@
 import type { CliField } from '@/types/index.js';
+import { filterFieldsForCli } from '@/utils/fields.js';
+import { commonEmailFields } from '../shared/fields.js';
 
-export const fields: Array<CliField> = [
-	{
-		name: 'from',
-		label: 'From',
-		placeholder: 'Your Name <sender@domain.com>',
-		helpText: 'Sender email address with optional name',
-		cliFlag: 'from',
-		cliShortFlag: 'f',
-	},
-	{
-		name: 'to',
-		label: 'To',
-		placeholder: 'recipient@domain.com',
-		helpText: 'Recipient email(s) - comma separated for multiple (max 50)',
-		cliFlag: 'to',
-		cliShortFlag: 't',
-	},
-	{
-		name: 'subject',
-		label: 'Subject',
-		placeholder: 'Enter email subject',
-		helpText: 'Email subject line',
-		cliFlag: 'subject',
-		cliShortFlag: 's',
-	},
-	{
-		name: 'bcc',
-		label: 'BCC',
-		placeholder: 'bcc@domain.com',
-		helpText: 'Blind carbon copy recipients - comma separated',
-		cliFlag: 'bcc',
-		cliShortFlag: 'b',
-	},
-	{
-		name: 'cc',
-		label: 'CC',
-		placeholder: 'cc@domain.com',
-		helpText: 'Carbon copy recipients - comma separated for multiple',
-		cliFlag: 'cc',
-		cliShortFlag: 'c',
-	},
-	{
-		name: 'scheduled_at',
-		label: 'Schedule',
-		placeholder: 'in 1 hour OR 2024-08-05T11:52:01.858Z',
-		helpText: 'Natural language (in 1 min) or ISO 8601 format',
-		cliFlag: 'scheduled-at',
-		cliShortFlag: 'a',
-	},
-	{
-		name: 'reply_to',
-		label: 'Reply To',
-		placeholder: 'reply@domain.com',
-		helpText: 'Reply-to address(es) - comma separated',
-		cliFlag: 'reply-to',
-		cliShortFlag: 'r',
-	},
-	{
-		name: 'html',
-		label: 'HTML Content',
-		placeholder: '<p>Your HTML content here</p>',
-		helpText: 'HTML version of the message',
-		type: 'textarea',
-		cliFlag: 'html',
-		cliShortFlag: 'h',
-	},
-	{
-		name: 'text',
-		label: 'Plain Text',
-		placeholder: 'Your plain text message here...',
-		helpText: 'Plain text version',
-		type: 'textarea',
-		cliFlag: 'text',
-		cliShortFlag: 'x',
-	},
-];
+// Fields used for send command
+const sendFieldNames = ['from', 'to', 'subject', 'bcc', 'cc', 'scheduled_at', 'reply_to', 'html', 'text'];
+
+export const fields: Array<CliField> = filterFieldsForCli(sendFieldNames, commonEmailFields);

@@ -41,11 +41,13 @@ export interface FormField {
 	placeholder?: string;
 	helpText?: string;
 	type?: 'text' | 'textarea';
+	cliFlag?: string; // CLI long flag (--flag)
+	cliShortFlag?: string; // CLI short flag (-f)
 }
 
 /**
  * Extended field configuration for CLI commands
- * Includes all form properties plus CLI-specific flags
+ * Includes all form properties with required CLI-specific properties
  */
 export interface CliField extends FormField {
 	placeholder: string; // Required for CLI help
