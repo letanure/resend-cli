@@ -1,3 +1,10 @@
+# [0.10.0](https://github.com/letanure/resend-cli/compare/v0.9.3...v0.10.0) (2025-07-07)
+
+
+### Features
+
+* add command error  handling ([f68975f](https://github.com/letanure/resend-cli/commit/f68975fafa121ba684c081124f970a00bd841ec1))
+
 ## [0.9.3](https://github.com/letanure/resend-cli/compare/v0.9.2...v0.9.3) (2025-07-07)
 
 
