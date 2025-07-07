@@ -435,6 +435,10 @@ Manage contacts in your audiences
 
 [options]    Create a contact in an audience via Resend API
 
+### contacts list
+
+[options]      List all contacts in an audience
+
 ### contacts retrieve
 
 [options]  Retrieve a contact by ID or email from an audience
