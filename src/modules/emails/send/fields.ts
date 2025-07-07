@@ -1,4 +1,4 @@
-import type { Field } from '@/types';
+import type { Field } from '@/types/index.js';
 
 export const fields: Array<Field> = [
 	{

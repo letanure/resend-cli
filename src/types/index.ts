@@ -1,4 +1,6 @@
-export enum AppState {
+import type { Command } from 'commander';
+
+export enum Module {
 	main = 'main',
 	email = 'email',
 	domains = 'domains',
@@ -6,6 +8,15 @@ export enum AppState {
 	broadcasts = 'broadcasts',
 	audiences = 'audiences',
 	contacts = 'contacts',
+}
+
+/**
+ * Module configuration that enforces AppState values for names
+ */
+export interface ModuleConfig {
+	name: Exclude<Module, Module.main>;
+	description: string;
+	registerCommands: (command: Command) => void;
 }
 
 /**
