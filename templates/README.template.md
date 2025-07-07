@@ -24,14 +24,6 @@ npx @letanure/resend-cli email send \
 ```bash
 # Launch interactive interface
 npx @letanure/resend-cli
-
-# Navigate through modules:
-# • Email Operations (send, batch, retrieve, etc.)
-# • Domain Management
-# • Audience Management  
-# • API Key Management
-# • Contact Management
-# • Broadcast Operations
 ```
 
 **Prerequisites:** Set your Resend API key as an environment variable:
@@ -46,16 +38,12 @@ Get your API key at: https://resend.com/docs/dashboard/api-keys/introduction
 ## Table of Contents
 
 - [Quick Start (TLDR)](#quick-start-tldr)
-  - [CLI Mode](#cli-mode)
-  - [TUI Mode (Interactive)](#tui-mode-interactive)
 - [Installation](#installation)
-- [Usage Modes](#usage-modes)
-  - [CLI Mode (Command Line)](#cli-mode-command-line)
-  - [TUI Mode (Interactive Interface)](#tui-mode-interactive-interface)
 - [Configuration](#configuration)
 - [CLI Commands](#cli-commands)
-- [Examples](#examples)
 - [Output Formats](#output-formats)
+- [Examples](#examples)
+- [TUI Mode (Interactive Interface)](#tui-mode-interactive-interface)
 - [CI/CD Integration](#cicd-integration)
 - [Complete CLI Reference](#complete-cli-reference)
 - [Troubleshooting](#troubleshooting)
@@ -65,71 +53,39 @@ Get your API key at: https://resend.com/docs/dashboard/api-keys/introduction
 
 ## Installation
 
-### Global Installation
+**Recommended:** Use with npx (no installation required)
+```bash
+npx @letanure/resend-cli --help
+```
+
+**For frequent use:** Install globally
 ```bash
 npm install -g @letanure/resend-cli
 resend-cli --help
 ```
 
-### Use with npx (Recommended)
-```bash
-npx @letanure/resend-cli --help
-```
-
-### Local Project Installation
+**In projects:** Install locally
 ```bash
 npm install @letanure/resend-cli
 npx resend-cli --help
 ```
-
-## Usage Modes
-
-### CLI Mode (Command Line)
-Perfect for automation, CI/CD, and scripting:
-
-{{CLI_HELP_MAIN}}
-
-### TUI Mode (Interactive Interface)
-Launch without arguments for a user-friendly interface:
-
-```bash
-$ resend-cli
-```
-
-**TUI Features:**
-- **Interactive Navigation**: Arrow keys to navigate through options
-- **Form-based Input**: Guided forms for each operation
-- **Real-time Validation**: Immediate feedback on input
-- **Module Organization**: Organized by functionality (Email, Domains, etc.)
-- **Rich Display**: Formatted results with colors and layout
-- **Error Handling**: User-friendly error messages and suggestions
-
-**TUI Modules:**
-- **Email Operations** - Send, batch, retrieve, update, cancel emails
-- **Domain Management** - Create, verify, update, delete domains
-- **Audience Management** - Create, list, retrieve, delete audiences
-- **API Key Management** - Create, list, delete API keys
-- **Contact Management** - Create, list, update, delete contacts
-- **Broadcast Operations** - Create, send, manage broadcasts
 
 ## Configuration
 
 Set your Resend API key as an environment variable:
 
 ```bash
-# Option 1: Export in your shell
+# Export in your shell
 export RESEND_API_KEY="re_your_api_key_here"
 
-# Option 2: Add to your .bashrc or .zshrc
+# Or add to your .bashrc/.zshrc
 echo 'export RESEND_API_KEY="re_your_api_key_here"' >> ~/.bashrc
 
-# Option 3: Use with the command
+# Or use inline with commands
 RESEND_API_KEY="re_your_api_key_here" resend-cli email send ...
 ```
 
 ## CLI Commands
-
-### Main CLI Help
 
 {{CLI_HELP_MAIN}}
 
@@ -140,10 +96,6 @@ RESEND_API_KEY="re_your_api_key_here" resend-cli email send ...
 ### Send Email Command
 
 {{CLI_HELP_EMAIL_SEND}}
-
-## Examples
-
-{{CLI_EXAMPLES}}
 
 ## Output Formats
 
@@ -194,6 +146,68 @@ $ resend-cli email send --output json
 }
 ```
 
+## Examples
+
+{{CLI_EXAMPLES}}
+
+### Additional Examples
+
+**Schedule an email:**
+```bash
+$ resend-cli email send \
+  --from="Acme <onboarding@resend.dev>" \
+  --to="delivered@resend.dev" \
+  --subject="Scheduled Email" \
+  --text="This email was scheduled" \
+  --scheduled-at="in 5 minutes"
+```
+
+**Send with multiple recipients:**
+```bash
+$ resend-cli email send \
+  --from="Acme <onboarding@resend.dev>" \
+  --to="user1@example.com,user2@example.com" \
+  --cc="manager@example.com" \
+  --subject="Team Update" \
+  --html="<h1>Team Update</h1><p>Important information...</p>"
+```
+
+**Extract email ID for tracking:**
+```bash
+$ EMAIL_ID=$(resend-cli email send --output json \
+  --from="Acme <onboarding@resend.dev>" \
+  --to="delivered@resend.dev" \
+  --subject="Welcome" \
+  --html="<h1>Welcome!</h1>" | jq -r '.data.id')
+$ echo "Email sent with ID: $EMAIL_ID"
+```
+
+## TUI Mode (Interactive Interface)
+
+Launch the interactive interface for a guided experience:
+
+```bash
+$ resend-cli
+```
+
+**Features:**
+- **Interactive Navigation**: Arrow keys to navigate through options
+- **Form-based Input**: Guided forms for each operation with validation
+- **Module Organization**: Organized by functionality (Email, Domains, etc.)
+- **Rich Display**: Formatted results with colors and layout
+
+**Available Modules:**
+- **Email Operations** - Send, batch, retrieve, update, cancel emails
+- **Domain Management** - Create, verify, update, delete domains
+- **Audience Management** - Create, list, retrieve, delete audiences
+- **API Key Management** - Create, list, delete API keys
+- **Contact Management** - Create, list, update, delete contacts
+- **Broadcast Operations** - Create, send, manage broadcasts
+
+**Navigation:**
+- **Arrow Keys / Enter**: Navigate and select options
+- **Escape**: Go back | **Ctrl+C**: Exit
+
 ## CI/CD Integration
 
 Perfect for automated workflows:
@@ -226,11 +240,6 @@ echo "Sent email with ID: $EMAIL_ID"
 
 - **Input Validation**: All inputs are validated - invalid emails, missing required fields, etc. will show clear error messages
 - **Unknown Options**: Unknown command options will trigger helpful error messages with suggestions
-
-### TUI Navigation
-
-- **Arrow Keys / Enter**: Navigate and select options
-- **Escape**: Go back | **Ctrl+C**: Exit
 
 ## Development
 
