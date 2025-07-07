@@ -5,7 +5,7 @@ import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
-import { sendEmailAction } from './send/action.js';
+import { sendEmail } from './send/action.js';
 import { fields } from './send/fields.js';
 import { CreateEmailOptionsSchema, type CreateEmailOptionsType } from './send/schema.js';
 
@@ -23,7 +23,7 @@ async function handleSendCommand(options: Record<string, unknown>): Promise<void
 		const isDryRun = Boolean(options.dryRun);
 
 		// Use generic displayResults function
-		const result = isDryRun ? undefined : await sendEmailAction(emailData as CreateEmailOptions, apiKey);
+		const result = isDryRun ? undefined : await sendEmail(emailData as CreateEmailOptions, apiKey);
 
 		displayResults({
 			data: emailData,

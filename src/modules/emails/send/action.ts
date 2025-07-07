@@ -10,7 +10,7 @@ import { formatResendError } from '@/utils/resendErrors.js';
  * @param apiKey - Required API key for Resend API
  * @returns Promise<ApiResult<EmailSendData>> - Standard result format
  */
-export async function sendEmailAction(
+export async function sendEmail(
 	emailData: CreateEmailOptions,
 	apiKey: string,
 ): Promise<ApiResult<CreateEmailResponseSuccess>> {

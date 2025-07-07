@@ -1,8 +1,8 @@
 import type { CreateEmailOptions } from 'resend';
 import { describe, expect, it } from 'vitest';
-import { sendEmailAction } from './action.js';
+import { sendEmail } from './action.js';
 
-describe('sendEmailAction', () => {
+describe('sendEmail', () => {
 	const testEmailData: CreateEmailOptions = {
 		to: 'test@example.com',
 		from: 'sender@example.com',
@@ -11,7 +11,7 @@ describe('sendEmailAction', () => {
 	};
 
 	it('returns success result structure', async () => {
-		const result = await sendEmailAction(testEmailData, 'test-api-key');
+		const result = await sendEmail(testEmailData, 'test-api-key');
 
 		expect(result).toHaveProperty('success');
 		expect(result.success).toBe(true);
@@ -28,13 +28,13 @@ describe('sendEmailAction', () => {
 			text: 'Hello',
 		};
 
-		const result = await sendEmailAction(emailData, 'test-api-key');
+		const result = await sendEmail(emailData, 'test-api-key');
 		expect(result.success).toBe(true);
 	});
 
 	it('requires api key parameter', async () => {
 		// Function should accept any string as API key
-		const result = await sendEmailAction(testEmailData, 'any-key');
+		const result = await sendEmail(testEmailData, 'any-key');
 		expect(result).toBeDefined();
 	});
 
@@ -53,12 +53,12 @@ describe('sendEmailAction', () => {
 			],
 		};
 
-		const result = await sendEmailAction(complexEmailData, 'test-api-key');
+		const result = await sendEmail(complexEmailData, 'test-api-key');
 		expect(result.success).toBe(true);
 	});
 
 	it('returns correct ApiResult type', async () => {
-		const result = await sendEmailAction(testEmailData, 'test-api-key');
+		const result = await sendEmail(testEmailData, 'test-api-key');
 
 		// Test ApiResult structure
 		if (result.success && result.data) {

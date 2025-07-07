@@ -4,7 +4,7 @@ import { Layout } from '@/components/ui/layout.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
-import { sendEmailAction } from './action.js';
+import { sendEmail } from './action.js';
 import { fields } from './fields.js';
 import { CreateEmailOptionsSchema, type CreateEmailOptionsType } from './schema.js';
 
@@ -38,7 +38,7 @@ export const Form = ({ onExit, onEmailSent, onEmailError }: FormProps) => {
 
 		// Data is already validated and transformed by SimpleForm + Zod schema
 		// Type assertion is safe here because Zod validation ensures compatibility
-		const result = await sendEmailAction(validatedData as CreateEmailOptions, apiKey);
+		const result = await sendEmail(validatedData as CreateEmailOptions, apiKey);
 
 		if (result.success && result.data?.id) {
 			if (onEmailSent) {
