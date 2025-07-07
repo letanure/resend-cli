@@ -1,17 +1,18 @@
 import type { Command } from 'commander';
-import { displayCLIResults, registerFieldOptions, validateEnvironmentVariable, validateOptions } from '@/utils/cli.js';
+import type { CreateEmailOptions } from 'resend';
+import { registerFieldOptions, validateOptions } from '@/utils/cli.js';
 import { configureCustomHelp } from '@/utils/cli-help.js';
+import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
+import { getResendApiKey } from '@/utils/resend-api.js';
+import { sendEmailAction } from './send/action.js';
 import { fields } from './send/fields.js';
 import { CreateEmailOptionsSchema, type CreateEmailOptionsType } from './send/schema.js';
 
 // Main handler for send command
 async function handleSendCommand(options: Record<string, unknown>): Promise<void> {
 	try {
-		const apiKey = validateEnvironmentVariable(
-			'RESEND_API_KEY',
-			'https://resend.com/docs/dashboard/api-keys/introduction',
-		);
+		const apiKey = getResendApiKey();
 
 		// Extract output format and validate email data
 		const outputFormat = (options.output as OutputFormat) || 'text';
@@ -21,20 +22,34 @@ async function handleSendCommand(options: Record<string, unknown>): Promise<void
 		// TODO: Fix global --dry-run flag not being passed to subcommands
 		const isDryRun = Boolean(options.dryRun);
 
-		// Display the results (the send action will handle dry-run logic internally)
-		displayCLIResults(
-			emailData as Record<string, unknown>,
+		// Use generic displayResults function
+		const result = isDryRun ? undefined : await sendEmailAction(emailData as CreateEmailOptions, apiKey);
+
+		displayResults({
+			data: emailData,
+			result,
 			fields,
 			outputFormat,
-			isDryRun ? 'DRY RUN - Email data (validation only):' : 'Parsed email data:',
-			{
-				'API Key': `${apiKey.substring(0, 10)}...`,
-				'Dry Run': isDryRun ? 'true' : 'false',
+			apiKey,
+			isDryRun,
+			operation: {
+				success: {
+					title: 'Email sent successfully:',
+					message: (data: unknown) => {
+						const emailResult = data as { id: string };
+						return `Email sent! ID: ${emailResult.id}`;
+					},
+				},
+				error: {
+					title: 'Failed to send email:',
+					message: 'Email sending failed',
+				},
+				dryRun: {
+					title: 'DRY RUN - Email data (validation only):',
+					message: 'Validation successful! (Email not sent due to --dry-run flag)',
+				},
 			},
-			isDryRun
-				? 'Validation successful! (Email not sent due to --dry-run flag)'
-				: 'Command parsed successfully! (Email not sent - for testing)',
-		);
+		});
 	} catch (error) {
 		console.error('Unexpected error:', error instanceof Error ? error.message : error);
 		process.exit(1);
