@@ -3,6 +3,7 @@ import { Box, Text, useInput } from 'ink';
 import { useState } from 'react';
 import type { z } from 'zod';
 import type { FormField } from '@/types/index.js';
+import { RadioField } from './RadioField.js';
 import { TextInput } from './TextInput.js';
 
 interface SimpleFormProps<T = Record<string, unknown>> {
@@ -18,10 +19,15 @@ export const SimpleForm = <T = Record<string, unknown>>({
 	onCancel,
 	validateWith,
 }: SimpleFormProps<T>) => {
-	const [formData, setFormData] = useState<Record<string, string>>(() => {
-		const initial: Record<string, string> = {};
+	const [formData, setFormData] = useState<Record<string, unknown>>(() => {
+		const initial: Record<string, unknown> = {};
 		for (const field of fields) {
-			initial[field.name] = '';
+			if (field.type === 'radio' && field.options) {
+				// Set default value to first option's value
+				initial[field.name] = field.options[0]?.value || false;
+			} else {
+				initial[field.name] = '';
+			}
 		}
 		return initial;
 	});
@@ -29,7 +35,10 @@ export const SimpleForm = <T = Record<string, unknown>>({
 	const [currentField, setCurrentField] = useState(0);
 	const [errors, setErrors] = useState<Record<string, string>>({});
 	const [formError, setFormError] = useState<string>('');
-	useInput((_input, key) => {
+	useInput((input, key) => {
+		const currentFieldData = fields[currentField];
+		const isRadioField = currentFieldData?.type === 'radio';
+
 		const keyHandlers: Array<{ condition: () => boolean; action: () => void }> = [
 			{ condition: () => key.escape, action: onCancel },
 			{ condition: () => key.shift && key.tab, action: () => setCurrentField(Math.max(currentField - 1, 0)) },
@@ -39,6 +48,14 @@ export const SimpleForm = <T = Record<string, unknown>>({
 			},
 			{ condition: () => key.downArrow, action: () => setCurrentField(Math.min(currentField + 1, fields.length - 1)) },
 			{ condition: () => key.upArrow, action: () => setCurrentField(Math.max(currentField - 1, 0)) },
+			{
+				condition: () => (key.leftArrow || key.rightArrow) && isRadioField,
+				action: () => currentFieldData && handleRadioToggle(currentFieldData),
+			},
+			{
+				condition: () => input === ' ' && isRadioField,
+				action: () => currentFieldData && handleRadioToggle(currentFieldData),
+			},
 			{ condition: () => key.return, action: handleFormSubmission },
 		];
 
@@ -55,9 +72,13 @@ export const SimpleForm = <T = Record<string, unknown>>({
 		let currentFormError = '';
 
 		if (validateWith) {
-			const cleanedData: Record<string, string | undefined> = {};
+			const cleanedData: Record<string, unknown> = {};
 			for (const [key, value] of Object.entries(formData)) {
-				cleanedData[key] = value.trim() === '' ? undefined : value.trim();
+				if (typeof value === 'string') {
+					cleanedData[key] = value.trim() === '' ? undefined : value.trim();
+				} else {
+					cleanedData[key] = value;
+				}
 			}
 			const result = validateWith.safeParse(cleanedData);
 			if (result.success) {
@@ -82,9 +103,13 @@ export const SimpleForm = <T = Record<string, unknown>>({
 				onSubmit(validatedData as T);
 			} else {
 				// Fallback to cleaned raw data if no schema
-				const cleanData: Record<string, string> = {};
+				const cleanData: Record<string, unknown> = {};
 				for (const [key, value] of Object.entries(formData)) {
-					cleanData[key] = value.trim();
+					if (typeof value === 'string') {
+						cleanData[key] = value.trim();
+					} else {
+						cleanData[key] = value;
+					}
 				}
 				onSubmit(cleanData as T);
 			}
@@ -94,7 +119,7 @@ export const SimpleForm = <T = Record<string, unknown>>({
 		}
 	};
 
-	const handleFieldChange = (fieldName: string, value: string) => {
+	const handleFieldChange = (fieldName: string, value: unknown) => {
 		setFormData((prev) => ({ ...prev, [fieldName]: value }));
 
 		// Clear error when user starts typing
@@ -108,6 +133,16 @@ export const SimpleForm = <T = Record<string, unknown>>({
 		}
 	};
 
+	const handleRadioToggle = (field: FormField) => {
+		if (field.options && field.options.length > 1) {
+			const currentValue = formData[field.name];
+			const currentIndex = field.options.findIndex((option) => option.value === currentValue);
+			const nextIndex = (currentIndex + 1) % field.options.length;
+			const nextValue = field.options[nextIndex]?.value;
+			handleFieldChange(field.name, nextValue);
+		}
+	};
+
 	return (
 		<Box flexDirection="column" marginTop={1}>
 			{formError && (
@@ -115,25 +150,43 @@ export const SimpleForm = <T = Record<string, unknown>>({
 					<Alert variant="error">{formError}</Alert>
 				</Box>
 			)}
-			{fields.map((field, index) => (
-				<TextInput
-					key={field.name}
-					label={field.label}
-					value={formData[field.name] || ''}
-					onChange={(value) => handleFieldChange(field.name, value)}
-					placeholder={field.placeholder}
-					helpText={field.helpText}
-					isFocused={currentField === index}
-					error={errors[field.name]}
-				/>
-			))}
+			{fields.map((field, index) => {
+				if (field.type === 'radio' && field.options) {
+					return (
+						<RadioField
+							key={field.name}
+							label={field.label}
+							options={field.options}
+							value={formData[field.name] as string | boolean}
+							isActive={currentField === index}
+							helpText={field.helpText}
+							errorMessage={errors[field.name]}
+							onToggle={() => handleRadioToggle(field)}
+						/>
+					);
+				}
+
+				return (
+					<TextInput
+						key={field.name}
+						label={field.label}
+						value={String(formData[field.name] || '')}
+						onChange={(value) => handleFieldChange(field.name, value)}
+						placeholder={field.placeholder}
+						helpText={field.helpText}
+						isFocused={currentField === index}
+						error={errors[field.name]}
+					/>
+				);
+			})}
 
 			<Box marginTop={1} flexDirection="column">
 				<Text dimColor={true}>
 					<Text color="yellow">Tab/↓</Text> Next field · <Text color="yellow">Shift+Tab/↑</Text> Previous field
 				</Text>
 				<Text dimColor={true}>
-					<Text color="yellow">Enter</Text> Submit · <Text color="yellow">Esc</Text> Cancel
+					<Text color="yellow">←/→/Space</Text> Toggle radio · <Text color="yellow">Enter</Text> Submit ·{' '}
+					<Text color="yellow">Esc</Text> Cancel
 				</Text>
 			</Box>
 		</Box>

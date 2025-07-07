@@ -9,6 +9,7 @@ interface TextInputProps {
 	helpText?: string;
 	isFocused?: boolean;
 	error?: string;
+	labelWidth?: number;
 }
 
 export const TextInput = ({
@@ -19,6 +20,7 @@ export const TextInput = ({
 	helpText,
 	isFocused = false,
 	error,
+	labelWidth = 22,
 }: TextInputProps) => {
 	const [cursorPosition, setCursorPosition] = useState(value.length);
 
@@ -53,7 +55,7 @@ export const TextInput = ({
 	return (
 		<Box flexDirection="column">
 			<Box flexDirection="row">
-				<Box width={15} justifyContent="flex-start" alignItems="center">
+				<Box width={labelWidth} justifyContent="flex-start" alignItems="center">
 					<Text bold={true} color={isFocused ? 'cyan' : 'white'}>
 						{label}
 					</Text>
@@ -90,7 +92,7 @@ export const TextInput = ({
 			</Box>
 
 			{!error && helpText && isFocused && (
-				<Box marginLeft={15}>
+				<Box marginLeft={labelWidth}>
 					<Text dimColor={true} color="gray">
 						{helpText}
 					</Text>
@@ -98,7 +100,7 @@ export const TextInput = ({
 			)}
 
 			{error && (
-				<Box marginLeft={15}>
+				<Box marginLeft={labelWidth}>
 					<Text color="red">{error}</Text>
 				</Box>
 			)}

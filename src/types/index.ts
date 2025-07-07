@@ -33,6 +33,16 @@ export interface ApiResult<T = unknown> {
 }
 
 /**
+ * Radio option for boolean/choice fields
+ */
+export interface RadioOption {
+	value: string | boolean;
+	label: string;
+	color?: 'green' | 'red' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white' | 'gray';
+	icon?: string;
+}
+
+/**
  * Base field configuration for forms
  */
 export interface FormField {
@@ -40,7 +50,8 @@ export interface FormField {
 	label: string;
 	placeholder?: string;
 	helpText?: string;
-	type?: 'text' | 'textarea';
+	type?: 'text' | 'textarea' | 'radio';
+	options?: Array<RadioOption>; // For radio fields
 	cliFlag?: string; // CLI long flag (--flag)
 	cliShortFlag?: string; // CLI short flag (-f)
 }
