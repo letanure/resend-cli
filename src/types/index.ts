@@ -33,14 +33,23 @@ export interface ApiResult<T = unknown> {
 }
 
 /**
- * Standard field configuration for forms and CLI arguments
+ * Base field configuration for forms
  */
-export interface Field {
+export interface FormField {
 	name: string;
 	label: string;
-	placeholder: string;
-	helpText: string;
+	placeholder?: string;
+	helpText?: string;
 	type?: 'text' | 'textarea';
-	cliFlag: string;
-	cliShortFlag: string;
+}
+
+/**
+ * Extended field configuration for CLI commands
+ * Includes all form properties plus CLI-specific flags
+ */
+export interface CliField extends FormField {
+	placeholder: string; // Required for CLI help
+	helpText: string; // Required for CLI help
+	cliFlag: string; // CLI long flag (--flag)
+	cliShortFlag: string; // CLI short flag (-f)
 }

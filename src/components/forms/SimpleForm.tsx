@@ -2,16 +2,8 @@ import { Alert } from '@inkjs/ui';
 import { Box, Text, useInput } from 'ink';
 import { useState } from 'react';
 import type { z } from 'zod';
+import type { FormField } from '@/types/index.js';
 import { TextInput } from './TextInput.js';
-
-export interface FormField {
-	name: string;
-	label: string;
-	placeholder?: string;
-	helpText?: string;
-	required?: boolean;
-	type?: 'text' | 'email' | 'textarea';
-}
 
 interface SimpleFormProps<T = Record<string, unknown>> {
 	fields: Array<FormField>;

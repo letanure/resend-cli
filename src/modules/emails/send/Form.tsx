@@ -1,5 +1,5 @@
 import type { CreateEmailOptions } from 'resend';
-import { type FormField, SimpleForm } from '@/components/forms/SimpleForm.js';
+import { SimpleForm } from '@/components/forms/SimpleForm.js';
 import { Layout } from '@/components/ui/layout.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
@@ -13,14 +13,6 @@ interface FormProps {
 	onEmailSent?: (emailId: string) => void;
 	onEmailError?: (error: string) => void;
 }
-
-const tuiFields: Array<FormField> = fields.map((field) => ({
-	name: field.name,
-	label: field.label,
-	placeholder: field.placeholder,
-	helpText: field.helpText,
-	type: field.type,
-}));
 
 export const Form = ({ onExit, onEmailSent, onEmailError }: FormProps) => {
 	const { apiKey } = useResend();
@@ -61,7 +53,7 @@ export const Form = ({ onExit, onEmailSent, onEmailError }: FormProps) => {
 	return (
 		<Layout headerText={`${config.baseTitle} - Emails - Send`}>
 			<SimpleForm<CreateEmailOptionsType>
-				fields={tuiFields}
+				fields={fields}
 				validateWith={CreateEmailOptionsSchema}
 				onSubmit={handleSubmit}
 				onCancel={onExit}

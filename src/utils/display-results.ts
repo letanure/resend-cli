@@ -1,4 +1,4 @@
-import type { ApiResult, Field } from '@/types/index.js';
+import type { ApiResult, CliField } from '@/types/index.js';
 import { displayCLIResults } from '@/utils/cli.js';
 import type { OutputFormat } from '@/utils/output.js';
 
@@ -20,7 +20,7 @@ export interface OperationMessages {
 export interface DisplayResultsOptions<T> {
 	data: T;
 	result?: ApiResult<unknown>;
-	fields: Array<Field>;
+	fields: Array<CliField>;
 	outputFormat: OutputFormat;
 	apiKey?: string;
 	operation: OperationMessages;

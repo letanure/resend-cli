@@ -1,9 +1,9 @@
 import chalk from 'chalk';
 import type { Command } from 'commander';
-import type { Field } from '@/types/index.js';
+import type { CliField } from '@/types/index.js';
 
 // Format field option for display with proper alignment
-export function formatFieldOption(field: Field, maxFlagWidth: number): string {
+export function formatFieldOption(field: CliField, maxFlagWidth: number): string {
 	const flagsText = `--${field.cliFlag}, -${field.cliShortFlag} <value>`;
 	const flags = chalk.cyan.bold(flagsText);
 	const padding = ' '.repeat(Math.max(0, maxFlagWidth - flagsText.length));
@@ -13,12 +13,12 @@ export function formatFieldOption(field: Field, maxFlagWidth: number): string {
 }
 
 // Calculate the maximum width needed for flags
-function getMaxFlagWidth(fields: Array<Field>): number {
+function getMaxFlagWidth(fields: Array<CliField>): number {
 	return Math.max(...fields.map((field) => `--${field.cliFlag}, -${field.cliShortFlag} <value>`.length));
 }
 
 // Generate custom help text
-export function generateCustomHelp(fields: Array<Field>, examples?: Array<string>): string {
+export function generateCustomHelp(fields: Array<CliField>, examples?: Array<string>): string {
 	let helpText = '\n';
 
 	// Add options header
@@ -46,7 +46,7 @@ export function generateCustomHelp(fields: Array<Field>, examples?: Array<string
 }
 
 // Configure command with custom help
-export function configureCustomHelp(command: Command, fields: Array<Field>, examples?: Array<string>): void {
+export function configureCustomHelp(command: Command, fields: Array<CliField>, examples?: Array<string>): void {
 	// Override the help output
 	command.configureHelp({
 		formatHelp: (cmd, helper) => {

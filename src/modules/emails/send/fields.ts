@@ -1,6 +1,6 @@
-import type { Field } from '@/types/index.js';
+import type { CliField } from '@/types/index.js';
 
-export const fields: Array<Field> = [
+export const fields: Array<CliField> = [
 	{
 		name: 'from',
 		label: 'From',

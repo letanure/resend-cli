@@ -1,6 +1,6 @@
 import type { Command } from 'commander';
 import type { ZodSchema } from 'zod';
-import type { Field } from '@/types/index.js';
+import type { CliField } from '@/types/index.js';
 import {
 	displayInvalidOptionError,
 	displayMissingEnvError,
@@ -32,7 +32,7 @@ export function validateOptions<T>(options: unknown, schema: ZodSchema<T>, forma
 // Display parsed CLI data using field configuration
 export function displayCLIResults(
 	data: Record<string, unknown>,
-	fields: Array<Field>,
+	fields: Array<CliField>,
 	format: OutputFormat = 'text',
 	title: string = 'Parsed data:',
 	additionalInfo?: Record<string, string | undefined>,
@@ -109,7 +109,7 @@ export function validateEnvironmentVariable(varName: string, helpUrl?: string): 
 }
 
 // Convert field configuration to Commander.js options
-export function fieldToCommanderOption(field: Field): { flags: string; description: string } {
+export function fieldToCommanderOption(field: CliField): { flags: string; description: string } {
 	const flags = `--${field.cliFlag}, -${field.cliShortFlag} <value>`;
 	return {
 		flags,
@@ -130,7 +130,7 @@ function validateOutputFormat(value: string): OutputFormat {
 }
 
 // Register field options on a command
-export function registerFieldOptions(command: Command, fields: Array<Field>): void {
+export function registerFieldOptions(command: Command, fields: Array<CliField>): void {
 	// Add global options first
 	command.option('--output <format>', 'Output format (text, json)', validateOutputFormat, 'text');
 	command.option('--dry-run', 'Validate and preview without sending');
