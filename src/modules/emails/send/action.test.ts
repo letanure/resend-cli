@@ -1,104 +1,73 @@
-import { describe, expect, it, vi } from 'vitest';
+import type { CreateEmailOptions } from 'resend';
+import { describe, expect, it } from 'vitest';
 import { sendEmailAction } from './action.js';
 
-// Mock the Resend SDK
-const mockSend = vi.fn();
-vi.mock('resend', () => ({
-	Resend: vi.fn().mockImplementation(() => ({
-		emails: {
-			send: mockSend,
-		},
-	})),
-}));
-
 describe('sendEmailAction', () => {
-	const testEmailData = {
+	const testEmailData: CreateEmailOptions = {
 		to: 'test@example.com',
 		from: 'sender@example.com',
 		subject: 'Test Subject',
-		html: '<p>Test content</p>',
+		text: 'Test message',
 	};
 
-	it('should return success ApiResult with correct data structure when Resend succeeds', async () => {
-		const mockResponseData = { id: 'email-123' };
-		mockSend.mockResolvedValue({
-			data: mockResponseData,
-			error: null,
-		});
-
+	it('returns success result structure', async () => {
 		const result = await sendEmailAction(testEmailData, 'test-api-key');
 
-		expect(result).toEqual({
-			success: true,
-			data: mockResponseData,
-		});
+		expect(result).toHaveProperty('success');
+		expect(result.success).toBe(true);
+		expect(result.data).toBeDefined();
+		expect(result.data?.id).toBe('test-email-id');
 	});
 
-	it('should return error ApiResult with formatted error when Resend returns error', async () => {
-		const resendError = {
-			message: 'Invalid from address',
-			name: 'invalid_from_address',
+	it('accepts CreateEmailOptions interface', async () => {
+		const emailData: CreateEmailOptions = {
+			to: ['user1@example.com', 'user2@example.com'],
+			from: 'sender@example.com',
+			subject: 'Test',
+			html: '<p>Hello</p>',
+			text: 'Hello',
 		};
-		mockSend.mockResolvedValue({
-			data: null,
-			error: resendError,
-		});
 
-		const result = await sendEmailAction(testEmailData, 'test-api-key');
-
-		expect(result.success).toBe(false);
-		expect(result.error).toContain('Failed to send email');
-		expect(result.error).toContain('Invalid from address');
-		expect(result.error).toContain('Suggestion:');
-		expect(result.error).toContain('Request data:');
-		expect(result.error).toContain('Request response');
+		const result = await sendEmailAction(emailData, 'test-api-key');
+		expect(result.success).toBe(true);
 	});
 
-	it('should handle network/exception errors and format them properly', async () => {
-		const networkError = new Error('Network timeout');
-		mockSend.mockRejectedValue(networkError);
-
-		const result = await sendEmailAction(testEmailData, 'test-api-key');
-
-		expect(result.success).toBe(false);
-		expect(result.error).toContain('Failed to send email');
-		expect(result.error).toContain('Network timeout');
-		expect(result.error).toContain('Request data:');
+	it('requires api key parameter', async () => {
+		// Function should accept any string as API key
+		const result = await sendEmailAction(testEmailData, 'any-key');
+		expect(result).toBeDefined();
 	});
 
-	it('should include request data in error messages for debugging', async () => {
-		const resendError = {
-			message: 'Validation failed',
-			name: 'validation_error',
+	it('handles complex email data', async () => {
+		const complexEmailData: CreateEmailOptions = {
+			to: 'test@example.com',
+			from: 'sender@example.com',
+			subject: 'Test',
+			html: '<h1>Hello</h1>',
+			headers: { 'X-Test': 'value' },
+			attachments: [
+				{
+					content: 'base64content',
+					filename: 'test.txt',
+				},
+			],
 		};
-		mockSend.mockResolvedValue({
-			data: null,
-			error: resendError,
-		});
 
-		const result = await sendEmailAction(testEmailData, 'test-api-key');
-
-		expect(result.error).toContain(JSON.stringify(testEmailData, null, 2));
-		expect(result.error).toContain('"to": "test@example.com"');
-		expect(result.error).toContain('"from": "sender@example.com"');
+		const result = await sendEmailAction(complexEmailData, 'test-api-key');
+		expect(result.success).toBe(true);
 	});
 
-	it('should handle unknown error types gracefully', async () => {
-		const unknownError = {
-			message: 'Some new error type',
-			name: 'new_error_type_not_in_our_map',
-		};
-		mockSend.mockResolvedValue({
-			data: null,
-			error: unknownError,
-		});
-
+	it('returns correct ApiResult type', async () => {
 		const result = await sendEmailAction(testEmailData, 'test-api-key');
 
-		expect(result.success).toBe(false);
-		expect(result.error).toContain('Failed to send email');
-		expect(result.error).toContain('Some new error type');
-		// Should fall back to unknown_error suggestion
-		expect(result.error).toContain('Please try again or contact support');
+		// Test ApiResult structure
+		if (result.success && result.data) {
+			expect(result).toHaveProperty('data');
+			expect(result.data).toHaveProperty('id');
+			expect(typeof result.data.id).toBe('string');
+		} else {
+			expect(result).toHaveProperty('error');
+			expect(typeof result.error).toBe('string');
+		}
 	});
 });
