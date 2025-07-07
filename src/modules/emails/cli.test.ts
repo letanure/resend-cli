@@ -17,13 +17,20 @@ describe('Email CLI Commands', () => {
 		vi.clearAllMocks();
 	});
 
-	it('registers email send command', () => {
+	it('registers email send and retrieve commands', () => {
 		registerEmailCommands(program);
 
 		const emailCommands = program.commands;
-		expect(emailCommands).toHaveLength(1);
-		expect(emailCommands[0]?.name()).toBe('send');
-		expect(emailCommands[0]?.description()).toBe('Send an email via Resend API');
+		expect(emailCommands).toHaveLength(2);
+
+		const sendCommand = emailCommands.find((cmd) => cmd.name() === 'send');
+		const retrieveCommand = emailCommands.find((cmd) => cmd.name() === 'retrieve');
+
+		expect(sendCommand).toBeDefined();
+		expect(sendCommand?.description()).toBe('Send an email via Resend API');
+
+		expect(retrieveCommand).toBeDefined();
+		expect(retrieveCommand?.description()).toBe('Retrieve an email by ID from Resend API');
 	});
 
 	it('configures command with correct field options', () => {
@@ -50,11 +57,12 @@ describe('Email CLI Commands', () => {
 		registerEmailCommands(program);
 
 		const mockCalls = mockConfigureCustomHelp.mock.calls;
-		expect(mockCalls).toHaveLength(1);
+		expect(mockCalls).toHaveLength(2);
 
-		const firstCall = mockCalls[0];
-		if (firstCall) {
-			const [, , examples] = firstCall;
+		// Check send command examples
+		const sendCall = mockCalls[0];
+		if (sendCall) {
+			const [, , examples] = sendCall;
 			expect(examples).toEqual(
 				expect.arrayContaining([
 					expect.stringContaining('--from="Acme <onboarding@resend.dev>"'),
@@ -64,21 +72,38 @@ describe('Email CLI Commands', () => {
 				]),
 			);
 		}
+
+		// Check retrieve command examples
+		const retrieveCall = mockCalls[1];
+		if (retrieveCall) {
+			const [, , examples] = retrieveCall;
+			expect(examples).toEqual(
+				expect.arrayContaining([
+					expect.stringContaining('--id="402a4ef4-3bd0-43fe-8e12-f6142bd2bd0f"'),
+					expect.stringContaining('--output json'),
+					expect.stringContaining('RESEND_API_KEY='),
+				]),
+			);
+		}
 	});
 
-	it('registers command with action handler', () => {
+	it('registers commands with action handlers', () => {
 		registerEmailCommands(program);
-		const sendCommand = program.commands[0];
+		const sendCommand = program.commands.find((cmd) => cmd.name() === 'send');
+		const retrieveCommand = program.commands.find((cmd) => cmd.name() === 'retrieve');
 
-		// Verify the command has an action (function) attached
+		// Verify both commands have actions attached
 		expect(sendCommand).toBeDefined();
 		expect(sendCommand?.name()).toBe('send');
+
+		expect(retrieveCommand).toBeDefined();
+		expect(retrieveCommand?.name()).toBe('retrieve');
 	});
 
 	it('calls field registration and help configuration', () => {
 		registerEmailCommands(program);
 
-		expect(mockRegisterFieldOptions).toHaveBeenCalledTimes(1);
-		expect(mockConfigureCustomHelp).toHaveBeenCalledTimes(1);
+		expect(mockRegisterFieldOptions).toHaveBeenCalledTimes(2);
+		expect(mockConfigureCustomHelp).toHaveBeenCalledTimes(2);
 	});
 });
