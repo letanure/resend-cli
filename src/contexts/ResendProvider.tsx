@@ -1,5 +1,6 @@
 import { Alert } from '@inkjs/ui';
 import { createContext, type ReactNode, useContext } from 'react';
+import { getResendApiKeyDocsUrl, getResendApiKeyOrNull } from '@/utils/resend-api.js';
 
 interface ResendContextType {
 	apiKey: string;
@@ -12,13 +13,13 @@ interface ResendProviderProps {
 }
 
 export const ResendProvider = ({ children }: ResendProviderProps) => {
-	const apiKey = process.env.RESEND_API_KEY;
+	const apiKey = getResendApiKeyOrNull();
 
 	if (!apiKey) {
 		return (
 			<Alert variant="warning">
 				Missing RESEND_API_KEY environment variable. Please set it to use the CLI.{'\n'}
-				Get your API key at https://resend.com/docs/dashboard/api-keys/introduction
+				Get your API key at {getResendApiKeyDocsUrl()}
 			</Alert>
 		);
 	}
