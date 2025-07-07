@@ -1,5 +1,6 @@
 import type { Command } from 'commander';
 import { displayCLIResults, registerFieldOptions, validateEnvironmentVariable, validateOptions } from '@/utils/cli.js';
+import { configureCustomHelp } from '@/utils/cli-help.js';
 import { fields } from './send/fields.js';
 import { CreateEmailOptionsSchema, type CreateEmailOptionsType } from './send/schema.js';
 
@@ -29,19 +30,18 @@ async function handleSendCommand(options: unknown): Promise<void> {
 
 export function registerEmailCommands(emailCommand: Command) {
 	// Register the send subcommand
-	const sendCommand = emailCommand.command('send').description('Send an email').action(handleSendCommand);
+	const sendCommand = emailCommand
+		.command('send')
+		.description('Send an email via Resend API')
+		.action(handleSendCommand);
 
 	// Add all the field options to the send command
 	registerFieldOptions(sendCommand, fields);
 
-	// Add help examples
-	sendCommand.addHelpText(
-		'after',
-		`
-Examples:
-  $ resend-cli email send --from="Acme <onboarding@resend.dev>" --to="user@example.com" --subject="Hello World" --html="<h1>it works!</h1>"
-  $ resend-cli email send -f onboarding@resend.dev -t user@example.com -s "Hello World" --text="it works!"
-  $ RESEND_API_KEY="re_xxxxx" resend-cli email send --from="..." --to="..." --subject="..." --html="..."
-`,
-	);
+	const examples = [
+		'$ resend-cli email send --from="Acme <onboarding@resend.dev>" --to="user@example.com" --subject="Hello World" --html="<h1>it works!</h1>"',
+		'$ resend-cli email send -f onboarding@resend.dev -t user@example.com -s "Hello World" --text="it works!"',
+		'$ RESEND_API_KEY="re_xxxxx" resend-cli email send --from="..." --to="..." --subject="..." --html="..."',
+	];
+	configureCustomHelp(sendCommand, fields, examples);
 }
