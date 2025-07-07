@@ -32,6 +32,6 @@ describe('App Component', () => {
 		const { lastFrame } = renderWithProviders(<AppMain />);
 		const output = lastFrame() ?? '';
 
-		expect(output).toContain('Use ↑/↓ to navigate, Enter to select q or ESC to go back');
+		expect(output).toContain('Use ↑/↓ to navigate, Enter/→ to select q/ESC/← to go back');
 	});
 });

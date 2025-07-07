@@ -29,14 +29,14 @@ export const Menu = <T extends string>({ menuItems, onSelect, onExit, initialSel
 			setSelectedIndex(selectedIndex + 1);
 		}
 
-		if (key.return) {
+		if (key.return || key.rightArrow) {
 			const selectedItem = menuItems[selectedIndex];
 			if (selectedItem && !selectedItem.disabled) {
 				onSelect(selectedItem.id);
 			}
 		}
 
-		if (input === 'q' || key.escape) {
+		if (input === 'q' || key.escape || key.leftArrow) {
 			const currentSelectedItem = menuItems[selectedIndex];
 			onExit(currentSelectedItem?.id);
 		}

@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import type { Resend } from 'resend';
 import { createContact } from './action.js';
 
 // Mock the Resend SDK
@@ -20,8 +21,8 @@ describe('Contact Create Action', () => {
 		vi.mocked(Resend).mockImplementation(
 			() =>
 				({
-					contacts: { create: mockCreate } as any,
-				}) as any,
+					contacts: { create: mockCreate },
+				}) as unknown as Resend,
 		);
 
 		const contactData = {
@@ -54,8 +55,8 @@ describe('Contact Create Action', () => {
 		vi.mocked(Resend).mockImplementation(
 			() =>
 				({
-					contacts: { create: mockCreate } as any,
-				}) as any,
+					contacts: { create: mockCreate },
+				}) as unknown as Resend,
 		);
 
 		const contactData = {
@@ -76,8 +77,8 @@ describe('Contact Create Action', () => {
 		vi.mocked(Resend).mockImplementation(
 			() =>
 				({
-					contacts: { create: mockCreate } as any,
-				}) as any,
+					contacts: { create: mockCreate },
+				}) as unknown as Resend,
 		);
 
 		const contactData = {
@@ -101,8 +102,8 @@ describe('Contact Create Action', () => {
 		vi.mocked(Resend).mockImplementation(
 			() =>
 				({
-					contacts: { create: mockCreate } as any,
-				}) as any,
+					contacts: { create: mockCreate },
+				}) as unknown as Resend,
 		);
 
 		const contactData = {
@@ -126,8 +127,8 @@ describe('Contact Create Action', () => {
 		vi.mocked(Resend).mockImplementation(
 			() =>
 				({
-					contacts: { create: mockCreate } as any,
-				}) as any,
+					contacts: { create: mockCreate },
+				}) as unknown as Resend,
 		);
 
 		const contactData = {

@@ -99,6 +99,26 @@ describe('Menu Component', () => {
 		expect(mockOnExit).toHaveBeenCalledWith('email');
 	});
 
+	it('calls onSelect when right arrow is pressed', async () => {
+		const { stdin } = renderWithProviders(
+			<Menu menuItems={mockMenuItems} onSelect={mockOnSelect} onExit={mockOnExit} />,
+		);
+
+		await stdin.write('\u001B[C'); // Right arrow
+
+		expect(mockOnSelect).toHaveBeenCalledWith('email');
+	});
+
+	it('calls onExit when left arrow is pressed', async () => {
+		const { stdin } = renderWithProviders(
+			<Menu menuItems={mockMenuItems} onSelect={mockOnSelect} onExit={mockOnExit} />,
+		);
+
+		await stdin.write('\u001B[D'); // Left arrow
+
+		expect(mockOnExit).toHaveBeenCalledWith('email');
+	});
+
 	it('handles empty menu items gracefully', () => {
 		const { lastFrame } = renderWithProviders(<Menu menuItems={[]} onSelect={mockOnSelect} onExit={mockOnExit} />);
 

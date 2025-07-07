@@ -33,8 +33,8 @@ export const Layout: React.FC<LayoutProps> = ({ headerText, footerText, showNavi
 				{showNavigationInstructions && (
 					<Box marginBottom={1}>
 						<Text dimColor={true}>
-							Use <Text color="yellow">↑/↓</Text> to navigate, <Text color="yellow">Enter</Text> to select{' '}
-							<Text color="yellow">q</Text> or <Text color="yellow">ESC</Text> to go back
+							Use <Text color="yellow">↑/↓</Text> to navigate, <Text color="yellow">Enter/→</Text> to select{' '}
+							<Text color="yellow">q</Text>/<Text color="yellow">ESC/←</Text> to go back
 						</Text>
 					</Box>
 				)}
