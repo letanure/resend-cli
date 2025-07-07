@@ -1,3 +1,10 @@
+## [0.9.1](https://github.com/letanure/resend-cli/compare/v0.9.0...v0.9.1) (2025-07-07)
+
+
+### Bug Fixes
+
+* moving footer on radio select ([40a61a9](https://github.com/letanure/resend-cli/commit/40a61a903d949e516b5d8b34019a015493bbbc86))
+
 # [0.9.0](https://github.com/letanure/resend-cli/compare/v0.8.0...v0.9.0) (2025-07-07)
 
 
