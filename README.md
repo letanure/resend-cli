@@ -435,6 +435,10 @@ Manage contacts in your audiences
 
 [options]    Create a contact in an audience via Resend API
 
+### contacts delete
+
+[options]    Delete a contact by ID or email from an audience in Resend
+
 ### contacts list
 
 [options]      List all contacts in an audience

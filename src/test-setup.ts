@@ -109,3 +109,17 @@ vi.mock('./modules/audiences/list/action.js', () => ({
 		}),
 	),
 }));
+
+// Mock the contact delete action
+vi.mock('./modules/contacts/delete/action.js', () => ({
+	deleteContact: vi.fn(() =>
+		Promise.resolve({
+			success: true,
+			data: {
+				object: 'contact',
+				contact: 'test-contact-id',
+				deleted: true,
+			},
+		}),
+	),
+}));
