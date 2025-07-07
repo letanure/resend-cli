@@ -29,6 +29,56 @@ export function validateOptions<T>(options: unknown, schema: ZodSchema<T>, forma
 	return validationResult.data;
 }
 
+/**
+ * Console output utilities for CLI results
+ */
+function logCliResults(
+	data: Record<string, unknown>,
+	fields: Array<CliField>,
+	title: string,
+	additionalInfo?: Record<string, string | undefined>,
+	successMessage?: string,
+): void {
+	console.log(title);
+
+	// Loop through fields to display the data
+	for (const field of fields) {
+		const value = data[field.name];
+
+		if (value !== undefined && value !== null && value !== '') {
+			const displayLabel = field.label || field.name;
+
+			// Handle different field types
+			let displayValue: string | boolean | number | unknown;
+			if (Array.isArray(value)) {
+				displayValue = value.join(', ');
+			} else if (field.type === 'textarea' && typeof value === 'string' && value.length > 100) {
+				displayValue = `${value.substring(0, 100)}...`;
+			} else {
+				displayValue = value;
+			}
+
+			console.log(`${displayLabel}:`, displayValue);
+		}
+	}
+
+	// Display any additional info (like API key)
+	if (additionalInfo) {
+		for (const [key, value] of Object.entries(additionalInfo)) {
+			if (value) {
+				console.log(`${key}:`, value);
+			}
+		}
+	}
+
+	if (successMessage) {
+		console.log('');
+		console.log(successMessage);
+	}
+
+	console.log('');
+}
+
 // Display parsed CLI data using field configuration
 export function displayCLIResults(
 	data: Record<string, unknown>,
@@ -48,44 +98,7 @@ export function displayCLIResults(
 	}
 
 	outputSuccess(resultData, format, () => {
-		console.log(title);
-
-		// Loop through fields to display the data
-		for (const field of fields) {
-			const value = data[field.name];
-
-			if (value !== undefined && value !== null && value !== '') {
-				const displayLabel = field.label || field.name;
-
-				// Handle different field types
-				let displayValue: string | boolean | number | unknown;
-				if (Array.isArray(value)) {
-					displayValue = value.join(', ');
-				} else if (field.type === 'textarea' && typeof value === 'string' && value.length > 100) {
-					displayValue = `${value.substring(0, 100)}...`;
-				} else {
-					displayValue = value;
-				}
-
-				console.log(`${displayLabel}:`, displayValue);
-			}
-		}
-
-		// Display any additional info (like API key)
-		if (additionalInfo) {
-			for (const [key, value] of Object.entries(additionalInfo)) {
-				if (value) {
-					console.log(`${key}:`, value);
-				}
-			}
-		}
-
-		if (successMessage) {
-			console.log('');
-			console.log(successMessage);
-		}
-
-		console.log('');
+		logCliResults(data, fields, title, additionalInfo, successMessage);
 	});
 }
 
@@ -150,7 +163,7 @@ export function registerFieldOptions(command: Command, fields: Array<CliField>):
 				if (match?.[1]) {
 					const invalidOption = match[1];
 					displayUnknownOptionError(invalidOption);
-					return;
+					// Function never returns, so this return is unreachable but kept for clarity
 				}
 			}
 			// Default error output for other Commander.js errors
