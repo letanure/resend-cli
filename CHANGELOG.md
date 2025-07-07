@@ -1,3 +1,10 @@
+# [0.9.0](https://github.com/letanure/resend-cli/compare/v0.8.0...v0.9.0) (2025-07-07)
+
+
+### Features
+
+* add contact creation ([1e465aa](https://github.com/letanure/resend-cli/commit/1e465aa3b8590efeae582cc7c88d565a4701a1dc))
+
 # [0.8.0](https://github.com/letanure/resend-cli/compare/v0.7.0...v0.8.0) (2025-07-07)
 
 
