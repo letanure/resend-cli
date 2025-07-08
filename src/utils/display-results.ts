@@ -1,5 +1,5 @@
 import type { ApiResult, CliField } from '@/types/index.js';
-import { displayCLIResults } from '@/utils/cli.js';
+import { displayCLIError, displayCLIResults } from '@/utils/cli.js';
 import { logDryRunResults } from '@/utils/dry-run.js';
 import type { OutputFormat } from '@/utils/output.js';
 
@@ -76,7 +76,7 @@ export function displayResults<T extends Record<string, unknown>>(options: Displ
 			metadata.Error = result.error;
 		}
 
-		displayCLIResults(data, fields, outputFormat, operation.error.title, metadata, operation.error.message);
+		displayCLIError(data, fields, outputFormat, operation.error.title, metadata, operation.error.message);
 
 		process.exit(1);
 	}

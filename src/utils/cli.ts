@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import type { Command } from 'commander';
 import type { ZodSchema } from 'zod';
 import type { CliField } from '@/types/index.js';
@@ -61,7 +62,7 @@ function logCliResults(
 	fields: Array<CliField>,
 	title: string,
 	additionalInfo?: Record<string, string | undefined>,
-	_successMessage?: string,
+	successMessage?: string,
 ): void {
 	// Format the main data using the shared formatter
 	const formattedFields = formatDataWithFields(data, fields);
@@ -76,9 +77,19 @@ function logCliResults(
 		}
 	}
 
-	// Output using shared formatter
-	const output = formatForCLI(formattedFields, title);
-	console.log(output);
+	// Show title with colors
+	console.log(chalk.green(`✓ ${title}`));
+
+	// If we have data to show, format and display it
+	if (formattedFields.length > 0) {
+		const output = formatForCLI(formattedFields, '');
+		console.log(output);
+	}
+
+	// Always show success message if provided
+	if (successMessage) {
+		console.log(chalk.yellow(`${successMessage}`));
+	}
 }
 
 // Display parsed CLI data using field configuration
@@ -102,6 +113,46 @@ export function displayCLIResults(
 	outputSuccess(data, format, () => {
 		logCliResults(data, fields, title, additionalInfo, successMessage);
 	});
+}
+
+// Display CLI errors with colors
+export function displayCLIError(
+	_data: Record<string, unknown>,
+	_fields: Array<CliField>,
+	format: OutputFormat = 'text',
+	title: string = 'Error:',
+	additionalInfo?: Record<string, string | undefined>,
+	errorMessage?: string,
+): void {
+	// For JSON output, use the standard error output
+	if (format === 'json') {
+		const errorData = {
+			success: false,
+			error: errorMessage || title,
+			...additionalInfo,
+		};
+		console.log(JSON.stringify(errorData, null, 2));
+		return;
+	}
+
+	// For text output, use colors
+
+	// Show error title with colors
+	console.error(chalk.red(`✗ ${title}`));
+
+	// Show error message if provided
+	if (errorMessage) {
+		console.error(chalk.red(errorMessage));
+	}
+
+	// Show additional error info
+	if (additionalInfo) {
+		for (const [key, value] of Object.entries(additionalInfo)) {
+			if (value) {
+				console.error(chalk.red(`${key}: ${value}`));
+			}
+		}
+	}
 }
 
 // Display validation errors

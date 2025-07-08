@@ -30,8 +30,14 @@ async function handleListCommand(options: Record<string, unknown>, command: Comm
 			isDryRun,
 			operation: {
 				success: {
-					title: 'API Keys Retrieved Successfully',
-					message: () => '',
+					title: 'API Key Search Completed',
+					message: (data: unknown) => {
+						if (Array.isArray(data) && data.length === 0) {
+							return 'No API keys found (0 results). Create your first API key to get started.';
+						}
+						const count = Array.isArray(data) ? data.length : 0;
+						return `Found ${count} API key${count === 1 ? '' : 's'}`;
+					},
 				},
 				error: {
 					title: 'Failed to Retrieve API Keys',

@@ -32,8 +32,14 @@ async function handleListCommand(options: Record<string, unknown>): Promise<void
 			isDryRun,
 			operation: {
 				success: {
-					title: 'Domains Retrieved Successfully',
-					message: () => '',
+					title: 'Domain Search Completed',
+					message: (data: unknown) => {
+						const domainData = data as { data: Array<unknown> };
+						if (domainData.data && domainData.data.length === 0) {
+							return 'No domains found (0 results).';
+						}
+						return `Found ${domainData.data.length} domain${domainData.data.length === 1 ? '' : 's'}`;
+					},
 				},
 				error: {
 					title: 'Failed to Retrieve Domains',

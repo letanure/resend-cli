@@ -138,24 +138,9 @@ export const DomainListForm = ({ onExit }: DomainListFormProps) => {
 		return (
 			<Layout headerText={`${config.baseTitle} - Domains - List`}>
 				<Box flexDirection="column">
-					<Box marginBottom={1}>
-						<Text bold={true} color="cyan">
-							{domainsList.length} domain{domainsList.length === 1 ? '' : 's'} found
-						</Text>
-					</Box>
-
-					{domainsList.length > 0 ? (
-						<Table data={domainsList} fields={displayFields} title="Domains" />
-					) : (
-						<Box marginBottom={1}>
-							<Text color="yellow">No domains found. Create your first domain to get started.</Text>
-						</Box>
-					)}
-
+					<Table data={domainsList || []} fields={displayFields} title="Domains" />
 					<Box marginTop={1}>
-						<Text>
-							Press <Text color="yellow">Esc</Text> to go back
-						</Text>
+						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>

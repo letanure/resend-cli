@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { Command } from 'commander';
 import { registerFieldOptions } from '@/utils/cli.js';
 import { configureCustomHelp } from '@/utils/cli-help.js';
@@ -69,14 +70,24 @@ async function handleListCommand(options: Record<string, unknown>, command: Comm
 			if (outputFormat === 'json') {
 				console.log(JSON.stringify(result, null, 2));
 			} else {
-				console.log('Audiences Listed Successfully\n');
+				console.log(chalk.green('✓ Audience Search Completed'));
+
 				// Convert audience objects to Record<string, unknown> for table formatter
 				const tableData = audiences.map((audience) => ({
 					id: audience.id,
 					name: audience.name,
 					created_at: audience.created_at,
 				}));
-				console.log(formatAsTable(tableData, displayFields));
+
+				const tableOutput = formatAsTable(tableData, displayFields);
+				console.log(tableOutput);
+
+				// Add count message
+				if (audiences.length === 0) {
+					console.log(chalk.yellow('No audiences found (0 results). Create your first audience to get started.'));
+				} else {
+					console.log(chalk.yellow(`Found ${audiences.length} audience${audiences.length === 1 ? '' : 's'}`));
+				}
 			}
 		} else {
 			const errorOutput = {
@@ -87,8 +98,8 @@ async function handleListCommand(options: Record<string, unknown>, command: Comm
 			if (outputFormat === 'json') {
 				console.log(JSON.stringify(errorOutput, null, 2));
 			} else {
-				console.error('Failed to List Audiences');
-				console.error(result.error || 'Unknown error occurred');
+				console.error(chalk.red('✗ Failed to List Audiences'));
+				console.error(chalk.red(result.error || 'Unknown error occurred'));
 			}
 			process.exit(1);
 		}
@@ -107,7 +118,7 @@ async function handleListCommand(options: Record<string, unknown>, command: Comm
 				),
 			);
 		} else {
-			console.error('Unexpected error:', errorMessage);
+			console.error(chalk.red('✗ Unexpected error:'), chalk.red(errorMessage));
 		}
 		process.exit(1);
 	}

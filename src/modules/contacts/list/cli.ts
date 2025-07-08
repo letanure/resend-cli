@@ -32,8 +32,14 @@ async function handleListCommand(options: Record<string, unknown>): Promise<void
 			isDryRun,
 			operation: {
 				success: {
-					title: 'Contacts Listed Successfully',
-					message: () => '',
+					title: 'Contact Search Completed',
+					message: (data: unknown) => {
+						const contactData = data as { data: Array<unknown> };
+						if (contactData.data && contactData.data.length === 0) {
+							return 'No contacts found in this audience (0 results).';
+						}
+						return `Found ${contactData.data.length} contact${contactData.data.length === 1 ? '' : 's'}`;
+					},
 				},
 				error: {
 					title: 'Failed to List Contacts',
