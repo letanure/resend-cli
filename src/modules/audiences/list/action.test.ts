@@ -3,7 +3,7 @@ import { listAudiences } from './action.js';
 
 describe('listAudiences', () => {
 	it('returns success result structure', async () => {
-		const result = await listAudiences('test-api-key');
+		const result = await listAudiences({}, 'test-api-key');
 
 		expect(result).toHaveProperty('success');
 		expect(result.success).toBe(true);
@@ -13,12 +13,12 @@ describe('listAudiences', () => {
 
 	it('requires api key parameter', async () => {
 		// Function should accept any string as API key
-		const result = await listAudiences('any-key');
+		const result = await listAudiences({}, 'any-key');
 		expect(result).toBeDefined();
 	});
 
 	it('returns consistent interface regardless of input', async () => {
-		const result = await listAudiences('test-key');
+		const result = await listAudiences({}, 'test-key');
 
 		// Should always return ApiResult interface
 		expect(typeof result.success).toBe('boolean');
@@ -30,13 +30,13 @@ describe('listAudiences', () => {
 	});
 
 	it('handles empty API key gracefully', async () => {
-		const result = await listAudiences('');
+		const result = await listAudiences({}, '');
 		expect(result).toBeDefined();
 		expect(typeof result.success).toBe('boolean');
 	});
 
 	it('returns list data structure', async () => {
-		const result = await listAudiences('test-api-key');
+		const result = await listAudiences({}, 'test-api-key');
 
 		if (result.success) {
 			expect(result.data).toHaveProperty('object', 'list');

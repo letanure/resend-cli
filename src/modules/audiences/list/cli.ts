@@ -62,7 +62,7 @@ async function handleListCommand(options: Record<string, unknown>, command: Comm
 			return;
 		}
 
-		const result = await listAudiences(apiKey);
+		const result = await listAudiences({}, apiKey);
 
 		if (result.success && result.data) {
 			const audiences = result.data.data || [];
