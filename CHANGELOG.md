@@ -1,3 +1,11 @@
+## [0.17.1](https://github.com/letanure/resend-cli/compare/v0.17.0...v0.17.1) (2025-07-08)
+
+
+### Bug Fixes
+
+* prevent layout shift on select + focus + hint ([4d7f445](https://github.com/letanure/resend-cli/commit/4d7f445d54d744be0679d7abea68c0e4db3e3dc0))
+* use right contact delete form ([ec2abcf](https://github.com/letanure/resend-cli/commit/ec2abcf4c423e17c9e444c75bae8175222d92ad2))
+
 # [0.17.0](https://github.com/letanure/resend-cli/compare/v0.16.0...v0.17.0) (2025-07-08)
 
 
