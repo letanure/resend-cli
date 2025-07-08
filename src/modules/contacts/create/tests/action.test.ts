@@ -27,9 +27,9 @@ describe('Contact Create Action', () => {
 
 		const contactData = {
 			email: 'test@example.com',
-			audience_id: 'audience-123',
-			first_name: 'John',
-			last_name: 'Doe',
+			audienceId: 'audience-123',
+			firstName: 'John',
+			lastName: 'Doe',
 			unsubscribed: false,
 		};
 
@@ -61,7 +61,7 @@ describe('Contact Create Action', () => {
 
 		const contactData = {
 			email: 'test@example.com',
-			audience_id: 'invalid-audience',
+			audienceId: 'invalid-audience',
 			unsubscribed: false,
 		};
 
@@ -83,7 +83,7 @@ describe('Contact Create Action', () => {
 
 		const contactData = {
 			email: 'test@example.com',
-			audience_id: 'audience-123',
+			audienceId: 'audience-123',
 			unsubscribed: false,
 		};
 
@@ -108,7 +108,7 @@ describe('Contact Create Action', () => {
 
 		const contactData = {
 			email: 'test@example.com',
-			audience_id: 'audience-123',
+			audienceId: 'audience-123',
 			unsubscribed: false,
 		};
 
@@ -133,9 +133,9 @@ describe('Contact Create Action', () => {
 
 		const contactData = {
 			email: 'test@example.com',
-			audience_id: 'audience-123',
-			first_name: 'Steve',
-			last_name: 'Wozniak',
+			audienceId: 'audience-123',
+			firstName: 'Steve',
+			lastName: 'Wozniak',
 			unsubscribed: true,
 		};
 

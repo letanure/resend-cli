@@ -8,7 +8,7 @@ describe('UpdateEmailOptionsSchema', () => {
 	it('validates correct email update data', () => {
 		const validData = {
 			id: validEmailId,
-			scheduled_at: futureDate,
+			scheduledAt: futureDate,
 		};
 
 		const result = UpdateEmailOptionsSchema.safeParse(validData);
@@ -18,7 +18,7 @@ describe('UpdateEmailOptionsSchema', () => {
 	it('rejects invalid email ID format', () => {
 		const invalidData = {
 			id: 'invalid-id',
-			scheduled_at: futureDate,
+			scheduledAt: futureDate,
 		};
 
 		const result = UpdateEmailOptionsSchema.safeParse(invalidData);
@@ -28,7 +28,7 @@ describe('UpdateEmailOptionsSchema', () => {
 	it('rejects email ID with wrong length', () => {
 		const invalidData = {
 			id: '402a4ef4-3bd0-43fe-8e12-f6142bd2bd0f-extra',
-			scheduled_at: futureDate,
+			scheduledAt: futureDate,
 		};
 
 		const result = UpdateEmailOptionsSchema.safeParse(invalidData);
@@ -39,7 +39,7 @@ describe('UpdateEmailOptionsSchema', () => {
 		const pastDate = new Date(Date.now() - 60000).toISOString(); // 1 minute ago
 		const invalidData = {
 			id: validEmailId,
-			scheduled_at: pastDate,
+			scheduledAt: pastDate,
 		};
 
 		const result = UpdateEmailOptionsSchema.safeParse(invalidData);
@@ -49,14 +49,14 @@ describe('UpdateEmailOptionsSchema', () => {
 	it('rejects invalid date format', () => {
 		const invalidData = {
 			id: validEmailId,
-			scheduled_at: 'invalid-date',
+			scheduledAt: 'invalid-date',
 		};
 
 		const result = UpdateEmailOptionsSchema.safeParse(invalidData);
 		expect(result.success).toBe(false);
 	});
 
-	it('requires both id and scheduled_at fields', () => {
+	it('requires both id and scheduledAt fields', () => {
 		const incompleteData = {
 			id: validEmailId,
 		};

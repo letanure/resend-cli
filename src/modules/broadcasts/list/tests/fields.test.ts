@@ -27,8 +27,8 @@ describe('list broadcasts fields', () => {
 			expect(idField?.cliShortFlag).toBe('-i');
 		});
 
-		it('should have audience_id field', () => {
-			const audienceIdField = displayFields.find((field) => field.name === 'audience_id');
+		it('should have audienceId field', () => {
+			const audienceIdField = displayFields.find((field) => field.name === 'audienceId');
 			expect(audienceIdField).toBeDefined();
 			expect(audienceIdField?.label).toBe('Audience ID');
 			expect(audienceIdField?.cliFlag).toBe('--audience-id');
@@ -51,8 +51,8 @@ describe('list broadcasts fields', () => {
 			expect(createdAtField?.cliShortFlag).toBe('-c');
 		});
 
-		it('should have scheduled_at field', () => {
-			const scheduledAtField = displayFields.find((field) => field.name === 'scheduled_at');
+		it('should have scheduledAt field', () => {
+			const scheduledAtField = displayFields.find((field) => field.name === 'scheduledAt');
 			expect(scheduledAtField).toBeDefined();
 			expect(scheduledAtField?.label).toBe('Scheduled At');
 			expect(scheduledAtField?.cliFlag).toBe('--scheduled-at');

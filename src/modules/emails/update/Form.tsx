@@ -42,7 +42,7 @@ export const Form = ({ onExit }: FormProps) => {
 			if (isDryRun) {
 				setShowDryRunData({
 					'Email ID': data.id,
-					'New Scheduled Date': data.scheduled_at,
+					'New Scheduled Date': data.scheduledAt,
 					'API Key': apiKey ? `${apiKey.substring(0, 10)}...` : 'Not set',
 					'Dry Run': 'true',
 					Status: 'Validation successful! (Email not updated due to dry-run mode)',
@@ -53,7 +53,7 @@ export const Form = ({ onExit }: FormProps) => {
 				if (result.success && result.data) {
 					setUpdateResult({
 						'Email ID': data.id,
-						'New Scheduled Date': data.scheduled_at,
+						'New Scheduled Date': data.scheduledAt,
 						'Update Status': 'Successfully updated',
 						'Object Type': result.data.object,
 						'Updated At': new Date().toISOString(),

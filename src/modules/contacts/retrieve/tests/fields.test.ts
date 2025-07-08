@@ -6,10 +6,10 @@ describe('Contact Retrieve Fields', () => {
 		expect(fields).toHaveLength(3);
 	});
 
-	it('should have audience_id field as first field', () => {
+	it('should have audienceId field as first field', () => {
 		const audienceIdField = fields[0];
 		expect(audienceIdField).toBeDefined();
-		expect(audienceIdField?.name).toBe('audience_id');
+		expect(audienceIdField?.name).toBe('audienceId');
 		expect(audienceIdField?.cliFlag).toBe('audience-id');
 		expect(audienceIdField?.cliShortFlag).toBe('a');
 	});
@@ -46,7 +46,7 @@ describe('Contact Retrieve Fields', () => {
 	});
 
 	it('should have all expected display fields', () => {
-		const expectedFieldNames = ['id', 'object', 'email', 'first_name', 'last_name', 'created_at', 'unsubscribed'];
+		const expectedFieldNames = ['id', 'object', 'email', 'firstName', 'lastName', 'created_at', 'unsubscribed'];
 
 		for (const expectedName of expectedFieldNames) {
 			const field = displayFields.find((f) => f.name === expectedName);

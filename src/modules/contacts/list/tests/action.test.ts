@@ -21,16 +21,16 @@ describe('Contact List Action', () => {
 					{
 						id: 'contact-123',
 						email: 'test@example.com',
-						first_name: 'John',
-						last_name: 'Doe',
+						firstName: 'John',
+						lastName: 'Doe',
 						created_at: '2023-01-01T00:00:00Z',
 						unsubscribed: false,
 					},
 					{
 						id: 'contact-456',
 						email: 'user@example.com',
-						first_name: 'Jane',
-						last_name: 'Smith',
+						firstName: 'Jane',
+						lastName: 'Smith',
 						created_at: '2023-01-02T00:00:00Z',
 						unsubscribed: true,
 					},
@@ -46,7 +46,7 @@ describe('Contact List Action', () => {
 		);
 
 		const listData = {
-			audience_id: 'audience-123',
+			audienceId: 'audience-123',
 		};
 
 		const result = await listContacts(listData, 'test-api-key');
@@ -58,16 +58,16 @@ describe('Contact List Action', () => {
 				{
 					id: 'contact-123',
 					email: 'test@example.com',
-					first_name: 'John',
-					last_name: 'Doe',
+					firstName: 'John',
+					lastName: 'Doe',
 					created_at: '2023-01-01T00:00:00Z',
 					unsubscribed: false,
 				},
 				{
 					id: 'contact-456',
 					email: 'user@example.com',
-					first_name: 'Jane',
-					last_name: 'Smith',
+					firstName: 'Jane',
+					lastName: 'Smith',
 					created_at: '2023-01-02T00:00:00Z',
 					unsubscribed: true,
 				},
@@ -95,7 +95,7 @@ describe('Contact List Action', () => {
 		);
 
 		const listData = {
-			audience_id: 'audience-123',
+			audienceId: 'audience-123',
 		};
 
 		const result = await listContacts(listData, 'test-api-key');
@@ -124,7 +124,7 @@ describe('Contact List Action', () => {
 		);
 
 		const listData = {
-			audience_id: 'invalid-audience-id',
+			audienceId: 'invalid-audience-id',
 		};
 
 		const result = await listContacts(listData, 'test-api-key');
@@ -144,7 +144,7 @@ describe('Contact List Action', () => {
 		);
 
 		const listData = {
-			audience_id: 'audience-123',
+			audienceId: 'audience-123',
 		};
 
 		const result = await listContacts(listData, 'test-api-key');
@@ -167,7 +167,7 @@ describe('Contact List Action', () => {
 		);
 
 		const listData = {
-			audience_id: 'audience-123',
+			audienceId: 'audience-123',
 		};
 
 		const result = await listContacts(listData, 'test-api-key');
@@ -185,8 +185,8 @@ describe('Contact List Action', () => {
 					{
 						id: 'contact-123',
 						email: 'test@example.com',
-						first_name: 'John',
-						last_name: 'Doe',
+						firstName: 'John',
+						lastName: 'Doe',
 						created_at: '2023-01-01T00:00:00Z',
 						unsubscribed: false,
 					},
@@ -202,7 +202,7 @@ describe('Contact List Action', () => {
 		);
 
 		const listData = {
-			audience_id: 'audience-123',
+			audienceId: 'audience-123',
 		};
 
 		await listContacts(listData, 'test-api-key');

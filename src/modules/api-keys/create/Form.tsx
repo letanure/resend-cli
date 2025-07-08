@@ -182,7 +182,7 @@ export const Form = ({ onExit }: FormProps) => {
 					} else {
 						const apiResult = await createApiKey(validatedData as CreateApiKeyOptionsType, apiKey);
 						if (apiResult.success && apiResult.data) {
-							setCreateResult(apiResult.data as Record<string, unknown>);
+							setCreateResult(apiResult.data as unknown as Record<string, unknown>);
 						} else {
 							setError({
 								title: 'API Key Creation Failed',

@@ -6,33 +6,40 @@ import { formatResendError } from '@/utils/resendErrors.js';
 /**
  * Sends an email using the Resend API
  *
- * @param emailData - Email data matching Resend's CreateEmailOptions interface
- * @param apiKey - Required API key for Resend API
- * @returns Promise<ApiResult<EmailSendData>> - Standard result format
+ * @param data - Email data matching Resend's CreateEmailOptions interface
+ * @param apiKey - API key for Resend API
+ * @returns Promise<ApiResult<CreateEmailResponseSuccess>> - Standard result format
  */
 export async function sendEmail(
-	emailData: CreateEmailOptions,
+	data: CreateEmailOptions,
 	apiKey: string,
 ): Promise<ApiResult<CreateEmailResponseSuccess>> {
 	try {
 		const resend = new Resend(apiKey);
-		const { data, error } = await resend.emails.send(emailData);
+		const { data: responseData, error } = await resend.emails.send(data);
 
 		if (error) {
 			return {
 				success: false,
-				error: formatResendError(error, 'send email', emailData),
+				error: formatResendError(error, 'send email', data),
+			};
+		}
+
+		if (!responseData) {
+			return {
+				success: false,
+				error: formatResendError('No data returned from API', 'send email', data),
 			};
 		}
 
 		return {
 			success: true,
-			data: data as CreateEmailResponseSuccess,
+			data: responseData,
 		};
 	} catch (error) {
 		return {
 			success: false,
-			error: formatResendError(error, 'send email', emailData),
+			error: formatResendError(error, 'send email', data),
 		};
 	}
 }

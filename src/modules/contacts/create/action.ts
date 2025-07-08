@@ -7,46 +7,40 @@ import type { CreateContactOptionsType } from './schema.js';
 /**
  * Creates a contact using the Resend API
  *
- * @param contactData - Contact data including email, audience_id, and optional fields
- * @param apiKey - API key for Resend API (assumed to be valid)
+ * @param data - Contact data for creation
+ * @param apiKey - API key for Resend API
  * @returns Promise<ApiResult<CreateContactResponseSuccess>> - Standard result format
  */
 export async function createContact(
-	contactData: CreateContactOptionsType,
+	data: CreateContactOptionsType,
 	apiKey: string,
 ): Promise<ApiResult<CreateContactResponseSuccess>> {
 	try {
 		const resend = new Resend(apiKey);
-		const { data, error } = await resend.contacts.create({
-			email: contactData.email,
-			audienceId: contactData.audience_id,
-			firstName: contactData.first_name,
-			lastName: contactData.last_name,
-			unsubscribed: contactData.unsubscribed,
-		});
+		const { data: responseData, error } = await resend.contacts.create(data);
 
 		if (error) {
 			return {
 				success: false,
-				error: formatResendError(error, 'create contact', contactData),
+				error: formatResendError(error, 'create contact', data),
 			};
 		}
 
-		if (!data) {
+		if (!responseData) {
 			return {
 				success: false,
-				error: formatResendError('No data returned from API', 'create contact', contactData),
+				error: formatResendError('No data returned from API', 'create contact', data),
 			};
 		}
 
 		return {
 			success: true,
-			data,
+			data: responseData,
 		};
 	} catch (error) {
 		return {
 			success: false,
-			error: formatResendError(error, 'create contact', contactData),
+			error: formatResendError(error, 'create contact', data),
 		};
 	}
 }

@@ -89,7 +89,7 @@ describe('broadcasts retrieve fields configuration', () => {
 	});
 
 	it('should have display fields for broadcast details', () => {
-		const expectedDisplayFields = ['id', 'name', 'audience_id', 'from', 'subject', 'status', 'created_at'];
+		const expectedDisplayFields = ['id', 'name', 'audienceId', 'from', 'subject', 'status', 'created_at'];
 		const displayFieldNames = displayFields.map((f) => f.name);
 
 		expectedDisplayFields.forEach((fieldName) => {

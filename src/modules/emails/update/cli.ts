@@ -34,7 +34,7 @@ async function handleUpdateCommand(options: Record<string, unknown>): Promise<vo
 			operation: {
 				success: {
 					title: 'Email Updated Successfully',
-					message: () => `Email ${updateData.id} scheduled time updated to ${updateData.scheduled_at}`,
+					message: () => `Email ${updateData.id} scheduled time updated to ${updateData.scheduledAt}`,
 				},
 				error: {
 					title: 'Failed to Update Email',

@@ -7,8 +7,8 @@ import type { RetrieveDomainData } from './schema.js';
 /**
  * Retrieves a domain using the Resend API
  *
- * @param data - Domain data containing domainId
- * @param apiKey - Required API key for Resend API
+ * @param data - Domain data for retrieval
+ * @param apiKey - API key for Resend API
  * @returns Promise<ApiResult<GetDomainResponseSuccess>> - Standard result format
  */
 export async function retrieveDomain(

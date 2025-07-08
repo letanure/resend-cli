@@ -19,8 +19,8 @@ describe('Contact Retrieve Action', () => {
 				object: 'contact',
 				id: 'contact-123',
 				email: 'test@example.com',
-				first_name: 'John',
-				last_name: 'Doe',
+				firstName: 'John',
+				lastName: 'Doe',
 				created_at: '2023-01-01T00:00:00Z',
 				unsubscribed: false,
 			},
@@ -34,7 +34,7 @@ describe('Contact Retrieve Action', () => {
 		);
 
 		const contactData = {
-			audience_id: 'audience-123',
+			audienceId: 'audience-123',
 			id: 'contact-123',
 		};
 
@@ -45,8 +45,8 @@ describe('Contact Retrieve Action', () => {
 			object: 'contact',
 			id: 'contact-123',
 			email: 'test@example.com',
-			first_name: 'John',
-			last_name: 'Doe',
+			firstName: 'John',
+			lastName: 'Doe',
 			created_at: '2023-01-01T00:00:00Z',
 			unsubscribed: false,
 		});
@@ -64,8 +64,8 @@ describe('Contact Retrieve Action', () => {
 				object: 'contact',
 				id: 'contact-456',
 				email: 'user@example.com',
-				first_name: 'Jane',
-				last_name: 'Smith',
+				firstName: 'Jane',
+				lastName: 'Smith',
 				created_at: '2023-01-01T00:00:00Z',
 				unsubscribed: true,
 			},
@@ -79,7 +79,7 @@ describe('Contact Retrieve Action', () => {
 		);
 
 		const contactData = {
-			audience_id: 'audience-123',
+			audienceId: 'audience-123',
 			email: 'user@example.com',
 		};
 
@@ -90,8 +90,8 @@ describe('Contact Retrieve Action', () => {
 			object: 'contact',
 			id: 'contact-456',
 			email: 'user@example.com',
-			first_name: 'Jane',
-			last_name: 'Smith',
+			firstName: 'Jane',
+			lastName: 'Smith',
 			created_at: '2023-01-01T00:00:00Z',
 			unsubscribed: true,
 		});
@@ -116,7 +116,7 @@ describe('Contact Retrieve Action', () => {
 		);
 
 		const contactData = {
-			audience_id: 'audience-123',
+			audienceId: 'audience-123',
 			id: 'invalid-contact-id',
 		};
 
@@ -137,7 +137,7 @@ describe('Contact Retrieve Action', () => {
 		);
 
 		const contactData = {
-			audience_id: 'audience-123',
+			audienceId: 'audience-123',
 			id: 'contact-123',
 		};
 
@@ -161,7 +161,7 @@ describe('Contact Retrieve Action', () => {
 		);
 
 		const contactData = {
-			audience_id: 'audience-123',
+			audienceId: 'audience-123',
 			id: 'contact-123',
 		};
 
@@ -191,7 +191,7 @@ describe('Contact Retrieve Action', () => {
 		);
 
 		const contactData = {
-			audience_id: 'audience-123',
+			audienceId: 'audience-123',
 			id: 'contact-123',
 		};
 
@@ -224,7 +224,7 @@ describe('Contact Retrieve Action', () => {
 		);
 
 		const contactData = {
-			audience_id: 'audience-123',
+			audienceId: 'audience-123',
 			email: 'user@example.com',
 		};
 

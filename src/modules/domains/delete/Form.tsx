@@ -15,7 +15,7 @@ import { type DeleteDomainData, deleteDomainSchema } from './schema.js';
 interface DeleteDomainResponse {
 	object: 'domain';
 	id: string;
-	deleted: true;
+	deleted: boolean;
 }
 
 interface FormProps {

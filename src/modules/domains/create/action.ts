@@ -7,8 +7,8 @@ import type { CreateDomainData } from './schema.js';
 /**
  * Creates a domain using the Resend API
  *
- * @param data - Domain data containing name, region, and custom_return_path
- * @param apiKey - Required API key for Resend API
+ * @param data - Domain data for creation
+ * @param apiKey - API key for Resend API
  * @returns Promise<ApiResult<CreateDomainResponseSuccess>> - Standard result format
  */
 export async function createDomain(
@@ -17,11 +17,7 @@ export async function createDomain(
 ): Promise<ApiResult<CreateDomainResponseSuccess>> {
 	try {
 		const resend = new Resend(apiKey);
-		const { data: responseData, error } = await resend.domains.create({
-			name: data.name,
-			region: data.region || 'us-east-1',
-			customReturnPath: data.custom_return_path || 'send',
-		});
+		const { data: responseData, error } = await resend.domains.create(data);
 
 		if (error) {
 			return {

@@ -14,8 +14,8 @@ describe('Update Email Fields', () => {
 		expect(idField?.cliShortFlag).toBe('i');
 	});
 
-	it('includes scheduled_at field', () => {
-		const scheduledAtField = fields.find((field) => field.name === 'scheduled_at');
+	it('includes scheduledAt field', () => {
+		const scheduledAtField = fields.find((field) => field.name === 'scheduledAt');
 		expect(scheduledAtField).toBeDefined();
 		expect(scheduledAtField?.cliFlag).toBe('scheduled-at');
 		expect(scheduledAtField?.cliShortFlag).toBe('a');
@@ -35,6 +35,6 @@ describe('Update Email Fields', () => {
 
 	it('fields match expected structure', () => {
 		const fieldNames = fields.map((field) => field.name);
-		expect(fieldNames).toEqual(['id', 'scheduled_at']);
+		expect(fieldNames).toEqual(['id', 'scheduledAt']);
 	});
 });

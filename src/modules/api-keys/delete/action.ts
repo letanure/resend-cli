@@ -7,8 +7,8 @@ import type { DeleteApiKeyData } from './schema.js';
 /**
  * Deletes an API key using the Resend API
  *
- * @param data - Delete data containing the API key ID
- * @param apiKey - Required API key for Resend API
+ * @param data - API key data for deletion
+ * @param apiKey - API key for Resend API
  * @returns Promise<ApiResult<RemoveApiKeyResponseSuccess>> - Standard result format
  */
 export async function deleteApiKey(

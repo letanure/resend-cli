@@ -4,7 +4,7 @@ import type { DeleteContactOptionsType } from '../schema.js';
 
 describe('deleteContact', () => {
 	const testContactData: DeleteContactOptionsType = {
-		audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+		audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 		id: '479e3145-dd38-476b-932c-529ceb705947',
 	};
 
@@ -19,7 +19,7 @@ describe('deleteContact', () => {
 
 	it('accepts valid contact data with ID', async () => {
 		const contactData: DeleteContactOptionsType = {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			id: '479e3145-dd38-476b-932c-529ceb705947',
 		};
 
@@ -29,7 +29,7 @@ describe('deleteContact', () => {
 
 	it('accepts valid contact data with email', async () => {
 		const contactData: DeleteContactOptionsType = {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			email: 'contact@example.com',
 		};
 
@@ -39,7 +39,7 @@ describe('deleteContact', () => {
 
 	it('accepts valid contact data with both ID and email', async () => {
 		const contactData: DeleteContactOptionsType = {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			id: '479e3145-dd38-476b-932c-529ceb705947',
 			email: 'contact@example.com',
 		};
@@ -57,15 +57,15 @@ describe('deleteContact', () => {
 	it('handles different audience and contact IDs', async () => {
 		const testData = [
 			{
-				audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+				audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 				id: '479e3145-dd38-476b-932c-529ceb705947',
 			},
 			{
-				audience_id: '12345678-1234-1234-1234-123456789abc',
+				audienceId: '12345678-1234-1234-1234-123456789abc',
 				email: 'user@example.com',
 			},
 			{
-				audience_id: '87654321-4321-4321-4321-cba987654321',
+				audienceId: '87654321-4321-4321-4321-cba987654321',
 				id: '11111111-1111-1111-1111-111111111111',
 			},
 		];
@@ -90,7 +90,7 @@ describe('deleteContact', () => {
 
 	it('handles email-only deletion', async () => {
 		const contactData: DeleteContactOptionsType = {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			email: 'test@example.com',
 		};
 

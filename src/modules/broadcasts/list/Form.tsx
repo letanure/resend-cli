@@ -4,7 +4,7 @@ import { displayFields } from './fields.js';
 
 interface BroadcastItem {
 	id: string;
-	audience_id: string;
+	audience_id: string | null;
 	status: 'draft' | 'sent' | 'queued';
 	created_at: string;
 	scheduled_at: string | null;
@@ -24,11 +24,11 @@ export const Form = ({ onExit }: FormProps) => {
 	const formatData = (data: ListBroadcastsResponse) => {
 		return data.data.map((broadcast) => ({
 			id: broadcast.id,
-			audience_id: broadcast.audience_id,
+			audience_id: broadcast.audience_id || '',
 			status: broadcast.status,
 			created_at: new Date(broadcast.created_at).toLocaleString(),
-			scheduled_at: broadcast.scheduled_at ? new Date(broadcast.scheduled_at).toLocaleString() : 'N/A',
-			sent_at: broadcast.sent_at ? new Date(broadcast.sent_at).toLocaleString() : 'N/A',
+			scheduled_at: broadcast.scheduled_at ? new Date(broadcast.scheduled_at).toLocaleString() : '',
+			sent_at: broadcast.sent_at ? new Date(broadcast.sent_at).toLocaleString() : '',
 		}));
 	};
 

@@ -20,8 +20,8 @@ describe('Email Send Fields', () => {
 
 		expect(fieldNames).toContain('bcc');
 		expect(fieldNames).toContain('cc');
-		expect(fieldNames).toContain('reply_to');
-		expect(fieldNames).toContain('scheduled_at');
+		expect(fieldNames).toContain('replyTo');
+		expect(fieldNames).toContain('scheduledAt');
 	});
 
 	it('has required field structure', () => {

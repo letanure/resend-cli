@@ -42,10 +42,10 @@ describe('updateBroadcast', () => {
 		expect(result.data?.id).toBe('49a3999c-0ce1-4ea6-ab68-afcd6dc2e794');
 		expect(result.error).toBeUndefined();
 		expect(mockUpdate).toHaveBeenCalledWith('49a3999c-0ce1-4ea6-ab68-afcd6dc2e794', {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			from: 'Acme <onboarding@resend.dev>',
 			subject: 'Updated subject',
-			reply_to: ['reply@example.com'],
+			replyTo: 'reply@example.com',
 			html: '<p>Updated HTML content</p>',
 			text: 'Updated text content',
 			name: 'Updated Broadcast Name',
@@ -113,7 +113,7 @@ describe('updateBroadcast', () => {
 
 		expect(result.success).toBe(true);
 		expect(mockUpdate).toHaveBeenCalledWith('49a3999c-0ce1-4ea6-ab68-afcd6dc2e794', {
-			reply_to: ['reply1@example.com', 'reply2@example.com'],
+			replyTo: 'reply1@example.com, reply2@example.com',
 		});
 	});
 

@@ -3,37 +3,22 @@ import type { ApiResult } from '@/types/index.js';
 import { formatResendError } from '@/utils/resendErrors.js';
 import type { RetrieveBroadcastData } from './schema.js';
 
-// Type based on API response documentation
-interface RetrieveBroadcastResponse {
-	object: 'broadcast';
-	id: string;
-	name: string | null;
-	audience_id: string;
-	from: string;
-	subject: string;
-	reply_to: Array<string> | null;
-	preview_text: string | null;
-	status: 'draft' | 'sent' | 'queued';
-	created_at: string;
-	scheduled_at: string | null;
-	sent_at: string | null;
-}
+type GetBroadcastResponseData = NonNullable<Awaited<ReturnType<Resend['broadcasts']['get']>>['data']>;
 
 /**
  * Retrieves a broadcast using the Resend API
  *
- * @param data - Broadcast data containing broadcastId
- * @param apiKey - Required API key for Resend API
- * @returns Promise<ApiResult<RetrieveBroadcastResponse>> - Standard result format
+ * @param data - Broadcast data for retrieval
+ * @param apiKey - API key for Resend API
+ * @returns Promise<ApiResult<GetBroadcastResponseData>> - Standard result format
  */
 export async function retrieveBroadcast(
 	data: RetrieveBroadcastData,
 	apiKey: string,
-): Promise<ApiResult<RetrieveBroadcastResponse>> {
+): Promise<ApiResult<GetBroadcastResponseData>> {
 	try {
 		const resend = new Resend(apiKey);
-
-		const { data: responseData, error } = await resend.broadcasts.get(data.broadcastId as string);
+		const { data: responseData, error } = await resend.broadcasts.get(data.broadcastId);
 
 		if (error) {
 			return {
@@ -51,7 +36,7 @@ export async function retrieveBroadcast(
 
 		return {
 			success: true,
-			data: responseData as RetrieveBroadcastResponse,
+			data: responseData,
 		};
 	} catch (error) {
 		return {

@@ -44,7 +44,7 @@ describe('createBroadcast', () => {
 			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			from: 'Acme <onboarding@resend.dev>',
 			subject: 'hello world',
-			replyTo: ['reply@example.com'],
+			replyTo: 'reply@example.com',
 			html: '<p>Hello world</p>',
 			text: 'Hello world',
 			name: 'Test Broadcast',
@@ -102,7 +102,7 @@ describe('createBroadcast', () => {
 			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			from: 'Acme <onboarding@resend.dev>',
 			subject: 'hello world',
-			replyTo: ['reply1@example.com', 'reply2@example.com'],
+			replyTo: 'reply1@example.com, reply2@example.com',
 			text: 'Hello world',
 		});
 	});

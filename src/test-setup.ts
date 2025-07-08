@@ -123,4 +123,3 @@ vi.mock('./modules/contacts/delete/action.js', () => ({
 		}),
 	),
 }));
-

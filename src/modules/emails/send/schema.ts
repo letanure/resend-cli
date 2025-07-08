@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { validateScheduledAt } from '@/utils/validations.js';
+import { validatescheduledAt } from '@/utils/validations.js';
 import {
 	createEmailRecipientsSchema,
 	createEmailSenderSchema,
@@ -14,8 +14,8 @@ export const CreateEmailOptionsSchema = z
 		subject: createTextFieldSchema(true),
 		bcc: createEmailRecipientsSchema(50, false),
 		cc: createEmailRecipientsSchema(50, false),
-		scheduled_at: z.string().optional().superRefine(validateScheduledAt),
-		reply_to: createEmailRecipientsSchema(50, false),
+		scheduledAt: z.string().optional().superRefine(validatescheduledAt),
+		replyTo: createEmailRecipientsSchema(50, false),
 		html: createTextFieldSchema(false),
 		text: createTextFieldSchema(false),
 		// react:

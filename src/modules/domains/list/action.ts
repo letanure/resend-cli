@@ -7,12 +7,12 @@ import type { ListDomainsOptionsType } from './schema.js';
 /**
  * Lists all domains using the Resend API
  *
- * @param _options - Empty options object (domains list requires no parameters)
- * @param apiKey - Required API key for Resend API
+ * @param data - Data for listing domains
+ * @param apiKey - API key for Resend API
  * @returns Promise<ApiResult<ListDomainsResponseSuccess>> - Standard result format
  */
 export async function listDomains(
-	_options: ListDomainsOptionsType,
+	data: ListDomainsOptionsType,
 	apiKey: string,
 ): Promise<ApiResult<ListDomainsResponseSuccess>> {
 	try {
@@ -22,14 +22,14 @@ export async function listDomains(
 		if (error) {
 			return {
 				success: false,
-				error: formatResendError(error, 'list domains', {}),
+				error: formatResendError(error, 'list domains', data),
 			};
 		}
 
 		if (!responseData) {
 			return {
 				success: false,
-				error: formatResendError('No data returned from API', 'list domains', {}),
+				error: formatResendError('No data returned from API', 'list domains', data),
 			};
 		}
 
@@ -40,7 +40,7 @@ export async function listDomains(
 	} catch (error) {
 		return {
 			success: false,
-			error: formatResendError(error, 'list domains', {}),
+			error: formatResendError(error, 'list domains', data),
 		};
 	}
 }

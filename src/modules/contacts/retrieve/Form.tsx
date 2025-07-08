@@ -40,7 +40,7 @@ export const Form = ({ onExit }: FormProps) => {
 		try {
 			if (isDryRun) {
 				setShowDryRunData({
-					'Audience ID': data.audience_id,
+					'Audience ID': data.audienceId,
 					'Contact ID': data.id || 'Not specified',
 					Email: data.email || 'Not specified',
 					'API Key': apiKey ? `${apiKey.substring(0, 10)}...` : 'Not set',

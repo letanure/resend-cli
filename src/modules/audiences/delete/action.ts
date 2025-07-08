@@ -7,40 +7,40 @@ import type { DeleteAudienceOptionsType } from './schema.js';
 /**
  * Deletes an audience using the Resend API
  *
- * @param audienceData - Audience data containing id
- * @param apiKey - Required API key for Resend API
+ * @param data - Audience data for deletion
+ * @param apiKey - API key for Resend API
  * @returns Promise<ApiResult<RemoveAudiencesResponseSuccess>> - Standard result format
  */
 export async function deleteAudience(
-	audienceData: DeleteAudienceOptionsType,
+	data: DeleteAudienceOptionsType,
 	apiKey: string,
 ): Promise<ApiResult<RemoveAudiencesResponseSuccess>> {
 	try {
 		const resend = new Resend(apiKey);
-		const { data, error } = await resend.audiences.remove(audienceData.id);
+		const { data: responseData, error } = await resend.audiences.remove(data.id);
 
 		if (error) {
 			return {
 				success: false,
-				error: formatResendError(error, 'delete audience', audienceData),
+				error: formatResendError(error, 'delete audience', data),
 			};
 		}
 
-		if (!data) {
+		if (!responseData) {
 			return {
 				success: false,
-				error: formatResendError('No data returned from API', 'delete audience', audienceData),
+				error: formatResendError('No data returned from API', 'delete audience', data),
 			};
 		}
 
 		return {
 			success: true,
-			data,
+			data: responseData,
 		};
 	} catch (error) {
 		return {
 			success: false,
-			error: formatResendError(error, 'delete audience', audienceData),
+			error: formatResendError(error, 'delete audience', data),
 		};
 	}
 }

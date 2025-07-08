@@ -33,8 +33,8 @@ async function handleListCommand(options: Record<string, unknown>): Promise<void
 			operation: {
 				success: {
 					title: 'Domain Search Completed',
-					message: (data: unknown) => {
-						const domainData = data as { data: Array<unknown> };
+					message: (data: { data: Array<{ id: string; name: string; status: string }> }) => {
+						const domainData = data;
 						if (domainData.data && domainData.data.length === 0) {
 							return 'No domains found (0 results).';
 						}

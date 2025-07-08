@@ -76,7 +76,7 @@ describe('createApiKey', () => {
 		);
 
 		expect(result.success).toBe(false);
-		expect(result.error).toBe('Invalid API key');
+		expect(result.error).toContain('Invalid API key');
 		expect(result.data).toBeUndefined();
 	});
 });

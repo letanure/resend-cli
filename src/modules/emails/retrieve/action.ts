@@ -4,15 +4,17 @@ import type { ApiResult } from '@/types/index.js';
 import { formatResendError } from '@/utils/resendErrors.js';
 
 /**
- * Retrieve a single email by ID from Resend API
- * @param emailId - The unique identifier of the email to retrieve
- * @param apiKey - Resend API key
- * @returns Promise resolving to API result with email data
+ * Retrieves an email using the Resend API
+ *
+ * @param emailId - Email ID for retrieval
+ * @param apiKey - API key for Resend API
+ * @returns Promise<ApiResult<GetEmailResponseSuccess>> - Standard result format
  */
 export async function getEmail(emailId: string, apiKey: string): Promise<ApiResult<GetEmailResponseSuccess>> {
 	try {
 		const resend = new Resend(apiKey);
-		const { data, error } = await resend.emails.get(emailId);
+		const { data: responseData, error } = await resend.emails.get(emailId);
+
 		if (error) {
 			return {
 				success: false,
@@ -20,16 +22,16 @@ export async function getEmail(emailId: string, apiKey: string): Promise<ApiResu
 			};
 		}
 
-		if (!data) {
+		if (!responseData) {
 			return {
 				success: false,
-				error: 'No email data returned from API',
+				error: formatResendError('No data returned from API', 'get email', { emailId }),
 			};
 		}
 
 		return {
 			success: true,
-			data,
+			data: responseData,
 		};
 	} catch (error) {
 		return {

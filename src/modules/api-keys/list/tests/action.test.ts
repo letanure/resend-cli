@@ -43,7 +43,7 @@ describe('listApiKeys', () => {
 		if (Array.isArray(result.data)) {
 			expect(result.data).toHaveLength(2);
 		} else if (result.data && typeof result.data === 'object' && 'data' in result.data) {
-			expect((result.data as { data: Array<unknown> }).data).toHaveLength(2);
+			expect((result.data as { data: Array<{ id: string; name: string; created_at: string }> }).data).toHaveLength(2);
 		}
 		expect(result.error).toBeUndefined();
 	});

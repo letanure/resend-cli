@@ -10,9 +10,9 @@ const booleanTransform = z.union([z.boolean(), z.string()]).transform((val) => {
 
 export const CreateContactOptionsSchema = z.object({
 	email: z.string().email('Invalid email address'),
-	audience_id: z.string().min(1, 'Audience ID is required'),
-	first_name: z.string().optional(),
-	last_name: z.string().optional(),
+	audienceId: z.string().min(1, 'Audience ID is required'),
+	firstName: z.string().optional(),
+	lastName: z.string().optional(),
 	unsubscribed: booleanTransform.default(false),
 });
 

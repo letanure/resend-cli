@@ -7,40 +7,40 @@ import type { RetrieveAudienceOptionsType } from './schema.js';
 /**
  * Retrieves an audience using the Resend API
  *
- * @param audienceData - Audience data containing id
- * @param apiKey - Required API key for Resend API
+ * @param data - Audience data for retrieval
+ * @param apiKey - API key for Resend API
  * @returns Promise<ApiResult<GetAudienceResponseSuccess>> - Standard result format
  */
 export async function retrieveAudience(
-	audienceData: RetrieveAudienceOptionsType,
+	data: RetrieveAudienceOptionsType,
 	apiKey: string,
 ): Promise<ApiResult<GetAudienceResponseSuccess>> {
 	try {
 		const resend = new Resend(apiKey);
-		const { data, error } = await resend.audiences.get(audienceData.id);
+		const { data: responseData, error } = await resend.audiences.get(data.id);
 
 		if (error) {
 			return {
 				success: false,
-				error: formatResendError(error, 'retrieve audience', audienceData),
+				error: formatResendError(error, 'retrieve audience', data),
 			};
 		}
 
-		if (!data) {
+		if (!responseData) {
 			return {
 				success: false,
-				error: formatResendError('No data returned from API', 'retrieve audience', audienceData),
+				error: formatResendError('No data returned from API', 'retrieve audience', data),
 			};
 		}
 
 		return {
 			success: true,
-			data,
+			data: responseData,
 		};
 	} catch (error) {
 		return {
 			success: false,
-			error: formatResendError(error, 'retrieve audience', audienceData),
+			error: formatResendError(error, 'retrieve audience', data),
 		};
 	}
 }

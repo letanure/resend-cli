@@ -5,7 +5,7 @@ import type { UpdateEmailOptionsType } from '../schema.js';
 describe('updateEmail', () => {
 	const testUpdateData: UpdateEmailOptionsType = {
 		id: '4ef9a417-02e9-4d39-ad75-9611e0fcc33c',
-		scheduled_at: new Date(Date.now() + 60000).toISOString(), // 1 minute from now
+		scheduledAt: new Date(Date.now() + 60000).toISOString(), // 1 minute from now
 	};
 
 	it('returns success result structure', async () => {
@@ -20,7 +20,7 @@ describe('updateEmail', () => {
 	it('accepts valid update data', async () => {
 		const updateData: UpdateEmailOptionsType = {
 			id: '12345678-1234-1234-1234-123456789abc',
-			scheduled_at: new Date(Date.now() + 3600000).toISOString(), // 1 hour from now
+			scheduledAt: new Date(Date.now() + 3600000).toISOString(), // 1 hour from now
 		};
 
 		const result = await updateEmail(updateData, 'test-api-key');
@@ -43,7 +43,7 @@ describe('updateEmail', () => {
 		for (const emailId of testIds) {
 			const updateData: UpdateEmailOptionsType = {
 				id: emailId,
-				scheduled_at: new Date(Date.now() + 60000).toISOString(),
+				scheduledAt: new Date(Date.now() + 60000).toISOString(),
 			};
 			const result = await updateEmail(updateData, 'test-api-key');
 			expect(result.success).toBe(true);

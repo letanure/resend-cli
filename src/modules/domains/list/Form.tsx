@@ -13,7 +13,7 @@ export const Form = ({ onExit }: FormProps) => {
 			id: domain.id,
 			name: domain.name,
 			status: domain.status,
-			region: domain.region || 'N/A',
+			region: domain.region || '',
 			created_at: new Date(domain.created_at).toLocaleString(),
 		}));
 	};

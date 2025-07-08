@@ -57,7 +57,7 @@ describe('createDomain', () => {
 		expect(mockCreate).toHaveBeenCalledWith({
 			name: 'example.com',
 			region: 'us-east-1',
-			customReturnPath: 'send',
+			custom_return_path: 'send',
 		});
 	});
 
@@ -134,8 +134,6 @@ describe('createDomain', () => {
 		expect(result.success).toBe(true);
 		expect(mockCreate).toHaveBeenCalledWith({
 			name: 'example.com',
-			region: 'us-east-1',
-			customReturnPath: 'send',
 		});
 	});
 });

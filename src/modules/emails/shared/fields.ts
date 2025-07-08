@@ -51,7 +51,7 @@ export const commonEmailFields: Array<FormField> = [
 		cliShortFlag: 'c',
 	},
 	{
-		name: 'scheduled_at',
+		name: 'scheduledAt',
 		label: 'Schedule',
 		placeholder: 'in 1 hour OR 2024-08-05T11:52:01.858Z',
 		helpText: 'Natural language (in 1 min) or ISO 8601 format',
@@ -59,7 +59,7 @@ export const commonEmailFields: Array<FormField> = [
 		cliShortFlag: 'a',
 	},
 	{
-		name: 'reply_to',
+		name: 'replyTo',
 		label: 'Reply To',
 		placeholder: 'reply@domain.com',
 		helpText: 'Reply-to address(es) - comma separated',
@@ -103,7 +103,7 @@ export const EMAIL_BASIC_FIELDS = ['id', 'from', 'to', 'subject', 'last_event', 
 
 export const EMAIL_CONTENT_FIELDS = ['text', 'html'];
 
-export const EMAIL_METADATA_FIELDS = ['cc', 'bcc', 'reply_to', 'scheduled_at'];
+export const EMAIL_METADATA_FIELDS = ['cc', 'bcc', 'replyTo', 'scheduledAt'];
 
 export const EMAIL_DETAIL_FIELDS = [...EMAIL_BASIC_FIELDS, ...EMAIL_CONTENT_FIELDS];
 

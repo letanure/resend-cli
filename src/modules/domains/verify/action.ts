@@ -1,22 +1,22 @@
 import { Resend } from 'resend';
+
+type VerifyDomainsResponseData = NonNullable<Awaited<ReturnType<Resend['domains']['verify']>>['data']>;
+
 import type { ApiResult } from '@/types/index.js';
 import { formatResendError } from '@/utils/resendErrors.js';
 import type { VerifyDomainData } from './schema.js';
 
-// Type for the verify domain response based on API documentation
-interface VerifyDomainResponse {
-	object: 'domain';
-	id: string;
-}
-
 /**
  * Verifies a domain using the Resend API
  *
- * @param data - Domain data containing domainId
- * @param apiKey - Required API key for Resend API
- * @returns Promise<ApiResult<VerifyDomainResponse>> - Standard result format
+ * @param data - Domain data for verification
+ * @param apiKey - API key for Resend API
+ * @returns Promise<ApiResult<any>> - Standard result format
  */
-export async function verifyDomain(data: VerifyDomainData, apiKey: string): Promise<ApiResult<VerifyDomainResponse>> {
+export async function verifyDomain(
+	data: VerifyDomainData,
+	apiKey: string,
+): Promise<ApiResult<VerifyDomainsResponseData>> {
 	try {
 		const resend = new Resend(apiKey);
 		const { data: responseData, error } = await resend.domains.verify(data.domainId);
@@ -37,7 +37,7 @@ export async function verifyDomain(data: VerifyDomainData, apiKey: string): Prom
 
 		return {
 			success: true,
-			data: responseData as VerifyDomainResponse,
+			data: responseData,
 		};
 	} catch (error) {
 		return {

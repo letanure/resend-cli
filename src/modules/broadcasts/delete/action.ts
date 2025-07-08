@@ -3,29 +3,21 @@ import type { ApiResult } from '@/types/index.js';
 import { formatResendError } from '@/utils/resendErrors.js';
 import type { DeleteBroadcastData } from './schema.js';
 
-interface DeleteBroadcastResponse {
-	object: string;
-	id: string;
-	deleted: boolean;
-}
+type RemoveBroadcastData = NonNullable<Awaited<ReturnType<Resend['broadcasts']['remove']>>['data']>;
 
 /**
  * Deletes a broadcast using the Resend API
- * Note: You can only delete broadcasts that are in the draft status.
- * If you delete a broadcast that has already been scheduled to be sent,
- * we will automatically cancel the scheduled delivery and it won't be sent.
  *
- * @param data - Broadcast data containing broadcastId
- * @param apiKey - Required API key for Resend API
- * @returns Promise<ApiResult<DeleteBroadcastResponse>> - Standard result format
+ * @param data - Broadcast data for deletion
+ * @param apiKey - API key for Resend API
+ * @returns Promise<ApiResult<RemoveBroadcastResponseSuccess>> - Standard result format
  */
 export async function deleteBroadcast(
 	data: DeleteBroadcastData,
 	apiKey: string,
-): Promise<ApiResult<DeleteBroadcastResponse>> {
+): Promise<ApiResult<RemoveBroadcastData>> {
 	try {
 		const resend = new Resend(apiKey);
-
 		const { data: responseData, error } = await resend.broadcasts.remove(data.broadcastId);
 
 		if (error) {
@@ -44,7 +36,7 @@ export async function deleteBroadcast(
 
 		return {
 			success: true,
-			data: responseData as DeleteBroadcastResponse,
+			data: responseData,
 		};
 	} catch (error) {
 		return {

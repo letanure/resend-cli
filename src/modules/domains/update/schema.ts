@@ -3,12 +3,12 @@ import { removeEmptyFields } from '@/utils/zodTransforms.js';
 
 // TLS configuration enum based on API documentation
 const tlsSchema = z
-	.string()
+	.union([
+		z.enum(['opportunistic', 'enforced']),
+		z.literal('').transform(() => undefined),
+		z.undefined()
+	])
 	.optional()
-	.refine((val) => val === undefined || val === '' || val === 'opportunistic' || val === 'enforced', {
-		message: 'TLS must be either "opportunistic" or "enforced"',
-	})
-	.transform((val) => (val === '' || val === undefined ? undefined : val));
 
 export const updateDomainSchema = z
 	.object({

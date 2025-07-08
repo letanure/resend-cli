@@ -3,10 +3,10 @@ import { displayCLIError, displayCLIResults } from '@/utils/cli.js';
 import { logDryRunResults } from '@/utils/dry-run.js';
 import type { OutputFormat } from '@/utils/output.js';
 
-export interface OperationMessages {
+export interface OperationMessages<T = unknown> {
 	success: {
 		title: string;
-		message: (data: unknown) => string;
+		message: (data: T) => string;
 	};
 	error: {
 		title: string;
@@ -18,13 +18,13 @@ export interface OperationMessages {
 	};
 }
 
-export interface DisplayResultsOptions<T> {
-	data: T;
-	result?: ApiResult<unknown>;
+export interface DisplayResultsOptions<TData, TResult = TData> {
+	data: TData;
+	result?: ApiResult<TResult>;
 	fields: Array<CliField>;
 	outputFormat: OutputFormat;
 	apiKey?: string;
-	operation: OperationMessages;
+	operation: OperationMessages<TResult>;
 	isDryRun?: boolean;
 }
 
@@ -32,7 +32,9 @@ export interface DisplayResultsOptions<T> {
  * Generic function to display CLI operation results
  * Handles success, error, and dry-run scenarios consistently
  */
-export function displayResults<T extends Record<string, unknown>>(options: DisplayResultsOptions<T>): void {
+export function displayResults<TData extends Record<string, unknown>, TResult = TData>(
+	options: DisplayResultsOptions<TData, TResult>,
+): void {
 	const { data, result, fields, outputFormat, apiKey, operation, isDryRun = false } = options;
 
 	// Handle dry-run mode

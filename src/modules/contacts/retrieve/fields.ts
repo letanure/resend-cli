@@ -3,7 +3,7 @@ import type { CliField } from '@/types/index.js';
 // Input fields (for CLI)
 export const fields: Array<CliField> = [
 	{
-		name: 'audience_id',
+		name: 'audienceId',
 		label: 'Audience ID',
 		placeholder: 'Enter audience ID (e.g., 78261eea-8f8b-4381-83c6-79fa7120f1cf)',
 		helpText: 'The unique identifier of the audience containing the contact',
@@ -55,7 +55,7 @@ export const displayFields: Array<CliField> = [
 		cliShortFlag: '',
 	},
 	{
-		name: 'first_name',
+		name: 'firstName',
 		label: 'First Name',
 		placeholder: '',
 		helpText: '',
@@ -63,7 +63,7 @@ export const displayFields: Array<CliField> = [
 		cliShortFlag: '',
 	},
 	{
-		name: 'last_name',
+		name: 'lastName',
 		label: 'Last Name',
 		placeholder: '',
 		helpText: '',

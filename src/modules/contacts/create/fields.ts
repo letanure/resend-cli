@@ -11,7 +11,7 @@ export const fields: Array<CliField> = [
 		cliShortFlag: '-e',
 	},
 	{
-		name: 'audience_id',
+		name: 'audienceId',
 		label: 'Audience ID',
 		placeholder: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 		helpText: 'The ID of the audience to add the contact to',
@@ -20,7 +20,7 @@ export const fields: Array<CliField> = [
 		cliShortFlag: '-a',
 	},
 	{
-		name: 'first_name',
+		name: 'firstName',
 		label: 'First Name',
 		placeholder: 'Steve',
 		helpText: 'The first name of the contact (optional)',
@@ -29,7 +29,7 @@ export const fields: Array<CliField> = [
 		cliShortFlag: '-f',
 	},
 	{
-		name: 'last_name',
+		name: 'lastName',
 		label: 'Last Name',
 		placeholder: 'Wozniak',
 		helpText: 'The last name of the contact (optional)',

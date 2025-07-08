@@ -4,7 +4,7 @@ import { DeleteContactOptionsSchema } from '../schema.js';
 describe('DeleteContactOptionsSchema', () => {
 	it('validates correct data with ID', () => {
 		const validData = {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			id: '479e3145-dd38-476b-932c-529ceb705947',
 		};
 
@@ -14,7 +14,7 @@ describe('DeleteContactOptionsSchema', () => {
 
 	it('validates correct data with email', () => {
 		const validData = {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			email: 'contact@example.com',
 		};
 
@@ -24,7 +24,7 @@ describe('DeleteContactOptionsSchema', () => {
 
 	it('validates correct data with both ID and email', () => {
 		const validData = {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			id: '479e3145-dd38-476b-932c-529ceb705947',
 			email: 'contact@example.com',
 		};
@@ -33,7 +33,7 @@ describe('DeleteContactOptionsSchema', () => {
 		expect(result.success).toBe(true);
 	});
 
-	it('rejects data without audience_id', () => {
+	it('rejects data without audienceId', () => {
 		const invalidData = {
 			id: '479e3145-dd38-476b-932c-529ceb705947',
 		};
@@ -44,16 +44,16 @@ describe('DeleteContactOptionsSchema', () => {
 
 	it('rejects data without both ID and email', () => {
 		const invalidData = {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 		};
 
 		const result = DeleteContactOptionsSchema.safeParse(invalidData);
 		expect(result.success).toBe(false);
 	});
 
-	it('rejects empty audience_id', () => {
+	it('rejects empty audienceId', () => {
 		const invalidData = {
-			audience_id: '',
+			audienceId: '',
 			id: '479e3145-dd38-476b-932c-529ceb705947',
 		};
 
@@ -63,7 +63,7 @@ describe('DeleteContactOptionsSchema', () => {
 
 	it('rejects empty ID when provided', () => {
 		const invalidData = {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			id: '',
 		};
 
@@ -73,7 +73,7 @@ describe('DeleteContactOptionsSchema', () => {
 
 	it('rejects empty email when provided', () => {
 		const invalidData = {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			email: '',
 		};
 
@@ -83,7 +83,7 @@ describe('DeleteContactOptionsSchema', () => {
 
 	it('trims whitespace from fields', () => {
 		const dataWithWhitespace = {
-			audience_id: '  78261eea-8f8b-4381-83c6-79fa7120f1cf  ',
+			audienceId: '  78261eea-8f8b-4381-83c6-79fa7120f1cf  ',
 			id: '  479e3145-dd38-476b-932c-529ceb705947  ',
 			email: '  contact@example.com  ',
 		};
@@ -91,15 +91,15 @@ describe('DeleteContactOptionsSchema', () => {
 		const result = DeleteContactOptionsSchema.safeParse(dataWithWhitespace);
 		expect(result.success).toBe(true);
 		if (result.success) {
-			expect(result.data.audience_id).toBe('78261eea-8f8b-4381-83c6-79fa7120f1cf');
+			expect(result.data.audienceId).toBe('78261eea-8f8b-4381-83c6-79fa7120f1cf');
 			expect(result.data.id).toBe('479e3145-dd38-476b-932c-529ceb705947');
 			expect(result.data.email).toBe('contact@example.com');
 		}
 	});
 
-	it('rejects non-UUID audience_id', () => {
+	it('rejects non-UUID audienceId', () => {
 		const invalidData = {
-			audience_id: 'not-a-uuid',
+			audienceId: 'not-a-uuid',
 			id: '479e3145-dd38-476b-932c-529ceb705947',
 		};
 
@@ -109,7 +109,7 @@ describe('DeleteContactOptionsSchema', () => {
 
 	it('rejects non-UUID contact id', () => {
 		const invalidData = {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			id: 'not-a-uuid',
 		};
 
@@ -119,7 +119,7 @@ describe('DeleteContactOptionsSchema', () => {
 
 	it('rejects invalid email format', () => {
 		const invalidData = {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			email: 'not-an-email',
 		};
 
@@ -136,7 +136,7 @@ describe('DeleteContactOptionsSchema', () => {
 
 		for (const audienceId of validUUIDs) {
 			for (const contactId of validUUIDs) {
-				const validData = { audience_id: audienceId, id: contactId };
+				const validData = { audienceId: audienceId, id: contactId };
 				const result = DeleteContactOptionsSchema.safeParse(validData);
 				expect(result.success).toBe(true);
 			}
@@ -148,7 +148,7 @@ describe('DeleteContactOptionsSchema', () => {
 
 		for (const email of validEmails) {
 			const validData = {
-				audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+				audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 				email,
 			};
 			const result = DeleteContactOptionsSchema.safeParse(validData);

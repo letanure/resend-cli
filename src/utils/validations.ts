@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export function validateScheduledAt(val: string | undefined, ctx: z.RefinementCtx) {
+export function validatescheduledAt(val: string | undefined, ctx: z.RefinementCtx) {
 	if (!val) {
 		return;
 	}

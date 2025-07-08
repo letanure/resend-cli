@@ -34,7 +34,9 @@ describe('sendBroadcast', () => {
 		expect(result.success).toBe(true);
 		expect(result.data?.id).toBe('49a3999c-0ce1-4ea6-ab68-afcd6dc2e794');
 		expect(result.error).toBeUndefined();
-		expect(mockSend).toHaveBeenCalledWith('49a3999c-0ce1-4ea6-ab68-afcd6dc2e794', {});
+		expect(mockSend).toHaveBeenCalledWith('49a3999c-0ce1-4ea6-ab68-afcd6dc2e794', {
+			broadcastId: '49a3999c-0ce1-4ea6-ab68-afcd6dc2e794',
+		});
 	});
 
 	it('should send broadcast successfully with scheduledAt parameter', async () => {
@@ -57,6 +59,7 @@ describe('sendBroadcast', () => {
 		expect(result.data?.id).toBe('49a3999c-0ce1-4ea6-ab68-afcd6dc2e794');
 		expect(result.error).toBeUndefined();
 		expect(mockSend).toHaveBeenCalledWith('49a3999c-0ce1-4ea6-ab68-afcd6dc2e794', {
+			broadcastId: '49a3999c-0ce1-4ea6-ab68-afcd6dc2e794',
 			scheduledAt: 'in 1 min',
 		});
 	});
@@ -81,6 +84,7 @@ describe('sendBroadcast', () => {
 		expect(result.data?.id).toBe('49a3999c-0ce1-4ea6-ab68-afcd6dc2e794');
 		expect(result.error).toBeUndefined();
 		expect(mockSend).toHaveBeenCalledWith('49a3999c-0ce1-4ea6-ab68-afcd6dc2e794', {
+			broadcastId: '49a3999c-0ce1-4ea6-ab68-afcd6dc2e794',
 			scheduledAt: '2024-08-05T11:52:01.858Z',
 		});
 	});

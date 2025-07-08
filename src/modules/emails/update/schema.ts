@@ -5,7 +5,7 @@ export const UpdateEmailOptionsSchema = z.object({
 		.string()
 		.length(36, 'Email ID must be exactly 36 characters')
 		.regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i, 'Email ID must be a valid UUID format'),
-	scheduled_at: z
+	scheduledAt: z
 		.string()
 		.datetime({ message: 'Scheduled date must be in ISO 8601 format (e.g: 2024-08-05T11:52:01.858Z)' })
 		.refine(

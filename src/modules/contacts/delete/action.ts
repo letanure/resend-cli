@@ -7,44 +7,40 @@ import type { DeleteContactOptionsType } from './schema.js';
 /**
  * Deletes a contact using the Resend API
  *
- * @param contactData - Contact data containing audience_id and either id or email
- * @param apiKey - Required API key for Resend API
+ * @param data - Contact data for deletion
+ * @param apiKey - API key for Resend API
  * @returns Promise<ApiResult<RemoveContactsResponseSuccess>> - Standard result format
  */
 export async function deleteContact(
-	contactData: DeleteContactOptionsType,
+	data: DeleteContactOptionsType,
 	apiKey: string,
 ): Promise<ApiResult<RemoveContactsResponseSuccess>> {
 	try {
 		const resend = new Resend(apiKey);
-		const { data, error } = await resend.contacts.remove({
-			audienceId: contactData.audience_id,
-			id: contactData.id,
-			email: contactData.email,
-		});
+		const { data: responseData, error } = await resend.contacts.remove(data);
 
 		if (error) {
 			return {
 				success: false,
-				error: formatResendError(error, 'delete contact', contactData),
+				error: formatResendError(error, 'delete contact', data),
 			};
 		}
 
-		if (!data) {
+		if (!responseData) {
 			return {
 				success: false,
-				error: formatResendError('No data returned from API', 'delete contact', contactData),
+				error: formatResendError('No data returned from API', 'delete contact', data),
 			};
 		}
 
 		return {
 			success: true,
-			data,
+			data: responseData,
 		};
 	} catch (error) {
 		return {
 			success: false,
-			error: formatResendError(error, 'delete contact', contactData),
+			error: formatResendError(error, 'delete contact', data),
 		};
 	}
 }

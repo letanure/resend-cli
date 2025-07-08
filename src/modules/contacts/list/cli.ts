@@ -33,8 +33,8 @@ async function handleListCommand(options: Record<string, unknown>): Promise<void
 			operation: {
 				success: {
 					title: 'Contact Search Completed',
-					message: (data: unknown) => {
-						const contactData = data as { data: Array<unknown> };
+					message: (data: { data: Array<{ id: string; email: string; first_name?: string; last_name?: string }> }) => {
+						const contactData = data;
 						if (contactData.data && contactData.data.length === 0) {
 							return 'No contacts found in this audience (0 results).';
 						}

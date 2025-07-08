@@ -1,40 +1,46 @@
+import type { CreateApiKeyOptions, CreateApiKeyResponseSuccess } from 'resend';
 import { Resend } from 'resend';
+import type { ApiResult } from '@/types/index.js';
+import { formatResendError } from '@/utils/resendErrors.js';
 import type { CreateApiKeyOptionsType } from './schema.js';
 
+/**
+ * Creates an API key using the Resend API
+ *
+ * @param data - API key data for creation
+ * @param apiKey - API key for Resend API
+ * @returns Promise<ApiResult<CreateApiKeyResponseSuccess>> - Standard result format
+ */
 export async function createApiKey(
 	data: CreateApiKeyOptionsType,
 	apiKey: string,
-): Promise<{ success: boolean; data?: unknown; error?: string }> {
+): Promise<ApiResult<CreateApiKeyResponseSuccess>> {
 	try {
 		const resend = new Resend(apiKey);
+		const { data: responseData, error } = await resend.apiKeys.create(data as CreateApiKeyOptions);
 
-		const apiKeyData: { name: string; permission: 'full_access' | 'sending_access'; domain_id?: string } = {
-			name: data.name,
-			permission: data.permission,
-		};
-
-		// Only include domain_id if it's provided and permission is sending_access
-		if (data.domain_id && data.permission === 'sending_access') {
-			apiKeyData.domain_id = data.domain_id;
-		}
-
-		const response = await resend.apiKeys.create(apiKeyData);
-
-		if (response.error) {
+		if (error) {
 			return {
 				success: false,
-				error: response.error.message || 'Failed to create API key',
+				error: formatResendError(error, 'create API key', data),
+			};
+		}
+
+		if (!responseData) {
+			return {
+				success: false,
+				error: formatResendError('No data returned from API', 'create API key', data),
 			};
 		}
 
 		return {
 			success: true,
-			data: response.data,
+			data: responseData,
 		};
 	} catch (error) {
 		return {
 			success: false,
-			error: error instanceof Error ? error.message : 'Unknown error occurred',
+			error: formatResendError(error, 'create API key', data),
 		};
 	}
 }

@@ -6,12 +6,12 @@ import { formatResendError } from '@/utils/resendErrors.js';
 /**
  * Lists audiences using the Resend API
  *
- * @param data - Empty object (no parameters needed for listing)
- * @param apiKey - API key for Resend API (assumed to be valid)
+ * @param data - Data for listing audiences
+ * @param apiKey - API key for Resend API
  * @returns Promise<ApiResult<ListAudiencesResponseSuccess>> - Standard result format
  */
 export async function listAudiences(
-	_data: Record<string, unknown>,
+	data: Record<string, unknown>,
 	apiKey: string,
 ): Promise<ApiResult<ListAudiencesResponseSuccess>> {
 	try {
@@ -21,14 +21,14 @@ export async function listAudiences(
 		if (error) {
 			return {
 				success: false,
-				error: formatResendError(error, 'list audiences', {}),
+				error: formatResendError(error, 'list audiences', data),
 			};
 		}
 
 		if (!responseData) {
 			return {
 				success: false,
-				error: formatResendError('No data returned from API', 'list audiences', {}),
+				error: formatResendError('No data returned from API', 'list audiences', data),
 			};
 		}
 
@@ -39,7 +39,7 @@ export async function listAudiences(
 	} catch (error) {
 		return {
 			success: false,
-			error: formatResendError(error, 'list audiences', {}),
+			error: formatResendError(error, 'list audiences', data),
 		};
 	}
 }

@@ -2,48 +2,48 @@ import { describe, expect, it } from 'vitest';
 import { ListContactsOptionsSchema } from '../schema.js';
 
 describe('Contact List Schema', () => {
-	it('should validate contact list data with valid audience_id', () => {
+	it('should validate contact list data with valid audienceId', () => {
 		const validData = {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 		};
 
 		const result = ListContactsOptionsSchema.parse(validData);
 		expect(result).toEqual(validData);
 	});
 
-	it('should reject data without audience_id', () => {
+	it('should reject data without audienceId', () => {
 		const invalidData = {};
 
 		expect(() => ListContactsOptionsSchema.parse(invalidData)).toThrow('Required');
 	});
 
-	it('should reject empty string for audience_id', () => {
+	it('should reject empty string for audienceId', () => {
 		const invalidData = {
-			audience_id: '',
+			audienceId: '',
 		};
 
 		expect(() => ListContactsOptionsSchema.parse(invalidData)).toThrow('Audience ID is required');
 	});
 
-	it('should reject invalid UUID format for audience_id', () => {
+	it('should reject invalid UUID format for audienceId', () => {
 		const invalidData = {
-			audience_id: 'invalid-uuid',
+			audienceId: 'invalid-uuid',
 		};
 
 		expect(() => ListContactsOptionsSchema.parse(invalidData)).toThrow('Audience ID must be a valid UUID');
 	});
 
-	it('should reject null value for audience_id', () => {
+	it('should reject null value for audienceId', () => {
 		const invalidData = {
-			audience_id: null,
+			audienceId: null,
 		};
 
 		expect(() => ListContactsOptionsSchema.parse(invalidData)).toThrow();
 	});
 
-	it('should reject undefined value for audience_id', () => {
+	it('should reject undefined value for audienceId', () => {
 		const invalidData = {
-			audience_id: undefined,
+			audienceId: undefined,
 		};
 
 		expect(() => ListContactsOptionsSchema.parse(invalidData)).toThrow();
@@ -58,17 +58,17 @@ describe('Contact List Schema', () => {
 
 		for (const uuid of validUUIDs) {
 			const validData = {
-				audience_id: uuid,
+				audienceId: uuid,
 			};
 
 			const result = ListContactsOptionsSchema.parse(validData);
-			expect(result.audience_id).toBe(uuid);
+			expect(result.audienceId).toBe(uuid);
 		}
 	});
 
-	it('should reject non-string values for audience_id', () => {
+	it('should reject non-string values for audienceId', () => {
 		const invalidData = {
-			audience_id: 123,
+			audienceId: 123,
 		};
 
 		expect(() => ListContactsOptionsSchema.parse(invalidData)).toThrow();
@@ -76,13 +76,13 @@ describe('Contact List Schema', () => {
 
 	it('should ignore extra properties', () => {
 		const dataWithExtraProps = {
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			extraProp: 'should be ignored',
 		};
 
 		const result = ListContactsOptionsSchema.parse(dataWithExtraProps);
 		expect(result).toEqual({
-			audience_id: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 		});
 		expect(result).not.toHaveProperty('extraProp');
 	});

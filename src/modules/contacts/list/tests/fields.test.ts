@@ -6,10 +6,10 @@ describe('Contact List Fields', () => {
 		expect(fields).toHaveLength(1);
 	});
 
-	it('should have audience_id field as the only input field', () => {
+	it('should have audienceId field as the only input field', () => {
 		const audienceIdField = fields[0];
 		expect(audienceIdField).toBeDefined();
-		expect(audienceIdField?.name).toBe('audience_id');
+		expect(audienceIdField?.name).toBe('audienceId');
 		expect(audienceIdField?.cliFlag).toBe('audience-id');
 		expect(audienceIdField?.cliShortFlag).toBe('a');
 	});
@@ -42,7 +42,7 @@ describe('Contact List Fields', () => {
 	});
 
 	it('should have all expected display fields', () => {
-		const expectedFieldNames = ['id', 'email', 'first_name', 'last_name', 'created_at', 'subscribed'];
+		const expectedFieldNames = ['id', 'email', 'firstName', 'lastName', 'created_at', 'subscribed'];
 
 		for (const expectedName of expectedFieldNames) {
 			const field = displayFields.find((f) => f.name === expectedName);

@@ -14,10 +14,10 @@ describe('Contact Create Fields', () => {
 		expect(emailField?.cliShortFlag).toBe('-e');
 	});
 
-	it('should have audience_id field as second field', () => {
+	it('should have audienceId field as second field', () => {
 		const audienceIdField = fields[1];
 		expect(audienceIdField).toBeDefined();
-		expect(audienceIdField?.name).toBe('audience_id');
+		expect(audienceIdField?.name).toBe('audienceId');
 		expect(audienceIdField?.cliFlag).toBe('--audience-id');
 		expect(audienceIdField?.cliShortFlag).toBe('-a');
 	});

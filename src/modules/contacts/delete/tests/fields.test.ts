@@ -7,8 +7,8 @@ describe('Delete Contact Fields', () => {
 		expect(Array.isArray(fields)).toBe(true);
 	});
 
-	it('includes audience_id field', () => {
-		const audienceIdField = fields.find((field) => field.name === 'audience_id');
+	it('includes audienceId field', () => {
+		const audienceIdField = fields.find((field) => field.name === 'audienceId');
 		expect(audienceIdField).toBeDefined();
 		expect(audienceIdField?.cliFlag).toBe('audience-id');
 		expect(audienceIdField?.cliShortFlag).toBe('a');
@@ -42,7 +42,7 @@ describe('Delete Contact Fields', () => {
 
 	it('fields match expected structure', () => {
 		const fieldNames = fields.map((field) => field.name);
-		expect(fieldNames).toEqual(['audience_id', 'id', 'email']);
+		expect(fieldNames).toEqual(['audienceId', 'id', 'email']);
 	});
 
 	it('all fields have proper labels and help text', () => {
@@ -53,8 +53,8 @@ describe('Delete Contact Fields', () => {
 		}
 	});
 
-	it('audience_id field has correct configuration', () => {
-		const audienceIdField = fields.find((field) => field.name === 'audience_id');
+	it('audienceId field has correct configuration', () => {
+		const audienceIdField = fields.find((field) => field.name === 'audienceId');
 		expect(audienceIdField?.label).toBe('Audience ID');
 		expect(audienceIdField?.helpText).toBe('The unique identifier of the audience containing the contact');
 	});

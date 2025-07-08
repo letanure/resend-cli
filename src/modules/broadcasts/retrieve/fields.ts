@@ -40,7 +40,7 @@ export const displayFields: Array<CliField> = [
 		cliShortFlag: '-n',
 	},
 	{
-		name: 'audience_id',
+		name: 'audienceId',
 		label: 'Audience ID',
 		placeholder: '',
 		helpText: '',

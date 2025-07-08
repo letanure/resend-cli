@@ -3,7 +3,7 @@ import { createTextFieldSchema } from '@/utils/zodTransforms.js';
 
 export const RetrieveContactOptionsSchema = z
 	.object({
-		audience_id: createTextFieldSchema(true),
+		audienceId: createTextFieldSchema(true),
 		id: createTextFieldSchema(false),
 		email: z.string().email('Invalid email address').optional(),
 	})

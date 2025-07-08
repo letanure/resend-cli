@@ -16,9 +16,9 @@ interface RetrieveBroadcastResponse {
 	object: 'broadcast';
 	id: string;
 	name: string | null;
-	audience_id: string;
-	from: string;
-	subject: string;
+	audience_id: string | null;
+	from: string | null;
+	subject: string | null;
 	reply_to: Array<string> | null;
 	preview_text: string | null;
 	status: 'draft' | 'sent' | 'queued';
@@ -116,7 +116,7 @@ const BroadcastRetrieveDisplay = ({ result, onExit }: BroadcastRetrieveDisplayPr
 
 	const formatDate = (dateString: string | null) => {
 		if (!dateString) {
-			return 'N/A';
+			return '';
 		}
 		return new Date(dateString).toLocaleString();
 	};
@@ -144,7 +144,7 @@ const BroadcastRetrieveDisplay = ({ result, onExit }: BroadcastRetrieveDisplayPr
 								Name:
 							</Text>
 						</Box>
-						<Text>{result.name || 'N/A'}</Text>
+						<Text>{result.name || ''}</Text>
 					</Box>
 
 					<Box>
@@ -162,7 +162,7 @@ const BroadcastRetrieveDisplay = ({ result, onExit }: BroadcastRetrieveDisplayPr
 								Audience ID:
 							</Text>
 						</Box>
-						<Text color="gray">{result.audience_id}</Text>
+						<Text color="gray">{result.audience_id || ''}</Text>
 					</Box>
 
 					<Box>
@@ -171,7 +171,7 @@ const BroadcastRetrieveDisplay = ({ result, onExit }: BroadcastRetrieveDisplayPr
 								From:
 							</Text>
 						</Box>
-						<Text>{result.from}</Text>
+						<Text>{result.from || ''}</Text>
 					</Box>
 
 					<Box>
@@ -180,7 +180,7 @@ const BroadcastRetrieveDisplay = ({ result, onExit }: BroadcastRetrieveDisplayPr
 								Subject:
 							</Text>
 						</Box>
-						<Text>{result.subject}</Text>
+						<Text>{result.subject || ''}</Text>
 					</Box>
 
 					{result.reply_to && result.reply_to.length > 0 && (

@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const DeleteContactOptionsSchema = z
 	.object({
-		audience_id: z
+		audienceId: z
 			.string()
 			.trim()
 			.min(1, { message: 'Audience ID is required' })

@@ -40,8 +40,8 @@ async function handleListCommand(options: Record<string, unknown>, command: Comm
 			operation: {
 				success: {
 					title: 'Broadcasts Retrieved Successfully',
-					message: (data: unknown) => {
-						const broadcasts = data as { object: string; data: Array<unknown> };
+					message: (data: { object: string; data: Array<{ id: string; name: string; status: string }> }) => {
+						const broadcasts = data;
 						const count = broadcasts.data.length;
 						return `Retrieved ${count} broadcast${count === 1 ? '' : 's'} successfully.`;
 					},

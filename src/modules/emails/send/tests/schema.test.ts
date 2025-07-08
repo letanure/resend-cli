@@ -84,7 +84,7 @@ describe('Email Schema Validation', () => {
 			html: '<p>Hello</p>',
 			bcc: 'hidden@example.com',
 			cc: 'cc@example.com',
-			reply_to: 'reply@example.com',
+			replyTo: 'reply@example.com',
 		};
 
 		const result = CreateEmailOptionsSchema.safeParse(withOptionalFields);
@@ -97,7 +97,7 @@ describe('Email Schema Validation', () => {
 			to: 'user@example.com',
 			subject: 'Test',
 			text: 'Hello',
-			scheduled_at: '2025-12-25T10:00:00Z',
+			scheduledAt: '2025-12-25T10:00:00Z',
 		};
 
 		const result = CreateEmailOptionsSchema.safeParse(withScheduledDate);
@@ -110,7 +110,7 @@ describe('Email Schema Validation', () => {
 			to: 'user@example.com',
 			subject: 'Test',
 			text: 'Hello',
-			scheduled_at: 'in 1 hour',
+			scheduledAt: 'in 1 hour',
 		};
 
 		const result = CreateEmailOptionsSchema.safeParse(withNaturalDate);

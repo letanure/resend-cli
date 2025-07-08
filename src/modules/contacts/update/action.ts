@@ -1,61 +1,23 @@
+import type { UpdateContactResponseSuccess } from 'resend';
 import { Resend } from 'resend';
 import type { ApiResult } from '@/types/index.js';
 import { formatResendError } from '@/utils/resendErrors.js';
 import type { UpdateContactData } from './schema.js';
 
-interface UpdateContactPayload {
-	id?: string;
-	email?: string;
-	audienceId: string;
-	firstName?: string;
-	lastName?: string;
-	unsubscribed?: boolean;
-}
-
-interface UpdateContactResponse {
-	object: string;
-	id: string;
-}
-
 /**
  * Updates a contact using the Resend API
  *
- * @param data - Contact data containing audienceId, id/email, and update parameters
- * @param apiKey - Required API key for Resend API
- * @returns Promise<ApiResult<UpdateContactResponse>> - Standard result format
+ * @param data - Contact data for update
+ * @param apiKey - API key for Resend API
+ * @returns Promise<ApiResult<UpdateContactResponseSuccess>> - Standard result format
  */
 export async function updateContact(
 	data: UpdateContactData,
 	apiKey: string,
-): Promise<ApiResult<UpdateContactResponse>> {
+): Promise<ApiResult<UpdateContactResponseSuccess>> {
 	try {
 		const resend = new Resend(apiKey);
-
-		// Prepare the update payload according to Resend API format
-		const updatePayload: UpdateContactPayload = {
-			audienceId: data.audienceId,
-		};
-
-		// Add identifier (id or email)
-		if (data.id !== undefined) {
-			updatePayload.id = data.id;
-		}
-		if (data.email !== undefined) {
-			updatePayload.email = data.email;
-		}
-
-		// Add optional parameters if provided
-		if (data.firstName !== undefined) {
-			updatePayload.firstName = data.firstName;
-		}
-		if (data.lastName !== undefined) {
-			updatePayload.lastName = data.lastName;
-		}
-		if (data.unsubscribed !== undefined) {
-			updatePayload.unsubscribed = data.unsubscribed;
-		}
-
-		const { data: responseData, error } = await resend.contacts.update(updatePayload);
+		const { data: responseData, error } = await resend.contacts.update(data);
 
 		if (error) {
 			return {
@@ -73,7 +35,7 @@ export async function updateContact(
 
 		return {
 			success: true,
-			data: responseData as UpdateContactResponse,
+			data: responseData,
 		};
 	} catch (error) {
 		return {

@@ -12,7 +12,7 @@ import { formatResendError } from '@/utils/resendErrors.js';
 export async function listApiKeys(apiKey: string): Promise<ApiResult<ListApiKeysResponseSuccess>> {
 	try {
 		const resend = new Resend(apiKey);
-		const { data, error } = await resend.apiKeys.list();
+		const { data: responseData, error } = await resend.apiKeys.list();
 
 		if (error) {
 			return {
@@ -21,7 +21,7 @@ export async function listApiKeys(apiKey: string): Promise<ApiResult<ListApiKeys
 			};
 		}
 
-		if (!data) {
+		if (!responseData) {
 			return {
 				success: false,
 				error: formatResendError('No data returned from API', 'list API keys', {}),
@@ -30,7 +30,7 @@ export async function listApiKeys(apiKey: string): Promise<ApiResult<ListApiKeys
 
 		return {
 			success: true,
-			data,
+			data: responseData,
 		};
 	} catch (error) {
 		return {

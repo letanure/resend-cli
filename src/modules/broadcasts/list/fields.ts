@@ -16,7 +16,7 @@ export const displayFields: Array<CliField> = [
 		cliShortFlag: '-i',
 	},
 	{
-		name: 'audience_id',
+		name: 'audienceId',
 		label: 'Audience ID',
 		placeholder: '',
 		helpText: '',
@@ -40,7 +40,7 @@ export const displayFields: Array<CliField> = [
 		cliShortFlag: '-c',
 	},
 	{
-		name: 'scheduled_at',
+		name: 'scheduledAt',
 		label: 'Scheduled At',
 		placeholder: '',
 		helpText: '',
