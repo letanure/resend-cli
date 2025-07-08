@@ -188,6 +188,7 @@ Options:
 
 Commands:
   create|c [options]  Create a new broadcast to send to your audience
+  delete|d [options]  Delete a broadcast (only draft or scheduled broadcasts)
   retrieve [options]  Retrieve a broadcast by ID from Resend API
   send|s [options]    Send a broadcast to your audience
   update|u [options]  Update a broadcast to send to your audience
