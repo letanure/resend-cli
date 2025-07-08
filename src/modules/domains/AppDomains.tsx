@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { CreateDomainForm } from './create/Form.js';
-import { DomainDeleteForm } from './delete/Form.js';
 import { DomainsMenu, DomainsMenuState, type DomainsMenuState as DomainsMenuStateType } from './DomainsMenu.js';
 import { DomainUpdateForm } from './DomainUpdateForm.js';
+import { DomainDeleteForm } from './delete/Form.js';
 import { DomainListForm } from './list/Form.js';
 import { DomainRetrieveForm } from './retrieve/Form.js';
 import { DomainVerifyForm } from './verify/Form.js';

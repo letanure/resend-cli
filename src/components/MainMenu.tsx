@@ -16,16 +16,6 @@ const MENU_ITEMS: Array<MenuItem<Module>> = [
 		description: 'Send, retrieve, update, and cancel emails',
 	},
 	{
-		id: Module.domains,
-		label: 'Domains',
-		description: 'Create, verify, update, list, and delete domains',
-	},
-	{
-		id: Module.apiKeys,
-		label: 'API Keys',
-		description: 'Create, list, and delete API keys',
-	},
-	{
 		id: Module.broadcasts,
 		label: 'Broadcasts',
 		description: 'Create, list, and delete broadcasts',
@@ -34,6 +24,16 @@ const MENU_ITEMS: Array<MenuItem<Module>> = [
 		id: Module.audiences,
 		label: 'Audiences',
 		description: 'Create, list, and delete audiences',
+	},
+	{
+		id: Module.domains,
+		label: 'Domains',
+		description: 'Create, verify, update, list, and delete domains',
+	},
+	{
+		id: Module.apiKeys,
+		label: 'API Keys',
+		description: 'Create, list, and delete API keys',
 	},
 	{
 		id: Module.contacts,
