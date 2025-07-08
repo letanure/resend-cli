@@ -124,15 +124,3 @@ vi.mock('./modules/contacts/delete/action.js', () => ({
 	),
 }));
 
-// Mock the domain update action
-vi.mock('./modules/domains/update/action.js', () => ({
-	updateDomain: vi.fn(() =>
-		Promise.resolve({
-			success: true,
-			data: {
-				object: 'domain',
-				id: 'test-domain-id',
-			},
-		}),
-	),
-}));
