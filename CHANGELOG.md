@@ -1,3 +1,10 @@
+# [0.15.0](https://github.com/letanure/resend-cli/compare/v0.14.0...v0.15.0) (2025-07-08)
+
+
+### Features
+
+* add commands for managing API keys, audiences, and contacts in README ([c41a579](https://github.com/letanure/resend-cli/commit/c41a579520a82877a6f4cbbf036a1505a8a81114))
+
 # [0.14.0](https://github.com/letanure/resend-cli/compare/v0.13.0...v0.14.0) (2025-07-08)
 
 
