@@ -38,7 +38,7 @@ exports[`Email Send Form > matches snapshot in dry-run mode 1`] = `
 
 
  Tab/↓ Next field · Shift+Tab/↑ Previous field
- ←/→/Space Toggle radio · Enter Submit · Esc Cancel
+ ←/→/Space Toggle select · Enter Submit · Esc Cancel
 
 "
 `;
@@ -77,7 +77,7 @@ exports[`Email Send Form > matches snapshot in normal mode 1`] = `
 
 
  Tab/↓ Next field · Shift+Tab/↑ Previous field
- ←/→/Space Toggle radio · Enter Submit · Esc Cancel
+ ←/→/Space Toggle select · Enter Submit · Esc Cancel
 
 "
 `;

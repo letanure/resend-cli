@@ -15,11 +15,11 @@ describe('SimpleForm', () => {
 		},
 	];
 
-	const radioFields: Array<FormField> = [
+	const selectFields: Array<FormField> = [
 		{
 			name: 'subscribed',
 			label: 'Subscription',
-			type: 'radio',
+			type: 'select',
 			options: [
 				{ value: true, label: 'Yes', color: 'green' },
 				{ value: false, label: 'No', color: 'red' },
@@ -27,7 +27,7 @@ describe('SimpleForm', () => {
 		},
 	];
 
-	const mixedFields: Array<FormField> = [...textFields, ...radioFields];
+	const mixedFields: Array<FormField> = [...textFields, ...selectFields];
 
 	const mockOnSubmit = vi.fn();
 	const mockOnCancel = vi.fn();
@@ -40,8 +40,8 @@ describe('SimpleForm', () => {
 		expect(lastFrame()).toContain('Enter');
 	});
 
-	it('should render radio fields', () => {
-		const { lastFrame } = render(<SimpleForm fields={radioFields} onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
+	it('should render select fields', () => {
+		const { lastFrame } = render(<SimpleForm fields={selectFields} onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
 		expect(lastFrame()).toContain('Subscription');
 		expect(lastFrame()).toContain('[✓] Yes');
@@ -71,8 +71,8 @@ describe('SimpleForm', () => {
 		expect(lastFrame()).toContain('Subscription');
 	});
 
-	it('should handle radio field default values', () => {
-		const { lastFrame } = render(<SimpleForm fields={radioFields} onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
+	it('should handle select field default values', () => {
+		const { lastFrame } = render(<SimpleForm fields={selectFields} onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
 		// First option should be selected by default
 		expect(lastFrame()).toContain('[✓] Yes');

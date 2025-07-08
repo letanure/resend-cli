@@ -10,6 +10,7 @@ interface TextInputProps {
 	isFocused?: boolean;
 	error?: string;
 	labelWidth?: number;
+	disabled?: boolean;
 }
 
 export const TextInput = ({
@@ -21,11 +22,12 @@ export const TextInput = ({
 	isFocused = false,
 	error,
 	labelWidth = 22,
+	disabled = false,
 }: TextInputProps) => {
 	const [cursorPosition, setCursorPosition] = useState(value.length);
 
 	useInput((input, key) => {
-		if (!isFocused) {
+		if (!isFocused || disabled) {
 			return;
 		}
 
@@ -47,16 +49,16 @@ export const TextInput = ({
 	});
 
 	const displayValue = value || placeholder;
-	const showCursor = isFocused;
+	const showCursor = isFocused && !disabled;
 
-	const borderColor = error ? 'red' : isFocused ? 'cyan' : 'gray';
-	const dimBorder = !!(error && !isFocused);
+	const borderColor = disabled ? 'gray' : error ? 'red' : isFocused ? 'cyan' : 'gray';
+	const dimBorder = disabled || !!(error && !isFocused);
 
 	return (
 		<Box flexDirection="column">
 			<Box flexDirection="row">
 				<Box width={labelWidth} justifyContent="flex-start" alignItems="center">
-					<Text bold={true} color={isFocused ? 'cyan' : 'white'}>
+					<Text bold={true} color={disabled ? 'gray' : isFocused ? 'cyan' : 'white'} dimColor={disabled}>
 						{label}
 					</Text>
 				</Box>
@@ -74,7 +76,7 @@ export const TextInput = ({
 								}
 								if (i < displayValue.length) {
 									return (
-										<Text key={uniqueKey} color={value ? 'white' : 'gray'}>
+										<Text key={uniqueKey} color={value ? (disabled ? 'gray' : 'white') : 'gray'} dimColor={disabled}>
 											{displayValue[i]}
 										</Text>
 									);

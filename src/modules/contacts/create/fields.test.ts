@@ -26,26 +26,24 @@ describe('Contact Create Fields', () => {
 		const unsubscribedField = fields[4];
 		expect(unsubscribedField).toBeDefined();
 		expect(unsubscribedField?.name).toBe('unsubscribed');
-		expect(unsubscribedField?.type).toBe('radio');
+		expect(unsubscribedField?.type).toBe('select');
 		expect(unsubscribedField?.options).toBeDefined();
 		expect(unsubscribedField?.options).toHaveLength(2);
 		expect(unsubscribedField?.cliFlag).toBe('--unsubscribed');
 		expect(unsubscribedField?.cliShortFlag).toBe('-u');
 	});
 
-	it('should have radio field options configured correctly', () => {
+	it('should have select field options configured correctly', () => {
 		const unsubscribedField = fields[4];
 		expect(unsubscribedField?.options?.[0]).toEqual({
 			value: false,
 			label: 'Subscribed',
 			color: 'green',
-			icon: '✓',
 		});
 		expect(unsubscribedField?.options?.[1]).toEqual({
 			value: true,
 			label: 'Unsubscribed',
 			color: 'red',
-			icon: '✗',
 		});
 	});
 

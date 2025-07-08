@@ -139,7 +139,7 @@ Options:
   -h, --help      display help for command
 
 Commands:
-  apiKeys         API key operations
+  apiKeys         Manage API keys
   audiences       Audience operations
   broadcasts      Broadcast operations
   contacts        Manage contacts in your audiences
@@ -390,11 +390,11 @@ Available for all commands:
 
 ## apiKeys
 
-API key operations
+Manage API keys
 
-### apiKeys list
+### apiKeys create
 
-List all API keys
+[options]  Create a new API key in Resend
 
 
 ## audiences
@@ -515,6 +515,6 @@ See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development setup.
 
 ---
 
-*Documentation last updated: 2025-07-07*
+*Documentation last updated: 2025-07-08*
 
 *CLI help content is auto-generated from actual CLI output to ensure accuracy.*

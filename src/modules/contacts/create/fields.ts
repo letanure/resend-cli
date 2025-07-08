@@ -42,19 +42,18 @@ export const fields: Array<CliField> = [
 		label: 'Subscription Status',
 		placeholder: 'false',
 		helpText: 'Whether the contact is unsubscribed (true/false)',
-		type: 'radio',
+		type: 'select',
+		display: 'inline',
 		options: [
 			{
 				value: false,
 				label: 'Subscribed',
 				color: 'green',
-				icon: '✓',
 			},
 			{
 				value: true,
 				label: 'Unsubscribed',
 				color: 'red',
-				icon: '✗',
 			},
 		],
 		cliFlag: '--unsubscribed',

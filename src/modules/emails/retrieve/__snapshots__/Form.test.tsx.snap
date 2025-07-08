@@ -10,7 +10,7 @@ exports[`EmailRetrieveForm > should match snapshot 1`] = `
                        The unique identifier of the email
 
  Tab/↓ Next field · Shift+Tab/↑ Previous field
- ←/→/Space Toggle radio · Enter Submit · Esc Cancel
+ ←/→/Space Toggle select · Enter Submit · Esc Cancel
 
 "
 `;

@@ -3,7 +3,7 @@ import { Box, Text, useInput } from 'ink';
 import { useState } from 'react';
 import type { z } from 'zod';
 import type { FormField } from '@/types/index.js';
-import { RadioField } from './RadioField.js';
+import { SelectField } from './SelectField.js';
 import { TextInput } from './TextInput.js';
 
 interface SimpleFormProps<T = Record<string, unknown>> {
@@ -22,7 +22,7 @@ export const SimpleForm = <T = Record<string, unknown>>({
 	const [formData, setFormData] = useState<Record<string, unknown>>(() => {
 		const initial: Record<string, unknown> = {};
 		for (const field of fields) {
-			if (field.type === 'radio' && field.options) {
+			if (field.type === 'select' && field.options) {
 				// Set default value to first option's value
 				initial[field.name] = field.options[0]?.value || false;
 			} else {
@@ -37,7 +37,7 @@ export const SimpleForm = <T = Record<string, unknown>>({
 	const [formError, setFormError] = useState<string>('');
 	useInput((input, key) => {
 		const currentFieldData = fields[currentField];
-		const isRadioField = currentFieldData?.type === 'radio';
+		const isSelectField = currentFieldData?.type === 'select';
 
 		const keyHandlers: Array<{ condition: () => boolean; action: () => void }> = [
 			{ condition: () => key.escape, action: onCancel },
@@ -49,12 +49,12 @@ export const SimpleForm = <T = Record<string, unknown>>({
 			{ condition: () => key.downArrow, action: () => setCurrentField(Math.min(currentField + 1, fields.length - 1)) },
 			{ condition: () => key.upArrow, action: () => setCurrentField(Math.max(currentField - 1, 0)) },
 			{
-				condition: () => (key.leftArrow || key.rightArrow) && isRadioField,
-				action: () => currentFieldData && handleRadioToggle(currentFieldData),
+				condition: () => (key.leftArrow || key.rightArrow) && isSelectField,
+				action: () => currentFieldData && handleSelectToggle(currentFieldData),
 			},
 			{
-				condition: () => input === ' ' && isRadioField,
-				action: () => currentFieldData && handleRadioToggle(currentFieldData),
+				condition: () => input === ' ' && isSelectField,
+				action: () => currentFieldData && handleSelectToggle(currentFieldData),
 			},
 			{ condition: () => key.return, action: handleFormSubmission },
 		];
@@ -133,7 +133,7 @@ export const SimpleForm = <T = Record<string, unknown>>({
 		}
 	};
 
-	const handleRadioToggle = (field: FormField) => {
+	const handleSelectToggle = (field: FormField) => {
 		if (field.options && field.options.length > 1) {
 			const currentValue = formData[field.name];
 			const currentIndex = field.options.findIndex((option) => option.value === currentValue);
@@ -151,9 +151,9 @@ export const SimpleForm = <T = Record<string, unknown>>({
 				</Box>
 			)}
 			{fields.map((field, index) => {
-				if (field.type === 'radio' && field.options) {
+				if (field.type === 'select' && field.options) {
 					return (
-						<RadioField
+						<SelectField
 							key={field.name}
 							label={field.label}
 							options={field.options}
@@ -161,7 +161,8 @@ export const SimpleForm = <T = Record<string, unknown>>({
 							isActive={currentField === index}
 							helpText={field.helpText}
 							errorMessage={errors[field.name]}
-							onToggle={() => handleRadioToggle(field)}
+							display={field.display}
+							onToggle={() => handleSelectToggle(field)}
 						/>
 					);
 				}
@@ -185,7 +186,7 @@ export const SimpleForm = <T = Record<string, unknown>>({
 					<Text color="yellow">Tab/↓</Text> Next field · <Text color="yellow">Shift+Tab/↑</Text> Previous field
 				</Text>
 				<Text dimColor={true}>
-					<Text color="yellow">←/→/Space</Text> Toggle radio · <Text color="yellow">Enter</Text> Submit ·{' '}
+					<Text color="yellow">←/→/Space</Text> Toggle select · <Text color="yellow">Enter</Text> Submit ·{' '}
 					<Text color="yellow">Esc</Text> Cancel
 				</Text>
 			</Box>
