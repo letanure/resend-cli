@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import { removeEmptyFields } from '@/utils/zodTransforms.js';
 
-// TLS configuration enum based on API documentation
+// TLS configuration enum - matches Resend's UpdateDomainsOptions['tls']
 const tlsSchema = z
 	.union([
-		z.enum(['opportunistic', 'enforced']),
+		z.enum(['opportunistic', 'enforced'] as const),
 		z.literal('').transform(() => undefined),
 		z.undefined()
 	])
