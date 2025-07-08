@@ -1,3 +1,12 @@
+# [0.11.0](https://github.com/letanure/resend-cli/compare/v0.10.0...v0.11.0) (2025-07-07)
+
+
+### Features
+
+* implement contact deletion ([7a0fc24](https://github.com/letanure/resend-cli/commit/7a0fc24338ecedfe7520b266d373b43ab10bbe06))
+* implement contact list ([083db1c](https://github.com/letanure/resend-cli/commit/083db1c3fdf9cf7244c609ce06244e2c6108d21a))
+* implement contact retrieval ([2834e87](https://github.com/letanure/resend-cli/commit/2834e87f9456099b00b5684da97b7971f5a3232c))
+
 # [0.10.0](https://github.com/letanure/resend-cli/compare/v0.9.3...v0.10.0) (2025-07-07)
 
 
