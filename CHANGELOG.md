@@ -1,3 +1,12 @@
+# [0.22.0](https://github.com/letanure/resend-cli/compare/v0.21.0...v0.22.0) (2025-07-08)
+
+
+### Features
+
+* add domain update ([196dd2e](https://github.com/letanure/resend-cli/commit/196dd2e0b7b366d6690ed2a9c1ff999c170eb853))
+* implement broadcast retrieve ([ed3fac6](https://github.com/letanure/resend-cli/commit/ed3fac6d1161a5b42b5d685ddced5bcb9b116061))
+* implement create broadcast ([db8af00](https://github.com/letanure/resend-cli/commit/db8af008eb31f39a0531b149b3d001fd6e99cf6c))
+
 # [0.21.0](https://github.com/letanure/resend-cli/compare/v0.20.0...v0.21.0) (2025-07-08)
 
 
