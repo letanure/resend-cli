@@ -1,3 +1,10 @@
+# [0.26.0](https://github.com/letanure/resend-cli/compare/v0.25.0...v0.26.0) (2025-07-08)
+
+
+### Features
+
+* implement broadcast deletion functionality ([fc2602d](https://github.com/letanure/resend-cli/commit/fc2602d5814815f296e39595dfeb296c5c0e7137))
+
 # [0.25.0](https://github.com/letanure/resend-cli/compare/v0.24.0...v0.25.0) (2025-07-08)
 
 
