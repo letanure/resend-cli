@@ -32,7 +32,7 @@ async function handleDeleteCommand(options: Record<string, unknown>, command: Co
 			process.exit(1);
 		}
 
-		const result = isDryRun ? undefined : await deleteApiKey(apiKey, validationResult.data);
+		const result = isDryRun ? undefined : await deleteApiKey(validationResult.data, apiKey);
 
 		displayResults({
 			data: validationResult.data,

@@ -5,6 +5,7 @@ import { config } from '@/config/config.js';
 export enum ApiKeysMenuState {
 	create = 'create',
 	list = 'list',
+	delete = 'delete',
 }
 
 const MAIN_MENU_ITEMS: Array<MenuItem<ApiKeysMenuState>> = [
@@ -17,6 +18,11 @@ const MAIN_MENU_ITEMS: Array<MenuItem<ApiKeysMenuState>> = [
 		id: ApiKeysMenuState.list,
 		label: 'List',
 		description: 'List all API keys in Resend.',
+	},
+	{
+		id: ApiKeysMenuState.delete,
+		label: 'Delete',
+		description: 'Delete an existing API key from Resend.',
 	},
 ];
 

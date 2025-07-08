@@ -1,7 +1,9 @@
-import { Box, Text } from 'ink';
+import { Spinner } from '@inkjs/ui';
+import { Box, Text, useInput } from 'ink';
 import { useState } from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
-import { ResultScreen } from '@/components/ui/ResultScreen.js';
+import { ErrorDisplay } from '@/components/ui/ErrorDisplay.js';
+import { Layout } from '@/components/ui/layout.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
@@ -16,62 +18,138 @@ interface DeleteApiKeyFormProps {
 export const DeleteApiKeyForm = ({ onExit }: DeleteApiKeyFormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
-	const [result, setResult] = useState<{ success: boolean; message: string; error?: string } | null>(null);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [apiKeyData, setApiKeyData] = useState<Record<string, unknown> | null>(null);
+	const [showDryRunData, setShowDryRunData] = useState<Record<string, unknown> | null>(null);
+	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
+
+	// Handle Esc key to go back from result screens
+	useInput(
+		(_input, key) => {
+			if (key.escape && (apiKeyData || showDryRunData || error)) {
+				setApiKeyData(null);
+				setShowDryRunData(null);
+				setError(null);
+			}
+		},
+		{ isActive: !!(apiKeyData || showDryRunData || error) },
+	);
 
 	const handleSubmit = async (data: DeleteApiKeyData) => {
-		if (isDryRun) {
-			setResult({
-				success: true,
-				message: `DRY RUN - Would delete API key: ${data.api_key_id}`,
-			});
-			return;
-		}
+		setIsSubmitting(true);
+		try {
+			if (isDryRun) {
+				setShowDryRunData({
+					'API Key ID': data.api_key_id,
+					'API Key': apiKey ? `${apiKey.substring(0, 10)}...` : 'Not set',
+					'Dry Run': 'true',
+					Status: 'Validation successful! (API key not deleted due to dry-run mode)',
+				});
+			} else {
+				const result = await deleteApiKey(data, apiKey);
 
-		const response = await deleteApiKey(apiKey, data);
-
-		if (response.success) {
-			setResult({
-				success: true,
-				message: response.data?.message || 'API key deleted successfully',
+				if (result.success && result.data) {
+					setApiKeyData({
+						'API Key ID': data.api_key_id,
+						'Object Type': 'api_key',
+						Status: 'Deleted successfully',
+					});
+				} else {
+					setError({
+						title: 'API Key Deletion Failed',
+						message: result.error || 'Unknown error occurred',
+						suggestion: 'Check the API key ID and ensure it exists in your Resend account',
+					});
+				}
+			}
+		} catch (error) {
+			setError({
+				title: 'API Key Deletion Error',
+				message: error instanceof Error ? error.message : 'Unknown error',
+				suggestion: 'Please check your API key and network connection',
 			});
-		} else {
-			setResult({
-				success: false,
-				message: 'Failed to delete API key',
-				error: response.error,
-			});
+		} finally {
+			setIsSubmitting(false);
 		}
 	};
 
-	if (result) {
+	if (isSubmitting) {
 		return (
-			<ResultScreen
-				headerText={`${config.baseTitle} - API Keys - Delete - ${result.success ? 'Success' : 'Error'}`}
-				type={result.success ? 'success' : 'error'}
-				message={result.error || result.message}
-				onContinue={onExit}
-			/>
+			<Layout headerText={`${config.baseTitle} - API Keys - Delete`}>
+				<Spinner label="Deleting API key..." />
+			</Layout>
+		);
+	}
+
+	if (apiKeyData) {
+		return (
+			<Layout headerText={`${config.baseTitle} - API Keys - Delete - Success`}>
+				<Box flexDirection="column">
+					<Box marginBottom={1}>
+						<Text bold={true}>API Key Deleted Successfully</Text>
+					</Box>
+					{Object.entries(apiKeyData).map(([key, value]) => (
+						<Box key={key} marginBottom={0}>
+							<Text>
+								<Text bold={true}>{key}:</Text> {String(value)}
+							</Text>
+						</Box>
+					))}
+					<Box marginTop={1}>
+						<Text dimColor={true}>Press Esc to go back</Text>
+					</Box>
+				</Box>
+			</Layout>
+		);
+	}
+
+	if (showDryRunData) {
+		return (
+			<Layout headerText={`${config.baseTitle} - API Keys - Delete - Dry Run`}>
+				<Box flexDirection="column">
+					<Box marginBottom={1}>
+						<Text bold={true}>DRY RUN - API key deletion data (validation only)</Text>
+					</Box>
+					{Object.entries(showDryRunData).map(([key, value]) => (
+						<Box key={key} marginBottom={0}>
+							<Text>
+								<Text bold={true}>{key}:</Text> {String(value)}
+							</Text>
+						</Box>
+					))}
+					<Box marginTop={1}>
+						<Text dimColor={true}>Press Esc to go back</Text>
+					</Box>
+				</Box>
+			</Layout>
+		);
+	}
+
+	if (error) {
+		return (
+			<Layout headerText={`${config.baseTitle} - API Keys - Delete - Error`}>
+				<Box flexDirection="column">
+					<Box marginBottom={1}>
+						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
+					</Box>
+					<Box>
+						<Text dimColor={true}>Press Esc to go back</Text>
+					</Box>
+				</Box>
+			</Layout>
 		);
 	}
 
 	return (
-		<Box flexDirection="column">
-			<Box marginBottom={1}>
-				<Text bold={true} color="red">
-					⚠️ WARNING: This action cannot be undone!
-				</Text>
+		<Layout headerText={`${config.baseTitle} - API Keys - Delete`}>
+			<Box flexDirection="column">
+				<SimpleForm<DeleteApiKeyData>
+					fields={fields}
+					onSubmit={handleSubmit}
+					onCancel={onExit}
+					validateWith={deleteApiKeySchema}
+				/>
 			</Box>
-			<Box marginBottom={1}>
-				<Text dimColor={true}>
-					Deleting an API key will permanently remove it and any applications using it will stop working.
-				</Text>
-			</Box>
-			<SimpleForm<DeleteApiKeyData>
-				fields={fields}
-				onSubmit={handleSubmit}
-				onCancel={onExit}
-				validateWith={deleteApiKeySchema}
-			/>
-		</Box>
+		</Layout>
 	);
 };

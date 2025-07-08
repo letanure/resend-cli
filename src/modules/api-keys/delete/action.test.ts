@@ -18,16 +18,19 @@ describe('deleteApiKey', () => {
 
 	it('should delete API key successfully', async () => {
 		mockRemove.mockResolvedValueOnce({
+			data: {},
 			error: null,
 		});
 
-		const result = await deleteApiKey('test-api-key', {
-			api_key_id: 'test-key-id-123',
-		});
+		const result = await deleteApiKey(
+			{
+				api_key_id: 'test-key-id-123',
+			},
+			'test-api-key',
+		);
 
 		expect(result.success).toBe(true);
-		expect(result.data?.message).toContain('test-key-id-123');
-		expect(result.data?.message).toContain('deleted successfully');
+		expect(result.data).toEqual({});
 		expect(result.error).toBeUndefined();
 		expect(mockRemove).toHaveBeenCalledWith('test-key-id-123');
 	});
@@ -37,9 +40,30 @@ describe('deleteApiKey', () => {
 			error: { message: 'API key not found' },
 		});
 
-		const result = await deleteApiKey('invalid-key', {
-			api_key_id: 'non-existent-key',
+		const result = await deleteApiKey(
+			{
+				api_key_id: 'non-existent-key',
+			},
+			'invalid-key',
+		);
+
+		expect(result.success).toBe(false);
+		expect(result.error).toBeDefined();
+		expect(result.data).toBeUndefined();
+	});
+
+	it('should handle no data returned from API', async () => {
+		mockRemove.mockResolvedValueOnce({
+			data: null,
+			error: null,
 		});
+
+		const result = await deleteApiKey(
+			{
+				api_key_id: 'test-key-id',
+			},
+			'test-api-key',
+		);
 
 		expect(result.success).toBe(false);
 		expect(result.error).toBeDefined();
@@ -49,9 +73,12 @@ describe('deleteApiKey', () => {
 	it('should handle exceptions', async () => {
 		mockRemove.mockRejectedValueOnce(new Error('Network error'));
 
-		const result = await deleteApiKey('test-api-key', {
-			api_key_id: 'test-key-id',
-		});
+		const result = await deleteApiKey(
+			{
+				api_key_id: 'test-key-id',
+			},
+			'test-api-key',
+		);
 
 		expect(result.success).toBe(false);
 		expect(result.error).toBeDefined();
