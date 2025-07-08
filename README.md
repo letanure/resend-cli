@@ -196,6 +196,63 @@ EXAMPLES:
 
 ```
 
+### API Keys Commands
+
+```bash
+$ resend-cli apiKeys --help
+Usage: resend-cli apiKeys [options] [command]
+
+Manage API keys
+
+Options:
+  -h, --help        display help for command
+
+Commands:
+  create [options]  Create a new API key in Resend
+  delete [options]  Delete an existing API key from Resend
+  list              List all API keys in Resend
+
+```
+
+### Audiences Commands
+
+```bash
+$ resend-cli audiences --help
+Usage: resend-cli audiences [options] [command]
+
+Audience operations
+
+Options:
+  -h, --help          display help for command
+
+Commands:
+  create [options]    Create a new audience via Resend API
+  retrieve [options]  Retrieve an audience by ID from Resend API
+  delete [options]    Delete an audience by ID from Resend API
+  list [options]      List all audiences from Resend API
+
+```
+
+### Contacts Commands
+
+```bash
+$ resend-cli contacts --help
+Usage: resend-cli contacts [options] [command]
+
+Manage contacts in your audiences
+
+Options:
+  -h, --help          display help for command
+
+Commands:
+  create [options]    Create a contact in an audience via Resend API
+  delete [options]    Delete a contact by ID or email from an audience in Resend
+                      API
+  list [options]      List all contacts in an audience
+  retrieve [options]  Retrieve a contact by ID or email from an audience
+
+```
+
 ## Output Formats
 
 The CLI supports both human-readable and machine-readable output:

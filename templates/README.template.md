@@ -137,6 +137,18 @@ RESEND_API_KEY="re_xxxxxxxxxxxx" resend-cli email send --from="..." --to="..."
 
 {{CLI_HELP_EMAIL_SEND}}
 
+### API Keys Commands
+
+{{CLI_HELP_APIKEYS}}
+
+### Audiences Commands
+
+{{CLI_HELP_AUDIENCES}}
+
+### Contacts Commands
+
+{{CLI_HELP_CONTACTS}}
+
 ## Output Formats
 
 The CLI supports both human-readable and machine-readable output:
