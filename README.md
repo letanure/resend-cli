@@ -213,6 +213,7 @@ Commands:
                       API
   list [options]      List all contacts in an audience
   retrieve [options]  Retrieve a contact by ID or email from an audience
+  update|u [options]  Update an existing contact
 
 ```
 ### domains
