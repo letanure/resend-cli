@@ -189,6 +189,7 @@ Options:
 Commands:
   create|c [options]  Create a new broadcast to send to your audience
   retrieve [options]  Retrieve a broadcast by ID from Resend API
+  send|s [options]    Send a broadcast to your audience
   update|u [options]  Update a broadcast to send to your audience
   list                List all broadcasts
 
