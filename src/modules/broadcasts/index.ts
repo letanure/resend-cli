@@ -1,6 +1,7 @@
 import { Module, type ModuleConfig } from '@/types/index.js';
 import { broadcastCreateCommand } from './create/cli.js';
 import { broadcastRetrieveCommand } from './retrieve/cli.js';
+import { broadcastUpdateCommand } from './update/cli.js';
 
 export const moduleConfig: ModuleConfig = {
 	name: Module.broadcasts,
@@ -8,6 +9,7 @@ export const moduleConfig: ModuleConfig = {
 	registerCommands: (command) => {
 		command.addCommand(broadcastCreateCommand);
 		command.addCommand(broadcastRetrieveCommand);
+		command.addCommand(broadcastUpdateCommand);
 
 		// TODO: Implement other broadcast commands
 		command
