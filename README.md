@@ -396,6 +396,10 @@ Manage API keys
 
 [options]  Create a new API key in Resend
 
+### apiKeys list
+
+List all API keys in Resend
+
 
 ## audiences
 
