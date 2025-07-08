@@ -90,17 +90,10 @@ function generateExamples() {
 }
 
 /**
- * Generate complete CLI reference with all arguments
+ * Generate CLI commands section with brief descriptions
  */
-function generateCLIReference() {
+function generateCLICommands() {
 	let output = '';
-
-	// Global options
-	output += '## Global Options\n\n';
-	output += 'Available for all commands:\n\n';
-	output += '- `--output <format>` - Output format (text, json)\n';
-	output += '- `--help, -h` - Display help for command\n';
-	output += '- `--version, -V` - Output the version number\n\n';
 
 	// Get main help to see all modules
 	const mainHelp = runCLI('--help');
@@ -126,75 +119,27 @@ function generateCLIReference() {
 			}
 		}
 
-		// Generate reference for each module
+		// Command descriptions mapping
+		const commandDescriptions = {
+			email: 'Send and manage emails',
+			apiKeys: 'Manage API keys',
+			audiences: 'Manage audiences for newsletters and broadcasts',
+			contacts: 'Manage contacts in your audiences',
+			domains: 'Manage domains and DNS configuration',
+			broadcasts: 'Manage newsletter broadcasts',
+		};
+
+		// Generate section for each module
 		for (const module of modules) {
-			output += `## ${module.name}\n\n`;
-			output += `${module.description}\n\n`;
+			output += `### ${module.name}\n\n`;
+			output += `${commandDescriptions[module.name] || module.description}\n\n`;
+			output += `${generateHelpDocs(module.name)}\n`;
 
-			// Get module help
-			const moduleHelp = runCLI(`${module.name} --help`);
-			if (moduleHelp.success) {
-				const moduleLines = moduleHelp.stdout.split('\n');
-				let inModuleCommands = false;
-				const commands = [];
-
-				for (const line of moduleLines) {
-					if (line.includes('Commands:')) {
-						inModuleCommands = true;
-						continue;
-					}
-					if (inModuleCommands && line.trim() && !line.includes('help [command]')) {
-						const match = line.match(/^\s*(\w+)\s+(.+)$/);
-						if (match) {
-							commands.push({
-								name: match[1],
-								description: match[2],
-							});
-						}
-					}
-				}
-
-				// Generate reference for each command
-				for (const command of commands) {
-					output += `### ${module.name} ${command.name}\n\n`;
-					output += `${command.description}\n\n`;
-
-					// Get command help and extract options
-					const commandHelp = runCLI(`${module.name} ${command.name} --help`);
-					if (commandHelp.success) {
-						const commandLines = commandHelp.stdout.split('\n');
-						let inOptions = false;
-						const options = [];
-
-						for (const line of commandLines) {
-							if (line.includes('Options:')) {
-								inOptions = true;
-								continue;
-							}
-							if (inOptions && line.trim()) {
-								// Parse option line: "  --from, -f <value>     Sender email address"
-								const optionMatch = line.match(/^\s*(--[\w-]+(?:,\s*-\w)?)\s*(?:<[^>]+>)?\s+(.+)$/);
-								if (optionMatch) {
-									options.push({
-										flag: optionMatch[1],
-										description: optionMatch[2],
-									});
-								}
-							}
-						}
-
-						if (options.length > 0) {
-							output += '**Arguments:**\n\n';
-							for (const option of options) {
-								output += `- \`${option.flag}\` - ${option.description}\n`;
-							}
-							output += '\n';
-						}
-					}
-				}
+			// For email module, add the send subcommand
+			if (module.name === 'email') {
+				output += `#### ${module.name} send\n\n`;
+				output += `${generateHelpDocs(`${module.name} send`)}\n`;
 			}
-
-			output += '\n';
 		}
 	}
 
@@ -225,13 +170,7 @@ function generateReadme() {
 function generateFromTemplate(template) {
 	const replacements = {
 		'{{CLI_HELP_MAIN}}': generateHelpDocs(),
-		'{{CLI_HELP_EMAIL}}': generateHelpDocs('email'),
-		'{{CLI_HELP_EMAIL_SEND}}': generateHelpDocs('email send'),
-		'{{CLI_HELP_APIKEYS}}': generateHelpDocs('apiKeys'),
-		'{{CLI_HELP_AUDIENCES}}': generateHelpDocs('audiences'),
-		'{{CLI_HELP_CONTACTS}}': generateHelpDocs('contacts'),
-		'{{CLI_EXAMPLES}}': generateExamples(),
-		'{{CLI_REFERENCE}}': generateCLIReference(),
+		'{{CLI_COMMANDS}}': generateCLICommands(),
 		'{{GENERATED_DATE}}': new Date().toISOString().split('T')[0],
 	};
 
@@ -265,4 +204,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 	main();
 }
 
-export { generateHelpDocs, generateExamples, generateCLIReference, generateFromTemplate };
+export { generateHelpDocs, generateExamples, generateCLICommands, generateFromTemplate };
