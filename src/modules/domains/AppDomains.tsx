@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { CreateDomainForm } from './create/Form.js';
 import { DomainDeleteForm } from './DomainDeleteForm.js';
-import { DomainListForm } from './DomainListForm.js';
 import { DomainsMenu, DomainsMenuState, type DomainsMenuState as DomainsMenuStateType } from './DomainsMenu.js';
 import { DomainUpdateForm } from './DomainUpdateForm.js';
 import { DomainVerifyForm } from './DomainVerifyForm.js';
+import { DomainListForm } from './list/Form.js';
 import { DomainRetrieveForm } from './retrieve/Form.js';
 
 type DomainsMenuStateWithMenu = 'menu' | DomainsMenuStateType;

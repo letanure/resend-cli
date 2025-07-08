@@ -227,7 +227,7 @@ Options:
 Commands:
   create [options]    Create a domain through the Resend Email API
   retrieve [options]  Retrieve a domain by ID from Resend API
-  list                List all domains
+  list [options]      List all domains from Resend API
 
 ```
 ### email
