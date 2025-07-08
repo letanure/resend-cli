@@ -1,43 +1,35 @@
 import { useState } from 'react';
-import {
-	BroadcastsMenu,
-	BroadcastsMenuState,
-	type BroadcastsMenuState as BroadcastsMenuStateType,
-} from './BroadcastsMenu.js';
 import { Form as CreateForm } from './create/Form.js';
 import { Form as DeleteForm } from './delete/Form.js';
 import { Form as ListForm } from './list/Form.js';
+import { Menu, MenuState, type MenuState as MenuStateType } from './Menu.js';
 import { Form as RetrieveForm } from './retrieve/Form.js';
 import { Form as SendForm } from './send/Form.js';
 import { Form as UpdateForm } from './update/Form.js';
 
-type BroadcastsMenuStateWithMenu = 'menu' | BroadcastsMenuStateType;
+type MenuStateWithMenu = 'menu' | MenuStateType;
 
-interface AppBroadcastsProps {
+interface AppProps {
 	onExit: () => void;
 }
 
-export const AppBroadcasts = ({ onExit }: AppBroadcastsProps) => {
-	const [screenState, setScreenState] = useState<BroadcastsMenuStateWithMenu>('menu');
-	const [lastSelectedBroadcastMenuItem, setLastSelectedBroadcastMenuItem] = useState<BroadcastsMenuStateType>();
+export const App = ({ onExit }: AppProps) => {
+	const [screenState, setScreenState] = useState<MenuStateWithMenu>('menu');
+	const [lastSelectedBroadcastMenuItem, setLastSelectedBroadcastMenuItem] = useState<MenuStateType>();
 
-	const handleMenuSelect = (menuId: BroadcastsMenuStateWithMenu) => {
+	const handleMenuSelect = (menuId: MenuStateWithMenu) => {
 		setScreenState(menuId);
 	};
 
 	return (
 		<>
 			{screenState === 'menu' && (
-				<BroadcastsMenu
-					onSelect={handleMenuSelect}
-					onExit={() => onExit()}
-					initialSelectedKey={lastSelectedBroadcastMenuItem}
-				/>
+				<Menu onSelect={handleMenuSelect} onExit={() => onExit()} initialSelectedKey={lastSelectedBroadcastMenuItem} />
 			)}
 			{screenState === 'create' && (
 				<CreateForm
 					onExit={() => {
-						setLastSelectedBroadcastMenuItem(BroadcastsMenuState.create);
+						setLastSelectedBroadcastMenuItem(MenuState.create);
 						setScreenState('menu');
 					}}
 				/>
@@ -45,7 +37,7 @@ export const AppBroadcasts = ({ onExit }: AppBroadcastsProps) => {
 			{screenState === 'retrieve' && (
 				<RetrieveForm
 					onExit={() => {
-						setLastSelectedBroadcastMenuItem(BroadcastsMenuState.retrieve);
+						setLastSelectedBroadcastMenuItem(MenuState.retrieve);
 						setScreenState('menu');
 					}}
 				/>
@@ -53,7 +45,7 @@ export const AppBroadcasts = ({ onExit }: AppBroadcastsProps) => {
 			{screenState === 'update' && (
 				<UpdateForm
 					onExit={() => {
-						setLastSelectedBroadcastMenuItem(BroadcastsMenuState.update);
+						setLastSelectedBroadcastMenuItem(MenuState.update);
 						setScreenState('menu');
 					}}
 				/>
@@ -61,7 +53,7 @@ export const AppBroadcasts = ({ onExit }: AppBroadcastsProps) => {
 			{screenState === 'send' && (
 				<SendForm
 					onExit={() => {
-						setLastSelectedBroadcastMenuItem(BroadcastsMenuState.send);
+						setLastSelectedBroadcastMenuItem(MenuState.send);
 						setScreenState('menu');
 					}}
 				/>
@@ -69,7 +61,7 @@ export const AppBroadcasts = ({ onExit }: AppBroadcastsProps) => {
 			{screenState === 'delete' && (
 				<DeleteForm
 					onExit={() => {
-						setLastSelectedBroadcastMenuItem(BroadcastsMenuState.delete);
+						setLastSelectedBroadcastMenuItem(MenuState.delete);
 						setScreenState('menu');
 					}}
 				/>
@@ -77,7 +69,7 @@ export const AppBroadcasts = ({ onExit }: AppBroadcastsProps) => {
 			{screenState === 'list' && (
 				<ListForm
 					onExit={() => {
-						setLastSelectedBroadcastMenuItem(BroadcastsMenuState.list);
+						setLastSelectedBroadcastMenuItem(MenuState.list);
 						setScreenState('menu');
 					}}
 				/>

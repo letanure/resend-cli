@@ -1,8 +1,8 @@
 import { Layout } from '@/components/ui/layout.js';
-import { Menu, type MenuItem } from '@/components/ui/Menu.js';
+import { type MenuItem, Menu as UIMenu } from '@/components/ui/Menu.js';
 import { config } from '@/config/config.js';
 
-export enum BroadcastsMenuState {
+export enum MenuState {
 	create = 'create',
 	retrieve = 'retrieve',
 	update = 'update',
@@ -11,49 +11,49 @@ export enum BroadcastsMenuState {
 	list = 'list',
 }
 
-const BROADCASTS_MENU_ITEMS: Array<MenuItem<BroadcastsMenuState>> = [
+const BROADCASTS_MENU_ITEMS: Array<MenuItem<MenuState>> = [
 	{
-		id: BroadcastsMenuState.create,
+		id: MenuState.create,
 		label: 'Create',
 		description: 'Create a new broadcast to send to your audience.',
 	},
 	{
-		id: BroadcastsMenuState.retrieve,
+		id: MenuState.retrieve,
 		label: 'Retrieve',
 		description: 'Retrieve a single broadcast..',
 	},
 	{
-		id: BroadcastsMenuState.update,
+		id: MenuState.update,
 		label: 'Update',
 		description: 'Update a broadcast to send to your audience.',
 	},
 	{
-		id: BroadcastsMenuState.send,
+		id: MenuState.send,
 		label: 'Send',
 		description: 'Start sending broadcasts to your audience through the Resend API.',
 	},
 	{
-		id: BroadcastsMenuState.delete,
+		id: MenuState.delete,
 		label: 'Delete',
 		description: 'Remove an existing broadcast.',
 	},
 	{
-		id: BroadcastsMenuState.list,
+		id: MenuState.list,
 		label: 'List',
 		description: 'Retrieve a list of broadcast.',
 	},
 ];
 
-interface BroadcastsMenuProps {
+interface MenuProps {
 	onExit: () => void;
-	onSelect: (menuId: BroadcastsMenuState) => void;
-	initialSelectedKey?: BroadcastsMenuState;
+	onSelect: (menuId: MenuState) => void;
+	initialSelectedKey?: MenuState;
 }
 
-export const BroadcastsMenu = ({ onExit, onSelect, initialSelectedKey }: BroadcastsMenuProps) => {
+export const Menu = ({ onExit, onSelect, initialSelectedKey }: MenuProps) => {
 	return (
 		<Layout headerText={`${config.baseTitle} - Broadcasts`} showNavigationInstructions={true}>
-			<Menu
+			<UIMenu
 				menuItems={BROADCASTS_MENU_ITEMS}
 				onSelect={(menuId) => {
 					onSelect(menuId);

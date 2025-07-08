@@ -1,47 +1,47 @@
 import { Layout } from '@/components/ui/layout.js';
-import { Menu, type MenuItem } from '@/components/ui/Menu.js';
+import { type MenuItem, Menu as UIMenu } from '@/components/ui/Menu.js';
 import { config } from '@/config/config.js';
 
-export enum AudiencesMenuState {
+export enum MenuState {
 	create = 'create',
 	retrieve = 'retrieve',
 	delete = 'delete',
 	list = 'list',
 }
 
-const AUDIENCES_MENU_ITEMS: Array<MenuItem<AudiencesMenuState>> = [
+const AUDIENCES_MENU_ITEMS: Array<MenuItem<MenuState>> = [
 	{
-		id: AudiencesMenuState.create,
+		id: MenuState.create,
 		label: 'Create',
 		description: 'Create a list of contacts.',
 	},
 	{
-		id: AudiencesMenuState.retrieve,
+		id: MenuState.retrieve,
 		label: 'Retrieve',
 		description: 'Retrieve a single audience.',
 	},
 	{
-		id: AudiencesMenuState.delete,
+		id: MenuState.delete,
 		label: 'Delete',
 		description: 'Remove an existing audience..',
 	},
 	{
-		id: AudiencesMenuState.list,
+		id: MenuState.list,
 		label: 'List',
 		description: 'Retrieve a list of audiences..',
 	},
 ];
 
-interface AudiencesMenuProps {
+interface MenuProps {
 	onExit: () => void;
-	onSelect: (menuId: AudiencesMenuState) => void;
-	initialSelectedKey?: AudiencesMenuState;
+	onSelect: (menuId: MenuState) => void;
+	initialSelectedKey?: MenuState;
 }
 
-export const AudiencesMenu = ({ onExit, onSelect, initialSelectedKey }: AudiencesMenuProps) => {
+export const Menu = ({ onExit, onSelect, initialSelectedKey }: MenuProps) => {
 	return (
 		<Layout headerText={`${config.baseTitle} - Audiences`} showNavigationInstructions={true}>
-			<Menu
+			<UIMenu
 				menuItems={AUDIENCES_MENU_ITEMS}
 				onSelect={(menuId) => {
 					onSelect(menuId);

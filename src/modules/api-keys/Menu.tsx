@@ -1,41 +1,41 @@
 import { Layout } from '@/components/ui/layout.js';
-import { Menu, type MenuItem } from '@/components/ui/Menu.js';
+import { type MenuItem, Menu as UIMenu } from '@/components/ui/Menu.js';
 import { config } from '@/config/config.js';
 
-export enum ApiKeysMenuState {
+export enum MenuState {
 	create = 'create',
 	list = 'list',
 	delete = 'delete',
 }
 
-const MAIN_MENU_ITEMS: Array<MenuItem<ApiKeysMenuState>> = [
+const MAIN_MENU_ITEMS: Array<MenuItem<MenuState>> = [
 	{
-		id: ApiKeysMenuState.create,
+		id: MenuState.create,
 		label: 'Create',
 		description: 'Create a new API key in Resend.',
 	},
 	{
-		id: ApiKeysMenuState.list,
+		id: MenuState.list,
 		label: 'List',
 		description: 'List all API keys in Resend.',
 	},
 	{
-		id: ApiKeysMenuState.delete,
+		id: MenuState.delete,
 		label: 'Delete',
 		description: 'Delete an existing API key from Resend.',
 	},
 ];
 
-interface ApiKeysMenuProps {
+interface MenuProps {
 	onExit: () => void;
-	onSelect: (menuId: ApiKeysMenuState) => void;
-	initialSelectedKey?: ApiKeysMenuState;
+	onSelect: (menuId: MenuState) => void;
+	initialSelectedKey?: MenuState;
 }
 
-export const ApiKeysMenu = ({ onExit, onSelect, initialSelectedKey }: ApiKeysMenuProps) => {
+export const Menu = ({ onExit, onSelect, initialSelectedKey }: MenuProps) => {
 	return (
 		<Layout headerText={`${config.baseTitle} - API Keys`} showNavigationInstructions={true}>
-			<Menu
+			<UIMenu
 				menuItems={MAIN_MENU_ITEMS}
 				onSelect={(menuId) => {
 					onSelect(menuId);

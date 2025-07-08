@@ -1,8 +1,8 @@
 import { Layout } from '@/components/ui/layout.js';
-import { Menu, type MenuItem } from '@/components/ui/Menu.js';
+import { type MenuItem, Menu as UIMenu } from '@/components/ui/Menu.js';
 import { config } from '@/config/config.js';
 
-export enum ContactsMenuState {
+export enum MenuState {
 	create = 'create',
 	retrieve = 'retrieve',
 	update = 'update',
@@ -10,44 +10,44 @@ export enum ContactsMenuState {
 	list = 'list',
 }
 
-const CONTACTS_MENU_ITEMS: Array<MenuItem<ContactsMenuState>> = [
+const CONTACTS_MENU_ITEMS: Array<MenuItem<MenuState>> = [
 	{
-		id: ContactsMenuState.create,
+		id: MenuState.create,
 		label: 'Create',
 		description: 'Create a contact inside an audience.',
 	},
 	{
-		id: ContactsMenuState.retrieve,
+		id: MenuState.retrieve,
 		label: 'Retrieve',
 		description: 'Retrieve a single contact from an audience.',
 	},
 	{
-		id: ContactsMenuState.update,
+		id: MenuState.update,
 		label: 'Update',
 		description: 'Update an existing contact.',
 	},
 	{
-		id: ContactsMenuState.delete,
+		id: MenuState.delete,
 		label: 'Delete',
 		description: 'Remove an existing contact from an audience.',
 	},
 	{
-		id: ContactsMenuState.list,
+		id: MenuState.list,
 		label: 'List',
 		description: 'Show all contacts from an audience.',
 	},
 ];
 
-interface ContactsMenuProps {
+interface MenuProps {
 	onExit: () => void;
-	onSelect: (menuId: ContactsMenuState) => void;
-	initialSelectedKey?: ContactsMenuState;
+	onSelect: (menuId: MenuState) => void;
+	initialSelectedKey?: MenuState;
 }
 
-export const ContactsMenu = ({ onExit, onSelect, initialSelectedKey }: ContactsMenuProps) => {
+export const Menu = ({ onExit, onSelect, initialSelectedKey }: MenuProps) => {
 	return (
 		<Layout headerText={`${config.baseTitle} - Contacts`} showNavigationInstructions={true}>
-			<Menu
+			<UIMenu
 				menuItems={CONTACTS_MENU_ITEMS}
 				onSelect={(menuId) => {
 					onSelect(menuId);

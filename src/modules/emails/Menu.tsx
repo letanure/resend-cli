@@ -1,8 +1,8 @@
 import { Layout } from '@/components/ui/layout.js';
-import { Menu, type MenuItem } from '@/components/ui/Menu.js';
+import { type MenuItem, Menu as UIMenu } from '@/components/ui/Menu.js';
 import { config } from '@/config/config.js';
 
-export enum EmailsMenuState {
+export enum MenuState {
 	send = 'send',
 	batch = 'batch',
 	retrieve = 'retrieve',
@@ -10,45 +10,45 @@ export enum EmailsMenuState {
 	cancel = 'cancel',
 }
 
-const MAIN_MENU_ITEMS: Array<MenuItem<EmailsMenuState>> = [
+const MAIN_MENU_ITEMS: Array<MenuItem<MenuState>> = [
 	{
-		id: EmailsMenuState.send,
+		id: MenuState.send,
 		label: 'Send',
 		description: 'Start sending emails through the Resend Email API.',
 	},
 	{
-		id: EmailsMenuState.retrieve,
+		id: MenuState.retrieve,
 		label: 'Retrieve',
 		description: 'Retrieve a single email.',
 	},
 	{
-		id: EmailsMenuState.update,
+		id: MenuState.update,
 		label: 'Update',
 		description: 'Update a scheduled email.',
 	},
 	{
-		id: EmailsMenuState.cancel,
+		id: MenuState.cancel,
 		label: 'Cancel',
 		description: 'Cancel a scheduled email.',
 	},
 	{
-		id: EmailsMenuState.batch,
+		id: MenuState.batch,
 		label: 'Batch',
 		description: 'To be implemented - file-based batch email operations.',
 		disabled: true,
 	},
 ];
 
-interface EmailsMenuProps {
+interface MenuProps {
 	onExit: () => void;
-	onSelect: (menuId: EmailsMenuState) => void;
-	initialSelectedKey?: EmailsMenuState;
+	onSelect: (menuId: MenuState) => void;
+	initialSelectedKey?: MenuState;
 }
 
-export const EmailsMenu = ({ onExit, onSelect, initialSelectedKey }: EmailsMenuProps) => {
+export const Menu = ({ onExit, onSelect, initialSelectedKey }: MenuProps) => {
 	return (
 		<Layout headerText={`${config.baseTitle} - Emails`} showNavigationInstructions={true}>
-			<Menu
+			<UIMenu
 				menuItems={MAIN_MENU_ITEMS}
 				onSelect={(menuId) => {
 					onSelect(menuId);

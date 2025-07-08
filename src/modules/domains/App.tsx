@@ -1,39 +1,35 @@
 import { useState } from 'react';
 import { Form as CreateForm } from './create/Form.js';
-import { DomainsMenu, DomainsMenuState, type DomainsMenuState as DomainsMenuStateType } from './DomainsMenu.js';
 import { Form as DeleteForm } from './delete/Form.js';
 import { Form as ListForm } from './list/Form.js';
+import { Menu, MenuState, type MenuState as MenuStateType } from './Menu.js';
 import { Form as RetrieveForm } from './retrieve/Form.js';
 import { Form as UpdateForm } from './update/Form.js';
 import { Form as VerifyForm } from './verify/Form.js';
 
-type DomainsMenuStateWithMenu = 'menu' | DomainsMenuStateType;
+type MenuStateWithMenu = 'menu' | MenuStateType;
 
-interface AppDomainsProps {
+interface AppProps {
 	onExit: () => void;
 }
 
-export const AppDomains = ({ onExit }: AppDomainsProps) => {
-	const [screenState, setScreenState] = useState<DomainsMenuStateWithMenu>('menu');
-	const [lastSelectedDomainMenuItem, setLastSelectedDomainMenuItem] = useState<DomainsMenuStateType>();
+export const App = ({ onExit }: AppProps) => {
+	const [screenState, setScreenState] = useState<MenuStateWithMenu>('menu');
+	const [lastSelectedDomainMenuItem, setLastSelectedDomainMenuItem] = useState<MenuStateType>();
 
-	const handleMenuSelect = (menuId: DomainsMenuStateWithMenu) => {
+	const handleMenuSelect = (menuId: MenuStateWithMenu) => {
 		setScreenState(menuId);
 	};
 
 	return (
 		<>
 			{screenState === 'menu' && (
-				<DomainsMenu
-					onSelect={handleMenuSelect}
-					onExit={() => onExit()}
-					initialSelectedKey={lastSelectedDomainMenuItem}
-				/>
+				<Menu onSelect={handleMenuSelect} onExit={() => onExit()} initialSelectedKey={lastSelectedDomainMenuItem} />
 			)}
 			{screenState === 'create' && (
 				<CreateForm
 					onExit={() => {
-						setLastSelectedDomainMenuItem(DomainsMenuState.create);
+						setLastSelectedDomainMenuItem(MenuState.create);
 						setScreenState('menu');
 					}}
 				/>
@@ -41,7 +37,7 @@ export const AppDomains = ({ onExit }: AppDomainsProps) => {
 			{screenState === 'retrieve' && (
 				<RetrieveForm
 					onExit={() => {
-						setLastSelectedDomainMenuItem(DomainsMenuState.retrieve);
+						setLastSelectedDomainMenuItem(MenuState.retrieve);
 						setScreenState('menu');
 					}}
 				/>
@@ -49,7 +45,7 @@ export const AppDomains = ({ onExit }: AppDomainsProps) => {
 			{screenState === 'verify' && (
 				<VerifyForm
 					onExit={() => {
-						setLastSelectedDomainMenuItem(DomainsMenuState.verify);
+						setLastSelectedDomainMenuItem(MenuState.verify);
 						setScreenState('menu');
 					}}
 				/>
@@ -57,7 +53,7 @@ export const AppDomains = ({ onExit }: AppDomainsProps) => {
 			{screenState === 'update' && (
 				<UpdateForm
 					onExit={() => {
-						setLastSelectedDomainMenuItem(DomainsMenuState.update);
+						setLastSelectedDomainMenuItem(MenuState.update);
 						setScreenState('menu');
 					}}
 				/>
@@ -65,7 +61,7 @@ export const AppDomains = ({ onExit }: AppDomainsProps) => {
 			{screenState === 'list' && (
 				<ListForm
 					onExit={() => {
-						setLastSelectedDomainMenuItem(DomainsMenuState.list);
+						setLastSelectedDomainMenuItem(MenuState.list);
 						setScreenState('menu');
 					}}
 				/>
@@ -73,7 +69,7 @@ export const AppDomains = ({ onExit }: AppDomainsProps) => {
 			{screenState === 'delete' && (
 				<DeleteForm
 					onExit={() => {
-						setLastSelectedDomainMenuItem(DomainsMenuState.delete);
+						setLastSelectedDomainMenuItem(MenuState.delete);
 						setScreenState('menu');
 					}}
 				/>

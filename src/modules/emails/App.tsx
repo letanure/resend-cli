@@ -1,38 +1,34 @@
 import { useState } from 'react';
 import { Form as BatchForm } from './batch/Form.js';
 import { Form as CancelForm } from './cancel/Form.js';
-import { EmailsMenu, EmailsMenuState, type EmailsMenuState as EmailsMenuStateType } from './EmailsMenu.js';
+import { Menu, MenuState, type MenuState as MenuStateType } from './Menu.js';
 import { Form as RetrieveForm } from './retrieve/Form.js';
 import { Form as SendForm } from './send/Form.js';
 import { Form as UpdateForm } from './update/Form.js';
 
-type EmailsMenuStateWithMenu = 'menu' | EmailsMenuStateType;
+type MenuStateWithMenu = 'menu' | MenuStateType;
 
-interface AppEmailProps {
+interface AppProps {
 	onExit: () => void;
 }
 
-export const AppEmail = ({ onExit }: AppEmailProps) => {
-	const [screenState, setScreenState] = useState<EmailsMenuStateWithMenu>('menu');
-	const [lastSelectedEmailMenuItem, setLastSelectedEmailMenuItem] = useState<EmailsMenuStateType>();
+export const App = ({ onExit }: AppProps) => {
+	const [screenState, setScreenState] = useState<MenuStateWithMenu>('menu');
+	const [lastSelectedEmailMenuItem, setLastSelectedEmailMenuItem] = useState<MenuStateType>();
 
-	const handleMenuSelect = (menuId: EmailsMenuStateWithMenu) => {
+	const handleMenuSelect = (menuId: MenuStateWithMenu) => {
 		setScreenState(menuId);
 	};
 
 	return (
 		<>
 			{screenState === 'menu' && (
-				<EmailsMenu
-					onSelect={handleMenuSelect}
-					onExit={() => onExit()}
-					initialSelectedKey={lastSelectedEmailMenuItem}
-				/>
+				<Menu onSelect={handleMenuSelect} onExit={() => onExit()} initialSelectedKey={lastSelectedEmailMenuItem} />
 			)}
 			{screenState === 'send' && (
 				<SendForm
 					onExit={() => {
-						setLastSelectedEmailMenuItem(EmailsMenuState.send);
+						setLastSelectedEmailMenuItem(MenuState.send);
 						setScreenState('menu');
 					}}
 				/>
@@ -40,7 +36,7 @@ export const AppEmail = ({ onExit }: AppEmailProps) => {
 			{screenState === 'batch' && (
 				<BatchForm
 					onExit={() => {
-						setLastSelectedEmailMenuItem(EmailsMenuState.batch);
+						setLastSelectedEmailMenuItem(MenuState.batch);
 						setScreenState('menu');
 					}}
 				/>
@@ -48,7 +44,7 @@ export const AppEmail = ({ onExit }: AppEmailProps) => {
 			{screenState === 'retrieve' && (
 				<RetrieveForm
 					onExit={() => {
-						setLastSelectedEmailMenuItem(EmailsMenuState.retrieve);
+						setLastSelectedEmailMenuItem(MenuState.retrieve);
 						setScreenState('menu');
 					}}
 				/>
@@ -56,7 +52,7 @@ export const AppEmail = ({ onExit }: AppEmailProps) => {
 			{screenState === 'update' && (
 				<UpdateForm
 					onExit={() => {
-						setLastSelectedEmailMenuItem(EmailsMenuState.update);
+						setLastSelectedEmailMenuItem(MenuState.update);
 						setScreenState('menu');
 					}}
 				/>
@@ -64,7 +60,7 @@ export const AppEmail = ({ onExit }: AppEmailProps) => {
 			{screenState === 'cancel' && (
 				<CancelForm
 					onExit={() => {
-						setLastSelectedEmailMenuItem(EmailsMenuState.cancel);
+						setLastSelectedEmailMenuItem(MenuState.cancel);
 						setScreenState('menu');
 					}}
 				/>
