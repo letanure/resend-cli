@@ -74,18 +74,18 @@ export const BroadcastDeleteForm = ({ onExit }: BroadcastDeleteFormProps) => {
 					<Alert variant="warning">DRY RUN MODE - No API calls will be made</Alert>
 				</Box>
 			)}
-			<Box marginBottom={1}>
-				<Alert variant="info">
-					Note: You can only delete broadcasts that are in draft status or scheduled broadcasts (which will cancel
-					delivery).
-				</Alert>
-			</Box>
 			<SimpleForm<DeleteBroadcastData>
 				fields={deleteBroadcastFields}
 				onSubmit={handleSubmit}
 				onCancel={onExit}
 				validateWith={deleteBroadcastSchema}
 			/>
+			<Box marginTop={1}>
+				<Alert variant="info">
+					Note: You can only delete broadcasts that are in draft status or scheduled broadcasts (which will cancel
+					delivery).
+				</Alert>
+			</Box>
 		</Layout>
 	);
 };
