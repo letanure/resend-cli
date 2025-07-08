@@ -1,3 +1,10 @@
+# [0.23.0](https://github.com/letanure/resend-cli/compare/v0.22.0...v0.23.0) (2025-07-08)
+
+
+### Features
+
+* implement broadcast update ([fb3f372](https://github.com/letanure/resend-cli/commit/fb3f37229ad9d9fef5279aa05f30fcb4eeda717b))
+
 # [0.22.0](https://github.com/letanure/resend-cli/compare/v0.21.0...v0.22.0) (2025-07-08)
 
 
