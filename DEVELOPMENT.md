@@ -236,6 +236,64 @@ npm publish --dry-run
 npm publish
 ```
 
+## 📋 Code Guidelines
+
+This project follows strict coding standards to ensure consistency, maintainability, and quality. These guidelines are also documented in [CLAUDE.md](./CLAUDE.md).
+
+### Testing Strategy
+- **Co-located tests**: Place test files next to the code they test
+- **Naming convention**: `file.ts` → `file.test.ts`, `component.tsx` → `component.test.tsx`
+- **1:1 relationship**: Each source file should have a corresponding test file
+- **Benefits**: Easy to find tests, clear relationships, encourages testing, better organization
+
+### Code Standards
+- **No emojis**: Keep all text clean and professional without emoji characters
+- **No console logs in TUI**: Use Ink components (Text, Box, etc.) for all TUI output
+- **No duplicate validations**: Trust context providers for API keys and global state
+- **Consistent spacing**: Use `marginBottom` only, never `marginTop` in content components
+- **Professional documentation**: Focus on clear, descriptive text instead of visual symbols
+
+### CLI Design Guidelines
+- **Terminal colors**: Use cyan bold for CLI flags and headers (better light/dark compatibility)
+- **Color standards**: Stick to basic ANSI colors (red, green, blue, yellow, cyan, magenta, white, gray)
+- **Help text format**: Docker/Kubernetes style with proper flag alignment
+- **Output support**: Default rich Ink components + `--output json` for automation
+
+### Module Structure Pattern
+When adding new functionality, follow this established structure:
+
+```
+src/modules/feature/
+├── action.ts          # API integration with Resend
+├── action.test.ts     # Action tests with mocked API
+├── schema.ts          # Zod validation schemas
+├── schema.test.ts     # Schema validation tests
+├── fields.ts          # CLI and form field definitions
+├── fields.test.ts     # Field configuration tests  
+├── cli.ts             # Commander.js CLI integration
+├── Form.tsx           # React/Ink TUI component
+└── index.ts           # Module exports (if needed)
+```
+
+### Component Guidelines
+- **Layout rules**: Content components should ONLY use `marginBottom` (never `marginTop`)
+- **Title spacing**: Layout titles should always have `marginBottom={1}`
+- **No layout conflicts**: Bottom-only margins prevent spacing conflicts
+- **Exception**: Layout-level components can use `marginTop` for footer/navigation areas
+
+### CLI Output Format Guidelines
+- **Dual output**: Support both human-friendly and machine-readable formats
+- **Consistent behavior**: ALL outputs (errors, success, results) follow chosen format
+- **JSON structure**: Standardized success/error format for automation
+- **Exit codes**: Standard exit codes (0=success, 1=error) regardless of format
+
+### Error Handling Standards
+- **Consistent formatting**: All errors use the same visual style
+- **Colored output**: Green checkmarks (✓), yellow warnings, red errors (✗)  
+- **Exit codes**: Proper exit codes for automation and CI/CD
+- **JSON support**: Machine-readable error format with `--output json`
+- **User-friendly**: Clear messages with actionable suggestions
+
 ## 🤝 Contributing
 
 ### Commit Convention
