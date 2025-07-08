@@ -1,3 +1,10 @@
+# [0.13.0](https://github.com/letanure/resend-cli/compare/v0.12.0...v0.13.0) (2025-07-08)
+
+
+### Features
+
+* add list API keys ([fa41aac](https://github.com/letanure/resend-cli/commit/fa41aacf3f83e9a88d77db9f60f194d54f6aec33))
+
 # [0.12.0](https://github.com/letanure/resend-cli/compare/v0.11.0...v0.12.0) (2025-07-08)
 
 
