@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DomainCreateForm } from './DomainCreateForm.js';
+import { CreateDomainForm } from './create/Form.js';
 import { DomainDeleteForm } from './DomainDeleteForm.js';
 import { DomainListForm } from './DomainListForm.js';
 import { DomainRetrieveForm } from './DomainRetrieveForm.js';
@@ -31,7 +31,7 @@ export const AppDomains = ({ onExit }: AppDomainsProps) => {
 				/>
 			)}
 			{screenState === 'create' && (
-				<DomainCreateForm
+				<CreateDomainForm
 					onExit={() => {
 						setLastSelectedDomainMenuItem(DomainsMenuState.create);
 						setScreenState('menu');

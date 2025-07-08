@@ -222,10 +222,11 @@ Usage: resend-cli domains [options] [command]
 Domain operations
 
 Options:
-  -h, --help  display help for command
+  -h, --help        display help for command
 
 Commands:
-  list        List all domains
+  create [options]  Create a domain through the Resend Email API
+  list              List all domains
 
 ```
 ### email
