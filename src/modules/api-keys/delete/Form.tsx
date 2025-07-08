@@ -1,13 +1,13 @@
 import { Box, Text } from 'ink';
 import { useState } from 'react';
+import { SimpleForm } from '@/components/forms/SimpleForm.js';
+import { ResultScreen } from '@/components/ui/ResultScreen.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
-import { ResultScreen } from '@/components/ui/ResultScreen.js';
-import { SimpleForm } from '@/components/forms/SimpleForm.js';
 import { deleteApiKey } from './action.js';
 import { fields } from './fields.js';
-import { deleteApiKeySchema, type DeleteApiKeyData } from './schema.js';
+import { type DeleteApiKeyData, deleteApiKeySchema } from './schema.js';
 
 interface DeleteApiKeyFormProps {
 	onExit: () => void;

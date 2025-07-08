@@ -4,7 +4,7 @@ import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
 import { deleteApiKey } from './action.js';
 import { fields } from './fields.js';
-import { deleteApiKeySchema, type DeleteApiKeyData } from './schema.js';
+import { type DeleteApiKeyData, deleteApiKeySchema } from './schema.js';
 
 async function handleDeleteCommand(options: Record<string, unknown>, command: Command): Promise<void> {
 	// Get global options from the root program (need to go up two levels)
