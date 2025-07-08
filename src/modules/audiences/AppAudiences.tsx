@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { AudienceDeleteForm } from './AudienceDeleteForm.js';
-import { AudienceListForm } from './AudienceListForm.js';
-import { AudienceRetrieveForm } from './AudienceRetrieveForm.js';
 import {
 	AudiencesMenu,
 	AudiencesMenuState,
 	type AudiencesMenuState as AudiencesMenuStateType,
 } from './AudiencesMenu.js';
 import { AudienceCreateForm } from './create/Form.js';
+import { DeleteAudienceForm } from './delete/Form.js';
+import { ListAudienceForm } from './list/Form.js';
+import { RetrieveAudienceForm } from './retrieve/Form.js';
 
 type AudiencesMenuStateWithMenu = 'menu' | AudiencesMenuStateType;
 
@@ -41,7 +41,7 @@ export const AppAudiences = ({ onExit }: AppAudiencesProps) => {
 				/>
 			)}
 			{screenState === 'retrieve' && (
-				<AudienceRetrieveForm
+				<RetrieveAudienceForm
 					onExit={() => {
 						setLastSelectedAudienceMenuItem(AudiencesMenuState.retrieve);
 						setScreenState('menu');
@@ -49,7 +49,7 @@ export const AppAudiences = ({ onExit }: AppAudiencesProps) => {
 				/>
 			)}
 			{screenState === 'delete' && (
-				<AudienceDeleteForm
+				<DeleteAudienceForm
 					onExit={() => {
 						setLastSelectedAudienceMenuItem(AudiencesMenuState.delete);
 						setScreenState('menu');
@@ -57,9 +57,9 @@ export const AppAudiences = ({ onExit }: AppAudiencesProps) => {
 				/>
 			)}
 			{screenState === 'list' && (
-				<AudienceListForm
+				<ListAudienceForm
 					onExit={() => {
-						setLastSelectedAudienceMenuItem(AudiencesMenuState.liest);
+						setLastSelectedAudienceMenuItem(AudiencesMenuState.list);
 						setScreenState('menu');
 					}}
 				/>

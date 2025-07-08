@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { ContactCreateForm } from './ContactCreateForm.js';
-import { ContactListForm } from './ContactListForm.js';
-import { ContactRetrieveForm } from './ContactRetrieveForm.js';
 import { ContactsMenu, ContactsMenuState, type ContactsMenuState as ContactsMenuStateType } from './ContactsMenu.js';
-import { ContactUpdateForm } from './ContactUpdateForm.js';
-import { DeleteContactForm as ContactDeleteForm } from './delete/Form.js';
+import { CreateContactForm } from './create/Form.js';
+import { DeleteContactForm } from './delete/Form.js';
+import { ContactListForm } from './list/Form.js';
+import { ContactRetrieveForm } from './retrieve/Form.js';
+import { ContactUpdateForm } from './update/Form.js';
 
 type ContactsMenuStateWithMenu = 'menu' | ContactsMenuStateType;
 
@@ -30,7 +30,7 @@ export const AppContacts = ({ onExit }: AppContactsProps) => {
 				/>
 			)}
 			{screenState === 'create' && (
-				<ContactCreateForm
+				<CreateContactForm
 					onExit={() => {
 						setLastSelectedContactMenuItem(ContactsMenuState.create);
 						setScreenState('menu');
@@ -54,7 +54,7 @@ export const AppContacts = ({ onExit }: AppContactsProps) => {
 				/>
 			)}
 			{screenState === 'delete' && (
-				<ContactDeleteForm
+				<DeleteContactForm
 					onExit={() => {
 						setLastSelectedContactMenuItem(ContactsMenuState.delete);
 						setScreenState('menu');

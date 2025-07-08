@@ -6,7 +6,7 @@ export enum AudiencesMenuState {
 	create = 'create',
 	retrieve = 'retrieve',
 	delete = 'delete',
-	liest = 'list',
+	list = 'list',
 }
 
 const AUDIENCES_MENU_ITEMS: Array<MenuItem<AudiencesMenuState>> = [
@@ -26,7 +26,7 @@ const AUDIENCES_MENU_ITEMS: Array<MenuItem<AudiencesMenuState>> = [
 		description: 'Remove an existing audience..',
 	},
 	{
-		id: AudiencesMenuState.liest,
+		id: AudiencesMenuState.list,
 		label: 'List',
 		description: 'Retrieve a list of audiences..',
 	},

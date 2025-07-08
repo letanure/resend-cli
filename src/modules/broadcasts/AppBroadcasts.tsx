@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { BroadcastCreateForm } from './BroadcastCreateForm.js';
-import { BroadcastDeleteForm } from './BroadcastDeleteForm.js';
-import { BroadcastListForm } from './BroadcastListForm.js';
-import { BroadcastRetrieveForm } from './BroadcastRetrieveForm.js';
-import { BroadcastSendForm } from './BroadcastSendForm.js';
 import {
 	BroadcastsMenu,
 	BroadcastsMenuState,
 	type BroadcastsMenuState as BroadcastsMenuStateType,
 } from './BroadcastsMenu.js';
-import { BroadcastUpdateForm } from './BroadcastUpdateForm.js';
+import { BroadcastCreateForm } from './create/Form.js';
+import { BroadcastDeleteForm } from './delete/Form.js';
+import { BroadcastListForm } from './list/Form.js';
+import { BroadcastRetrieveForm } from './retrieve/Form.js';
+import { BroadcastSendForm } from './send/Form.js';
+import { BroadcastUpdateForm } from './update/Form.js';
 
 type BroadcastsMenuStateWithMenu = 'menu' | BroadcastsMenuStateType;
 
