@@ -1,3 +1,10 @@
+# [0.20.0](https://github.com/letanure/resend-cli/compare/v0.19.1...v0.20.0) (2025-07-08)
+
+
+### Features
+
+* add domain verification ([345752e](https://github.com/letanure/resend-cli/commit/345752e9ddf8cd81ba8ed32ea977e0255d612ec8))
+
 ## [0.19.1](https://github.com/letanure/resend-cli/compare/v0.19.0...v0.19.1) (2025-07-08)
 
 
