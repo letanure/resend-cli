@@ -33,11 +33,13 @@ export const SimpleForm = <T = Record<string, unknown>>({
 	});
 
 	const [currentField, setCurrentField] = useState(0);
+	const [_currentSelectOption, setCurrentSelectOption] = useState(0);
 	const [errors, setErrors] = useState<Record<string, string>>({});
 	const [formError, setFormError] = useState<string>('');
 	useInput((input, key) => {
 		const currentFieldData = fields[currentField];
 		const isSelectField = currentFieldData?.type === 'select';
+		const isStackedSelect = isSelectField && currentFieldData?.display === 'stacked';
 
 		const keyHandlers: Array<{ condition: () => boolean; action: () => void }> = [
 			{ condition: () => key.escape, action: onCancel },
@@ -46,8 +48,24 @@ export const SimpleForm = <T = Record<string, unknown>>({
 				condition: () => key.tab && !key.shift,
 				action: () => setCurrentField(Math.min(currentField + 1, fields.length - 1)),
 			},
-			{ condition: () => key.downArrow, action: () => setCurrentField(Math.min(currentField + 1, fields.length - 1)) },
-			{ condition: () => key.upArrow, action: () => setCurrentField(Math.max(currentField - 1, 0)) },
+			// Special handling for stacked select fields
+			{
+				condition: () => key.downArrow && isStackedSelect,
+				action: () => handleStackedSelectNavigation('down'),
+			},
+			{
+				condition: () => key.upArrow && isStackedSelect,
+				action: () => handleStackedSelectNavigation('up'),
+			},
+			// Default field navigation for non-stacked selects
+			{
+				condition: () => key.downArrow && !isStackedSelect,
+				action: () => setCurrentField(Math.min(currentField + 1, fields.length - 1)),
+			},
+			{
+				condition: () => key.upArrow && !isStackedSelect,
+				action: () => setCurrentField(Math.max(currentField - 1, 0)),
+			},
 			{
 				condition: () => (key.leftArrow || key.rightArrow) && isSelectField,
 				action: () => currentFieldData && handleSelectToggle(currentFieldData),
@@ -140,6 +158,42 @@ export const SimpleForm = <T = Record<string, unknown>>({
 			const nextIndex = (currentIndex + 1) % field.options.length;
 			const nextValue = field.options[nextIndex]?.value;
 			handleFieldChange(field.name, nextValue);
+			setCurrentSelectOption(nextIndex);
+		}
+	};
+
+	const handleStackedSelectNavigation = (direction: 'up' | 'down') => {
+		const currentFieldData = fields[currentField];
+		if (!currentFieldData?.options) {
+			return;
+		}
+
+		const currentValue = formData[currentFieldData.name];
+		const currentIndex = currentFieldData.options.findIndex((option) => option.value === currentValue);
+		const optionsLength = currentFieldData.options.length;
+
+		if (direction === 'down') {
+			if (currentIndex < optionsLength - 1) {
+				// Move to next option
+				const nextIndex = currentIndex + 1;
+				const nextValue = currentFieldData.options[nextIndex]?.value;
+				handleFieldChange(currentFieldData.name, nextValue);
+				setCurrentSelectOption(nextIndex);
+			} else {
+				// Move to next field when on last option
+				setCurrentField(Math.min(currentField + 1, fields.length - 1));
+			}
+		} else if (direction === 'up') {
+			if (currentIndex > 0) {
+				// Move to previous option
+				const prevIndex = currentIndex - 1;
+				const prevValue = currentFieldData.options[prevIndex]?.value;
+				handleFieldChange(currentFieldData.name, prevValue);
+				setCurrentSelectOption(prevIndex);
+			} else {
+				// Move to previous field when on first option
+				setCurrentField(Math.max(currentField - 1, 0));
+			}
 		}
 	};
 

@@ -112,14 +112,10 @@ export const SelectField = ({
 								<Text color={isSelected ? 'green' : 'gray'}>{isSelected ? '[✓]' : '[ ]'}</Text>
 								<Text> </Text>
 								<Text bold={isSelected}>{option.label}</Text>
+								{isSelected && isActive && <Text color="gray"> (Use ↑/↓ to navigate options, Space to select)</Text>}
 							</Box>
 						);
 					})}
-					{isActive && (
-						<Box marginTop={1}>
-							<Text color="gray">(Use ←/→ or Space to change)</Text>
-						</Box>
-					)}
 				</Box>
 			</Box>
 
