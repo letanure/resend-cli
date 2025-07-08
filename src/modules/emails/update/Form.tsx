@@ -12,11 +12,11 @@ import { updateEmail } from './action.js';
 import { fields } from './fields.js';
 import { UpdateEmailOptionsSchema, type UpdateEmailOptionsType } from './schema.js';
 
-interface EmailUpdateFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const EmailUpdateForm = ({ onExit }: EmailUpdateFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 	const [isSubmitting, setIsSubmitting] = useState(false);

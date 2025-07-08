@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { ContactsMenu, ContactsMenuState, type ContactsMenuState as ContactsMenuStateType } from './ContactsMenu.js';
-import { CreateContactForm } from './create/Form.js';
-import { DeleteContactForm } from './delete/Form.js';
-import { ContactListForm } from './list/Form.js';
-import { ContactRetrieveForm } from './retrieve/Form.js';
-import { ContactUpdateForm } from './update/Form.js';
+import { Form as CreateForm } from './create/Form.js';
+import { Form as DeleteForm } from './delete/Form.js';
+import { Form as ListForm } from './list/Form.js';
+import { Form as RetrieveForm } from './retrieve/Form.js';
+import { Form as UpdateForm } from './update/Form.js';
 
 type ContactsMenuStateWithMenu = 'menu' | ContactsMenuStateType;
 
@@ -30,7 +30,7 @@ export const AppContacts = ({ onExit }: AppContactsProps) => {
 				/>
 			)}
 			{screenState === 'create' && (
-				<CreateContactForm
+				<CreateForm
 					onExit={() => {
 						setLastSelectedContactMenuItem(ContactsMenuState.create);
 						setScreenState('menu');
@@ -38,7 +38,7 @@ export const AppContacts = ({ onExit }: AppContactsProps) => {
 				/>
 			)}
 			{screenState === 'retrieve' && (
-				<ContactRetrieveForm
+				<RetrieveForm
 					onExit={() => {
 						setLastSelectedContactMenuItem(ContactsMenuState.retrieve);
 						setScreenState('menu');
@@ -46,7 +46,7 @@ export const AppContacts = ({ onExit }: AppContactsProps) => {
 				/>
 			)}
 			{screenState === 'update' && (
-				<ContactUpdateForm
+				<UpdateForm
 					onExit={() => {
 						setLastSelectedContactMenuItem(ContactsMenuState.update);
 						setScreenState('menu');
@@ -54,7 +54,7 @@ export const AppContacts = ({ onExit }: AppContactsProps) => {
 				/>
 			)}
 			{screenState === 'delete' && (
-				<DeleteContactForm
+				<DeleteForm
 					onExit={() => {
 						setLastSelectedContactMenuItem(ContactsMenuState.delete);
 						setScreenState('menu');
@@ -62,7 +62,7 @@ export const AppContacts = ({ onExit }: AppContactsProps) => {
 				/>
 			)}
 			{screenState === 'list' && (
-				<ContactListForm
+				<ListForm
 					onExit={() => {
 						setLastSelectedContactMenuItem(ContactsMenuState.list);
 						setScreenState('menu');

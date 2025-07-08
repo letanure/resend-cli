@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { renderWithProviders } from '@/utils/test-utils.js';
-import { EmailRetrieveForm } from './Form.js';
+import { Form as EmailRetrieveForm } from './Form.js';
 
 describe('EmailRetrieveForm', () => {
 	const mockOnExit = vi.fn();

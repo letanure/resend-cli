@@ -13,11 +13,11 @@ import { retrieveDomain } from './action.js';
 import { retrieveDomainFields } from './fields.js';
 import { type RetrieveDomainData, retrieveDomainSchema } from './schema.js';
 
-interface DomainRetrieveFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const DomainRetrieveForm = ({ onExit }: DomainRetrieveFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const [result, setResult] = React.useState<ApiResult<GetDomainResponseSuccess> | null>(null);
 	const [loading, setLoading] = React.useState(false);
 	const { isDryRun } = useDryRun();

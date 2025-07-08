@@ -17,11 +17,11 @@ interface UpdateContactResponse {
 	id: string;
 }
 
-interface ContactUpdateFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const ContactUpdateForm = ({ onExit }: ContactUpdateFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const [result, setResult] = React.useState<ApiResult<UpdateContactResponse> | null>(null);
 	const [loading, setLoading] = React.useState(false);
 	const { isDryRun } = useDryRun();

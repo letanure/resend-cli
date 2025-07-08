@@ -16,11 +16,11 @@ interface ListBroadcastsResponse {
 	data: Array<BroadcastItem>;
 }
 
-interface BroadcastListFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const BroadcastListForm = ({ onExit }: BroadcastListFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const formatData = (data: ListBroadcastsResponse) => {
 		return data.data.map((broadcast) => ({
 			id: broadcast.id,

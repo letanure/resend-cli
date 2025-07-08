@@ -10,11 +10,11 @@ import { useResend } from '@/contexts/ResendProvider.js';
 import { listApiKeys } from './action.js';
 import { displayFields } from './fields.js';
 
-interface ApiKeyListFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const ListApiKeyForm = ({ onExit }: ApiKeyListFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 	const [isLoading, setIsLoading] = useState(true);

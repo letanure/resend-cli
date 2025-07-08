@@ -16,11 +16,11 @@ interface CreateBroadcastResponse {
 	id: string;
 }
 
-interface BroadcastCreateFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const BroadcastCreateForm = ({ onExit }: BroadcastCreateFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const [result, setResult] = React.useState<ApiResult<CreateBroadcastResponse> | null>(null);
 	const [loading, setLoading] = React.useState(false);
 	const { isDryRun } = useDryRun();

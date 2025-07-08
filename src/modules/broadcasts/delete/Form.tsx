@@ -18,11 +18,11 @@ interface DeleteBroadcastResponse {
 	deleted: boolean;
 }
 
-interface BroadcastDeleteFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const BroadcastDeleteForm = ({ onExit }: BroadcastDeleteFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const [result, setResult] = React.useState<ApiResult<DeleteBroadcastResponse> | null>(null);
 	const [loading, setLoading] = React.useState(false);
 	const { isDryRun } = useDryRun();

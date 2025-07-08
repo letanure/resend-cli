@@ -11,11 +11,11 @@ import { createContact } from './action.js';
 import { fields } from './fields.js';
 import { CreateContactOptionsSchema, type CreateContactOptionsType } from './schema.js';
 
-interface ContactCreateFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const CreateContactForm = ({ onExit }: ContactCreateFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const { apiKey } = useResend();
 	const { isDryRun } = useDryRun();
 	const [isSubmitting, setIsSubmitting] = useState(false);

@@ -11,11 +11,11 @@ import { createDomain } from './action.js';
 import { fields } from './fields.js';
 import { type CreateDomainData, createDomainSchema } from './schema.js';
 
-interface CreateDomainFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const CreateDomainForm = ({ onExit }: CreateDomainFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 	const [isSubmitting, setIsSubmitting] = useState(false);

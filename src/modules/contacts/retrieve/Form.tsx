@@ -11,11 +11,11 @@ import { retrieveContact } from './action.js';
 import { fields } from './fields.js';
 import { RetrieveContactOptionsSchema, type RetrieveContactOptionsType } from './schema.js';
 
-interface ContactRetrieveFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const ContactRetrieveForm = ({ onExit }: ContactRetrieveFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 	const [isSubmitting, setIsSubmitting] = useState(false);

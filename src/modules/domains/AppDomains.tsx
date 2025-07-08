@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { CreateDomainForm } from './create/Form.js';
-import { DomainDeleteForm } from './delete/Form.js';
+import { Form as CreateForm } from './create/Form.js';
 import { DomainsMenu, DomainsMenuState, type DomainsMenuState as DomainsMenuStateType } from './DomainsMenu.js';
-import { DomainListForm } from './list/Form.js';
-import { DomainRetrieveForm } from './retrieve/Form.js';
-import { DomainUpdateForm } from './update/Form.js';
-import { DomainVerifyForm } from './verify/Form.js';
+import { Form as DeleteForm } from './delete/Form.js';
+import { Form as ListForm } from './list/Form.js';
+import { Form as RetrieveForm } from './retrieve/Form.js';
+import { Form as UpdateForm } from './update/Form.js';
+import { Form as VerifyForm } from './verify/Form.js';
 
 type DomainsMenuStateWithMenu = 'menu' | DomainsMenuStateType;
 
@@ -31,7 +31,7 @@ export const AppDomains = ({ onExit }: AppDomainsProps) => {
 				/>
 			)}
 			{screenState === 'create' && (
-				<CreateDomainForm
+				<CreateForm
 					onExit={() => {
 						setLastSelectedDomainMenuItem(DomainsMenuState.create);
 						setScreenState('menu');
@@ -39,7 +39,7 @@ export const AppDomains = ({ onExit }: AppDomainsProps) => {
 				/>
 			)}
 			{screenState === 'retrieve' && (
-				<DomainRetrieveForm
+				<RetrieveForm
 					onExit={() => {
 						setLastSelectedDomainMenuItem(DomainsMenuState.retrieve);
 						setScreenState('menu');
@@ -47,7 +47,7 @@ export const AppDomains = ({ onExit }: AppDomainsProps) => {
 				/>
 			)}
 			{screenState === 'verify' && (
-				<DomainVerifyForm
+				<VerifyForm
 					onExit={() => {
 						setLastSelectedDomainMenuItem(DomainsMenuState.verify);
 						setScreenState('menu');
@@ -55,7 +55,7 @@ export const AppDomains = ({ onExit }: AppDomainsProps) => {
 				/>
 			)}
 			{screenState === 'update' && (
-				<DomainUpdateForm
+				<UpdateForm
 					onExit={() => {
 						setLastSelectedDomainMenuItem(DomainsMenuState.update);
 						setScreenState('menu');
@@ -63,7 +63,7 @@ export const AppDomains = ({ onExit }: AppDomainsProps) => {
 				/>
 			)}
 			{screenState === 'list' && (
-				<DomainListForm
+				<ListForm
 					onExit={() => {
 						setLastSelectedDomainMenuItem(DomainsMenuState.list);
 						setScreenState('menu');
@@ -71,7 +71,7 @@ export const AppDomains = ({ onExit }: AppDomainsProps) => {
 				/>
 			)}
 			{screenState === 'delete' && (
-				<DomainDeleteForm
+				<DeleteForm
 					onExit={() => {
 						setLastSelectedDomainMenuItem(DomainsMenuState.delete);
 						setScreenState('menu');

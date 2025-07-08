@@ -12,11 +12,11 @@ import { listContacts } from './action.js';
 import { displayFields, fields } from './fields.js';
 import { ListContactsOptionsSchema, type ListContactsOptionsType } from './schema.js';
 
-interface ContactListFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const ContactListForm = ({ onExit }: ContactListFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 	const [isLoading, setIsLoading] = useState(false);

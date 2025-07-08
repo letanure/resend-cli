@@ -3,11 +3,11 @@ import { Box, Text, useInput } from 'ink';
 import { Layout } from '@/components/ui/layout.js';
 import { config } from '@/config/config.js';
 
-interface EmailBatchFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const EmailBatchForm = ({ onExit }: EmailBatchFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	useInput((input, key) => {
 		if (input === 'q' || key.escape) {
 			onExit();

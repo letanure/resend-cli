@@ -27,11 +27,11 @@ interface RetrieveBroadcastResponse {
 	sent_at: string | null;
 }
 
-interface BroadcastRetrieveFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const BroadcastRetrieveForm = ({ onExit }: BroadcastRetrieveFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const [result, setResult] = React.useState<ApiResult<RetrieveBroadcastResponse> | null>(null);
 	const [loading, setLoading] = React.useState(false);
 	const { isDryRun } = useDryRun();

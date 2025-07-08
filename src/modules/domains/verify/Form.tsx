@@ -17,11 +17,11 @@ interface VerifyDomainResponse {
 	id: string;
 }
 
-interface DomainVerifyFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const DomainVerifyForm = ({ onExit }: DomainVerifyFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const [result, setResult] = React.useState<ApiResult<VerifyDomainResponse> | null>(null);
 	const [loading, setLoading] = React.useState(false);
 	const { isDryRun } = useDryRun();

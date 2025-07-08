@@ -12,7 +12,7 @@ import { createApiKey } from './action.js';
 import { displayFields, fields } from './fields.js';
 import { CreateApiKeyOptionsSchema, type CreateApiKeyOptionsType } from './schema.js';
 
-interface CreateApiKeyFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
@@ -49,7 +49,7 @@ const ApiKeyDisplay = ({ data, title }: ApiKeyDisplayProps) => {
 	);
 };
 
-export const CreateApiKeyForm = ({ onExit }: CreateApiKeyFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 	const [formData, setFormData] = useState<Record<string, unknown>>({

@@ -3,11 +3,11 @@ import { ListDisplay } from '@/components/ui/ListDisplay.js';
 import { listAudiences } from './action.js';
 import { displayFields } from './fields.js';
 
-interface AudienceListFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const ListAudienceForm = ({ onExit }: AudienceListFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const formatData = (data: ListAudiencesResponseSuccess) => {
 		return data.data.map((audience) => ({
 			id: audience.id,

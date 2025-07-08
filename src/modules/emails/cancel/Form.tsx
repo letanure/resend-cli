@@ -12,11 +12,11 @@ import { cancelEmail } from './action.js';
 import { fields } from './fields.js';
 import { CancelEmailOptionsSchema, type CancelEmailOptionsType } from './schema.js';
 
-interface EmailCancelFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const EmailCancelForm = ({ onExit }: EmailCancelFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 	const [isSubmitting, setIsSubmitting] = useState(false);

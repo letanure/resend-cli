@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { EmailBatchForm } from './batch/Form.js';
-import { EmailCancelForm } from './cancel/Form.js';
+import { Form as BatchForm } from './batch/Form.js';
+import { Form as CancelForm } from './cancel/Form.js';
 import { EmailsMenu, EmailsMenuState, type EmailsMenuState as EmailsMenuStateType } from './EmailsMenu.js';
-import { EmailRetrieveForm } from './retrieve/Form.js';
-import { Form as SendEmailForm } from './send/Form.js';
-import { EmailUpdateForm } from './update/Form.js';
+import { Form as RetrieveForm } from './retrieve/Form.js';
+import { Form as SendForm } from './send/Form.js';
+import { Form as UpdateForm } from './update/Form.js';
 
 type EmailsMenuStateWithMenu = 'menu' | EmailsMenuStateType;
 
@@ -30,7 +30,7 @@ export const AppEmail = ({ onExit }: AppEmailProps) => {
 				/>
 			)}
 			{screenState === 'send' && (
-				<SendEmailForm
+				<SendForm
 					onExit={() => {
 						setLastSelectedEmailMenuItem(EmailsMenuState.send);
 						setScreenState('menu');
@@ -38,7 +38,7 @@ export const AppEmail = ({ onExit }: AppEmailProps) => {
 				/>
 			)}
 			{screenState === 'batch' && (
-				<EmailBatchForm
+				<BatchForm
 					onExit={() => {
 						setLastSelectedEmailMenuItem(EmailsMenuState.batch);
 						setScreenState('menu');
@@ -46,7 +46,7 @@ export const AppEmail = ({ onExit }: AppEmailProps) => {
 				/>
 			)}
 			{screenState === 'retrieve' && (
-				<EmailRetrieveForm
+				<RetrieveForm
 					onExit={() => {
 						setLastSelectedEmailMenuItem(EmailsMenuState.retrieve);
 						setScreenState('menu');
@@ -54,7 +54,7 @@ export const AppEmail = ({ onExit }: AppEmailProps) => {
 				/>
 			)}
 			{screenState === 'update' && (
-				<EmailUpdateForm
+				<UpdateForm
 					onExit={() => {
 						setLastSelectedEmailMenuItem(EmailsMenuState.update);
 						setScreenState('menu');
@@ -62,7 +62,7 @@ export const AppEmail = ({ onExit }: AppEmailProps) => {
 				/>
 			)}
 			{screenState === 'cancel' && (
-				<EmailCancelForm
+				<CancelForm
 					onExit={() => {
 						setLastSelectedEmailMenuItem(EmailsMenuState.cancel);
 						setScreenState('menu');

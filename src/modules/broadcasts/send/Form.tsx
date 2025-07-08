@@ -16,11 +16,11 @@ interface SendBroadcastResponse {
 	id: string;
 }
 
-interface BroadcastSendFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const BroadcastSendForm = ({ onExit }: BroadcastSendFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const [result, setResult] = React.useState<ApiResult<SendBroadcastResponse> | null>(null);
 	const [loading, setLoading] = React.useState(false);
 	const { isDryRun } = useDryRun();

@@ -11,7 +11,7 @@ import { createAudience } from './action.js';
 import { fields } from './fields.js';
 import { CreateAudienceOptionsSchema, type CreateAudienceOptionsType } from './schema.js';
 
-interface AudienceCreateFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
@@ -42,7 +42,7 @@ const AudienceDisplay = ({ data, title }: AudienceDisplayProps) => {
 	);
 };
 
-export const AudienceCreateForm = ({ onExit }: AudienceCreateFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 	const [isSubmitting, setIsSubmitting] = useState(false);

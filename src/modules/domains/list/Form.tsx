@@ -3,11 +3,11 @@ import { ListDisplay } from '@/components/ui/ListDisplay.js';
 import { listDomains } from './action.js';
 import { displayFields } from './fields.js';
 
-interface DomainListFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const DomainListForm = ({ onExit }: DomainListFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const formatData = (data: ListDomainsResponseSuccess) => {
 		return data.data.map((domain) => ({
 			id: domain.id,

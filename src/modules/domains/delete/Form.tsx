@@ -18,11 +18,11 @@ interface DeleteDomainResponse {
 	deleted: true;
 }
 
-interface DomainDeleteFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const DomainDeleteForm = ({ onExit }: DomainDeleteFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const [result, setResult] = React.useState<ApiResult<DeleteDomainResponse> | null>(null);
 	const [loading, setLoading] = React.useState(false);
 	const { isDryRun } = useDryRun();

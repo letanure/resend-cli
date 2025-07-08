@@ -11,11 +11,11 @@ import { retrieveAudience } from './action.js';
 import { fields } from './fields.js';
 import { RetrieveAudienceOptionsSchema, type RetrieveAudienceOptionsType } from './schema.js';
 
-interface AudienceRetrieveFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const RetrieveAudienceForm = ({ onExit }: AudienceRetrieveFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 	const [isSubmitting, setIsSubmitting] = useState(false);

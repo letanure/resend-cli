@@ -11,11 +11,11 @@ import { deleteApiKey } from './action.js';
 import { fields } from './fields.js';
 import { type DeleteApiKeyData, deleteApiKeySchema } from './schema.js';
 
-interface DeleteApiKeyFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const DeleteApiKeyForm = ({ onExit }: DeleteApiKeyFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 	const [isSubmitting, setIsSubmitting] = useState(false);

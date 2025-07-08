@@ -13,11 +13,11 @@ import { getEmail } from './action.js';
 import { fields } from './fields.js';
 import { GetEmailOptionsSchema, type GetEmailOptionsType } from './schema.js';
 
-interface EmailRetrieveFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const EmailRetrieveForm = ({ onExit }: EmailRetrieveFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 	const [isSubmitting, setIsSubmitting] = useState(false);

@@ -17,11 +17,11 @@ interface UpdateDomainResponse {
 	id: string;
 }
 
-interface DomainUpdateFormProps {
+interface FormProps {
 	onExit: () => void;
 }
 
-export const DomainUpdateForm = ({ onExit }: DomainUpdateFormProps) => {
+export const Form = ({ onExit }: FormProps) => {
 	const [result, setResult] = React.useState<ApiResult<UpdateDomainResponse> | null>(null);
 	const [loading, setLoading] = React.useState(false);
 	const { isDryRun } = useDryRun();
