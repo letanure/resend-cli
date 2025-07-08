@@ -1,3 +1,10 @@
+# [0.27.0](https://github.com/letanure/resend-cli/compare/v0.26.1...v0.27.0) (2025-07-08)
+
+
+### Features
+
+* implement list broadcasts ([1d3a44e](https://github.com/letanure/resend-cli/commit/1d3a44ef7c6fb5e1fc7ce9412662ed85680a1f37))
+
 ## [0.26.1](https://github.com/letanure/resend-cli/compare/v0.26.0...v0.26.1) (2025-07-08)
 
 
