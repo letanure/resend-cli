@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { ContactCreateForm } from './ContactCreateForm.js';
-import { DeleteContactForm as ContactDeleteForm } from './delete/Form.js';
 import { ContactListForm } from './ContactListForm.js';
 import { ContactRetrieveForm } from './ContactRetrieveForm.js';
 import { ContactsMenu, ContactsMenuState, type ContactsMenuState as ContactsMenuStateType } from './ContactsMenu.js';
 import { ContactUpdateForm } from './ContactUpdateForm.js';
+import { DeleteContactForm as ContactDeleteForm } from './delete/Form.js';
 
 type ContactsMenuStateWithMenu = 'menu' | ContactsMenuStateType;
 
