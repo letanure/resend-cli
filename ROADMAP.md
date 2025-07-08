@@ -4,62 +4,82 @@ This roadmap outlines the planned features and improvements for the Resend CLI. 
 
 > **Note**: This is an unofficial CLI tool built on top of the Resend Node.js SDK and is not affiliated with Resend.
 
-## Current Phase - Core Email Operations ✅
+## ✅ Completed Features
 
+### Core Email Operations
 - [x] Email sending functionality
-- [x] Email retrieval functionality
+- [x] Email retrieval functionality  
+- [x] Email cancellation (cancel scheduled emails)
+- [x] Email updates (modify scheduled emails)
 - [x] Dry-run mode for all operations
 - [x] JSON and text output formats
 - [x] Interactive TUI interface
 - [x] Comprehensive error handling
 - [x] Environment variable configuration
 
-## Next Phase - Email Management
+### Domain Management
+- [x] Domain creation and setup
+- [x] Domain listing and status
+- [x] Domain retrieval with DNS records
+- [x] Domain verification ✨ *Recently added*
 
-- [ ] Email batch operations (send up to 100 emails at once)
-- [ ] Email cancellation (cancel scheduled emails)
-- [ ] Email updates (modify scheduled emails)
-- [ ] Email status tracking and events
-- [ ] Email search and filtering
+### API Key Management  
+- [x] API key creation and listing
+- [x] API key deletion
+- [x] Dry-run support for all operations
 
-## Phase 3 - Domain Management
+### Contact & Audience Management
+- [x] Contact creation and management
+- [x] Contact retrieval and deletion
+- [x] Contact listing with audience filtering
+- [x] Audience creation and management
+- [x] Audience listing and deletion
+- [x] Audience retrieval
 
-- [ ] Domain verification and setup
-- [ ] Domain listing and status
-- [ ] DNS record management
-- [ ] Domain removal and cleanup
-- [ ] DKIM configuration
+## 🚧 Next Phase - UX Improvements (High Priority)
 
-## Phase 4 - API Key Management
+### Navigation & User Experience
+- [ ] **Show only relevant navigation tips in footer** (context-aware help)
+- [ ] **Fix back navigation from lists** (currently stuck in loading state)
+- [ ] Enhanced TUI with better state management
 
-- [ ] API key creation and listing
-- [ ] API key permissions and scoping
-- [ ] API key rotation and deletion
-- [ ] Usage monitoring and limits
+### Component Enhancements  
+- [ ] **File selector component** (for attachments and imports)
+- [ ] **Domain ID selector component** (based on user's domain list)
+- [ ] **API key name validation** (show warnings for repeated names)
 
-## Phase 5 - Contact & Audience Management
+## 📋 Planned Features
 
-- [ ] Contact creation and management
+### Batch Operations
+- [ ] **Batch email sending based on JSON input** (send multiple emails at once)
 - [ ] Contact import/export (CSV, JSON)
-- [ ] Audience creation and segmentation
-- [ ] Contact subscription management
 - [ ] Bulk contact operations
 
-## Phase 6 - Advanced Features
+### List Enhancements
+- [ ] **Add actions to all lists** (delete/update directly from list views)
+- [ ] Search and filtering capabilities
+- [ ] Pagination for large datasets
 
+## 🔮 Future Features
+
+### Advanced Email Features
 - [ ] Email templates and reusable content
+- [ ] Email scheduling with cron-like syntax
 - [ ] Webhook management and testing
 - [ ] Analytics and reporting
-- [ ] Email scheduling with cron-like syntax
-- [ ] Configuration file support (.resendrc)
+- [ ] Email status tracking and events
 
-## Developer Experience Improvements
-
+### Developer Experience
 - [ ] Shell completion (bash, zsh, fish)
-- [ ] Enhanced TUI with search and pagination
+- [ ] Configuration file support (.resendrc)
 - [ ] Better error messages and suggestions
 - [ ] Plugin system for extensions
 - [ ] CI/CD integration examples
+
+### Technical Improvements
+- [ ] Performance optimizations for large datasets
+- [ ] Multi-account support
+- [ ] DKIM configuration management
 
 ## Ideas Under Consideration
 
