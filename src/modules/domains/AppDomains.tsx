@@ -3,9 +3,9 @@ import { CreateDomainForm } from './create/Form.js';
 import { DomainDeleteForm } from './DomainDeleteForm.js';
 import { DomainsMenu, DomainsMenuState, type DomainsMenuState as DomainsMenuStateType } from './DomainsMenu.js';
 import { DomainUpdateForm } from './DomainUpdateForm.js';
-import { DomainVerifyForm } from './DomainVerifyForm.js';
 import { DomainListForm } from './list/Form.js';
 import { DomainRetrieveForm } from './retrieve/Form.js';
+import { DomainVerifyForm } from './verify/Form.js';
 
 type DomainsMenuStateWithMenu = 'menu' | DomainsMenuStateType;
 

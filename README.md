@@ -227,6 +227,7 @@ Options:
 Commands:
   create [options]    Create a domain through the Resend Email API
   retrieve [options]  Retrieve a domain by ID from Resend API
+  verify [options]    Verify a domain by ID using Resend API
   list [options]      List all domains from Resend API
 
 ```
