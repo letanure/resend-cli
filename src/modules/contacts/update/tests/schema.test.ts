@@ -131,7 +131,7 @@ describe('updateContactSchema', () => {
 		}
 	});
 
-	it('should remove empty optional fields', () => {
+	it('should preserve empty optional fields (cleaning handled in actions)', () => {
 		const result = updateContactSchema.safeParse({
 			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			id: 'e169aa45-1ecf-4183-9955-b1499d5701d3',
@@ -143,8 +143,8 @@ describe('updateContactSchema', () => {
 		if (result.success) {
 			expect(result.data.audienceId).toBe('78261eea-8f8b-4381-83c6-79fa7120f1cf');
 			expect(result.data.id).toBe('e169aa45-1ecf-4183-9955-b1499d5701d3');
-			expect(result.data.firstName).toBeUndefined();
-			expect(result.data.lastName).toBeUndefined();
+			expect(result.data.firstName).toBe('');
+			expect(result.data.lastName).toBe('');
 		}
 	});
 

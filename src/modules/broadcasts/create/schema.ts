@@ -1,10 +1,6 @@
 import { z } from 'zod';
-import {
-	createEmailRecipientsSchema,
-	createEmailSenderSchema,
-	createTextFieldSchema,
-	removeEmptyFields,
-} from '@/utils/zodTransforms.js';
+import { htmlOrTextMessage, htmlOrTextRefine } from '@/utils/shared-schemas.js';
+import { createEmailRecipientsSchema, createEmailSenderSchema, createTextFieldSchema } from '@/utils/zodTransforms.js';
 
 export const createBroadcastSchema = z
 	.object({
@@ -19,18 +15,8 @@ export const createBroadcastSchema = z
 		text: createTextFieldSchema(false),
 		name: createTextFieldSchema(false),
 	})
-	.refine((data) => data.html || data.text, {
-		message: 'Either html or text must be provided',
-	})
-	.transform((data) => {
-		const cleaned = removeEmptyFields(data);
-		// Ensure required fields are always present
-		return {
-			audienceId: data.audienceId,
-			from: data.from,
-			subject: data.subject,
-			...cleaned,
-		};
+	.refine(htmlOrTextRefine, {
+		message: htmlOrTextMessage,
 	});
 
 export type CreateBroadcastData = z.infer<typeof createBroadcastSchema>;

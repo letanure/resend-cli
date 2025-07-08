@@ -13,7 +13,11 @@ async function handleCreateCommand(options: Record<string, unknown>): Promise<vo
 		const apiKey = getResendApiKey();
 
 		const outputFormat = (options.output as OutputFormat) || 'text';
-		const createData = validateOptions<CreateApiKeyOptionsType>(options, CreateApiKeyOptionsSchema, outputFormat);
+		const validatedData = validateOptions<CreateApiKeyOptionsType>(options, CreateApiKeyOptionsSchema, outputFormat);
+
+		// Business logic: If permission is full_access, clear domain_id
+		const createData =
+			validatedData.permission === 'full_access' ? { ...validatedData, domain_id: undefined } : validatedData;
 
 		const isDryRun = Boolean(options.dryRun);
 

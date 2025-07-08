@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { removeEmptyFields } from '@/utils/zodTransforms.js';
 
 export const updateContactSchema = z
 	.object({
@@ -16,13 +15,6 @@ export const updateContactSchema = z
 	.refine((data) => data.id || data.email, {
 		message: 'Either contact ID or email must be provided',
 		path: ['id'],
-	})
-	.transform((data) => {
-		const cleaned = removeEmptyFields(data);
-		return {
-			audienceId: data.audienceId,
-			...cleaned,
-		};
 	});
 
 export type UpdateContactData = z.infer<typeof updateContactSchema>;

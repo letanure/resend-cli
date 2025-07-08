@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { htmlOrTextMessage, htmlOrTextRefine } from '@/utils/shared-schemas.js';
 import { validatescheduledAt } from '@/utils/validations.js';
 import {
 	createEmailRecipientsSchema,
@@ -40,8 +41,8 @@ export const CreateEmailOptionsSchema = z
 			)
 			.optional(),
 	})
-	.refine((data) => data.html || data.text, {
-		message: 'Either html or text must be provided',
+	.refine(htmlOrTextRefine, {
+		message: htmlOrTextMessage,
 	})
 	.transform(removeEmptyFields);
 

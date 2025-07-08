@@ -16,3 +16,7 @@ export const contactIdentifierSchema = z
 	.refine((data) => data.id || data.email, {
 		message: 'Either contact ID or email is required',
 	});
+
+// HTML or text content validation for emails/broadcasts
+export const htmlOrTextRefine = (data: { html?: unknown; text?: unknown }) => data.html || data.text;
+export const htmlOrTextMessage = 'Either html or text must be provided';

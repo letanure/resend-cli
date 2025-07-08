@@ -2,6 +2,7 @@ import type { CreateBroadcastResponseSuccess } from 'resend';
 import { Resend } from 'resend';
 import type { ApiResult } from '@/types/index.js';
 import { formatResendError } from '@/utils/resendErrors.js';
+import { removeEmptyFields } from '@/utils/zodTransforms.js';
 import type { CreateBroadcastData } from './schema.js';
 
 /**
@@ -17,7 +18,8 @@ export async function createBroadcast(
 ): Promise<ApiResult<CreateBroadcastResponseSuccess>> {
 	try {
 		const resend = new Resend(apiKey);
-		const { data: responseData, error } = await resend.broadcasts.create(data as never);
+		const cleanedData = removeEmptyFields(data);
+		const { data: responseData, error } = await resend.broadcasts.create(cleanedData as never);
 
 		if (error) {
 			return {

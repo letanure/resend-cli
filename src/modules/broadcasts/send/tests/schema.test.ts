@@ -81,7 +81,7 @@ describe('sendBroadcastSchema', () => {
 		}
 	});
 
-	it('should remove empty scheduledAt field', () => {
+	it('should preserve empty scheduledAt field (cleaning handled in actions)', () => {
 		const result = sendBroadcastSchema.safeParse({
 			broadcastId: '49a3999c-0ce1-4ea6-ab68-afcd6dc2e794',
 			scheduledAt: '',
@@ -90,7 +90,7 @@ describe('sendBroadcastSchema', () => {
 		expect(result.success).toBe(true);
 		if (result.success) {
 			expect(result.data.broadcastId).toBe('49a3999c-0ce1-4ea6-ab68-afcd6dc2e794');
-			expect(result.data.scheduledAt).toBeUndefined();
+			expect(result.data.scheduledAt).toBe('');
 		}
 	});
 
