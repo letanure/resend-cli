@@ -184,10 +184,11 @@ Usage: resend-cli broadcasts [options] [command]
 Broadcast operations
 
 Options:
-  -h, --help  display help for command
+  -h, --help          display help for command
 
 Commands:
-  list        List all broadcasts
+  create|c [options]  Create a new broadcast to send to your audience
+  list                List all broadcasts
 
 ```
 ### contacts
