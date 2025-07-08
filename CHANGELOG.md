@@ -1,3 +1,10 @@
+# [0.25.0](https://github.com/letanure/resend-cli/compare/v0.24.0...v0.25.0) (2025-07-08)
+
+
+### Features
+
+* implement contact update ([50669ae](https://github.com/letanure/resend-cli/commit/50669aedbd705173fdf6f0cdc5c0d6fae74ad2ea))
+
 # [0.24.0](https://github.com/letanure/resend-cli/compare/v0.23.0...v0.24.0) (2025-07-08)
 
 
