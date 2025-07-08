@@ -1,3 +1,10 @@
+# [0.28.0](https://github.com/letanure/resend-cli/compare/v0.27.0...v0.28.0) (2025-07-08)
+
+
+### Features
+
+*  use ListDisplay  for lists ([539e804](https://github.com/letanure/resend-cli/commit/539e804dc45c0ccb3d7ddcc9155132b1e64e3c34))
+
 # [0.27.0](https://github.com/letanure/resend-cli/compare/v0.26.1...v0.27.0) (2025-07-08)
 
 
