@@ -188,6 +188,7 @@ Options:
 
 Commands:
   create|c [options]  Create a new broadcast to send to your audience
+  retrieve [options]  Retrieve a broadcast by ID from Resend API
   list                List all broadcasts
 
 ```
