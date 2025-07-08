@@ -1,3 +1,10 @@
+# [0.17.0](https://github.com/letanure/resend-cli/compare/v0.16.0...v0.17.0) (2025-07-08)
+
+
+### Features
+
+* implement domain cerate ([0148911](https://github.com/letanure/resend-cli/commit/0148911adf253e9883c7696a8407c4bfbdb7cc6b))
+
 # [0.16.0](https://github.com/letanure/resend-cli/compare/v0.15.0...v0.16.0) (2025-07-08)
 
 
