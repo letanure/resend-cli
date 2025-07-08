@@ -1,3 +1,10 @@
+## [0.26.1](https://github.com/letanure/resend-cli/compare/v0.26.0...v0.26.1) (2025-07-08)
+
+
+### Bug Fixes
+
+* move info alert about broadcast deletionafter form ([c8a5798](https://github.com/letanure/resend-cli/commit/c8a57988cbebf50bb5bb11669752b5cd64ecf8dc))
+
 # [0.26.0](https://github.com/letanure/resend-cli/compare/v0.25.0...v0.26.0) (2025-07-08)
 
 
