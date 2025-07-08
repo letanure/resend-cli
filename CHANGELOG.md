@@ -1,3 +1,10 @@
+# [0.18.0](https://github.com/letanure/resend-cli/compare/v0.17.1...v0.18.0) (2025-07-08)
+
+
+### Features
+
+* implement domain retrieve ([31398f7](https://github.com/letanure/resend-cli/commit/31398f716011256b547b2e16565b91c5839b5bb6))
+
 ## [0.17.1](https://github.com/letanure/resend-cli/compare/v0.17.0...v0.17.1) (2025-07-08)
 
 
