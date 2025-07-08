@@ -1,3 +1,10 @@
+## [0.19.1](https://github.com/letanure/resend-cli/compare/v0.19.0...v0.19.1) (2025-07-08)
+
+
+### Bug Fixes
+
+* unify cli results ([faf3db5](https://github.com/letanure/resend-cli/commit/faf3db552aa3548368b919d3baa218a7163a28d8))
+
 # [0.19.0](https://github.com/letanure/resend-cli/compare/v0.18.0...v0.19.0) (2025-07-08)
 
 
