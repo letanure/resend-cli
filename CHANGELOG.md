@@ -1,3 +1,10 @@
+# [0.16.0](https://github.com/letanure/resend-cli/compare/v0.15.0...v0.16.0) (2025-07-08)
+
+
+### Features
+
+* implement API key delete ([81df063](https://github.com/letanure/resend-cli/commit/81df063fe647977d565d51eefbab924e8b76a025))
+
 # [0.15.0](https://github.com/letanure/resend-cli/compare/v0.14.0...v0.15.0) (2025-07-08)
 
 
