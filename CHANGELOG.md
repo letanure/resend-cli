@@ -1,3 +1,10 @@
+# [0.21.0](https://github.com/letanure/resend-cli/compare/v0.20.0...v0.21.0) (2025-07-08)
+
+
+### Features
+
+* implement domain delete ([233f869](https://github.com/letanure/resend-cli/commit/233f8699ef2086a1fa2a2716c50f0c3a7224ca82))
+
 # [0.20.0](https://github.com/letanure/resend-cli/compare/v0.19.1...v0.20.0) (2025-07-08)
 
 
