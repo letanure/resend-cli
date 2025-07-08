@@ -3,25 +3,15 @@ import { removeEmptyFields } from '@/utils/zodTransforms.js';
 
 // TLS configuration enum - matches Resend's UpdateDomainsOptions['tls']
 const tlsSchema = z
-	.union([
-		z.enum(['opportunistic', 'enforced'] as const),
-		z.literal('').transform(() => undefined),
-		z.undefined()
-	])
-	.optional()
+	.union([z.enum(['opportunistic', 'enforced'] as const), z.literal('').transform(() => undefined), z.undefined()])
+	.optional();
 
 export const updateDomainSchema = z
 	.object({
 		domainId: z.string().trim().min(1, { message: 'Domain ID is required' }),
-		clickTracking: z
-			.union([z.boolean(), z.string()])
-			.transform((val) => (typeof val === 'string' ? val === 'true' : val))
-			.optional(),
-		openTracking: z
-			.union([z.boolean(), z.string()])
-			.transform((val) => (typeof val === 'string' ? val === 'true' : val))
-			.optional(),
-		tls: tlsSchema.optional(),
+		clickTracking: z.boolean().optional(),
+		openTracking: z.boolean().optional(),
+		tls: tlsSchema,
 	})
 	.transform((data) => {
 		const cleaned = removeEmptyFields(data);

@@ -17,10 +17,17 @@ async function handleCreateCommand(options: Record<string, unknown>, command: Co
 	const allOptions = { ...globalOptions, ...options };
 
 	try {
-		// Extract output format and validate contact data
+		// Extract output format and convert boolean strings to booleans
 		const outputFormat = (allOptions.output as OutputFormat) || 'text';
+
+		// Convert string boolean values to actual booleans
+		const processedOptions = { ...allOptions };
+		if (typeof processedOptions.unsubscribed === 'string') {
+			processedOptions.unsubscribed = ['true', 'yes', '1'].includes(processedOptions.unsubscribed.toLowerCase());
+		}
+
 		const contactData = validateOptions(
-			allOptions,
+			processedOptions,
 			CreateContactOptionsSchema,
 			outputFormat,
 		) as CreateContactOptionsType;

@@ -40,7 +40,6 @@ describe('updateDomain', () => {
 		expect(result.data?.object).toBe('domain');
 		expect(result.error).toBeUndefined();
 		expect(mockUpdate).toHaveBeenCalledWith({
-			domainId: 'b8617ad3-b712-41d9-81a0-f7c3d879314e',
 			id: 'b8617ad3-b712-41d9-81a0-f7c3d879314e',
 			clickTracking: true,
 			openTracking: false,
@@ -67,7 +66,6 @@ describe('updateDomain', () => {
 
 		expect(result.success).toBe(true);
 		expect(mockUpdate).toHaveBeenCalledWith({
-			domainId: 'b8617ad3-b712-41d9-81a0-f7c3d879314e',
 			id: 'b8617ad3-b712-41d9-81a0-f7c3d879314e',
 			clickTracking: true,
 		});

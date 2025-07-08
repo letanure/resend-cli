@@ -44,15 +44,14 @@ describe('Contact Create Schema', () => {
 		expect(() => CreateContactOptionsSchema.parse(invalidData)).toThrow();
 	});
 
-	it('should transform boolean strings correctly', () => {
+	it('should reject string booleans (CLI should convert before validation)', () => {
 		const dataWithStringBoolean = {
 			email: 'test@example.com',
 			audienceId: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			unsubscribed: 'true',
 		};
 
-		const result = CreateContactOptionsSchema.parse(dataWithStringBoolean);
-		expect(result.unsubscribed).toBe(true);
+		expect(() => CreateContactOptionsSchema.parse(dataWithStringBoolean)).toThrow('Expected boolean, received string');
 	});
 
 	it('should handle optional fields', () => {
