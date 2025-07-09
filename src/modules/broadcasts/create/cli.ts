@@ -1,5 +1,6 @@
 import { Command } from 'commander';
-import { validateOptions } from '@/utils/cli.js';
+import { registerFieldOptions, validateOptions } from '@/utils/cli.js';
+import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
@@ -61,13 +62,33 @@ async function handleCreateCommand(options: Record<string, unknown>, command: Co
 	}
 }
 
+export function registerCreateBroadcastCommand(broadcastsCommand: Command): void {
+	const createCommand = createCreateBroadcastCommand();
+	broadcastsCommand.addCommand(createCommand);
+}
+
+function createCreateBroadcastCommand(): Command {
+	const createCommand = new Command('create')
+		.alias('c')
+		.description('Create a new broadcast to send to your audience')
+		.action(handleCreateCommand);
+
+	registerFieldOptions(createCommand, fields);
+
+	const createExamples = [
+		'$ resend-cli broadcast create --audience-id="78261eea-8f8b-4381-83c6-79fa7120f1cf" --from="Acme <onboarding@resend.dev>" --subject="Weekly Newsletter" --html="<h1>Hello World</h1>"',
+		'$ resend-cli broadcast create -a 78261eea-8f8b-4381-83c6-79fa7120f1cf -f onboarding@resend.dev -s "Product Update" --text="New features available!"',
+		'$ resend-cli broadcast create --audience-id="..." --from="..." --subject="..." --html="..." --name="Campaign Name" --reply-to="support@example.com"',
+		'$ resend-cli broadcast create --output json --audience-id="..." --from="..." --subject="..." --html="..." | jq \'.\'',
+		'$ RESEND_API_KEY="re_xxxxx" resend-cli broadcast create --audience-id="..." --from="..." --subject="..." --html="..."',
+	];
+
+	configureCustomHelp(createCommand, fields, createExamples);
+
+	return createCommand;
+}
+
 export const broadcastCreateCommand = new Command('create')
 	.alias('c')
 	.description('Create a new broadcast to send to your audience')
 	.action(handleCreateCommand);
-
-// Add CLI options
-fields.forEach((field) => {
-	const flags = `${field.cliShortFlag}, ${field.cliFlag} <value>`;
-	broadcastCreateCommand.option(flags, field.helpText, field.placeholder);
-});

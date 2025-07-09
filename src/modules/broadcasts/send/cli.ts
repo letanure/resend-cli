@@ -1,5 +1,6 @@
 import { Command } from 'commander';
-import { validateOptions } from '@/utils/cli.js';
+import { registerFieldOptions, validateOptions } from '@/utils/cli.js';
+import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
@@ -61,13 +62,34 @@ async function handleSendCommand(options: Record<string, unknown>, command: Comm
 	}
 }
 
+export function registerSendBroadcastCommand(broadcastsCommand: Command): void {
+	const sendCommand = createSendBroadcastCommand();
+	broadcastsCommand.addCommand(sendCommand);
+}
+
+function createSendBroadcastCommand(): Command {
+	const sendCommand = new Command('send')
+		.alias('s')
+		.description('Send a broadcast to your audience')
+		.action(handleSendCommand);
+
+	registerFieldOptions(sendCommand, fields);
+
+	const sendExamples = [
+		'$ resend-cli broadcast send --broadcast-id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794"',
+		'$ resend-cli broadcast send -b 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794',
+		'$ resend-cli broadcast send --broadcast-id="..." --scheduled-at="in 1 hour"',
+		'$ resend-cli broadcast send --broadcast-id="..." --scheduled-at="2024-12-25T10:00:00Z"',
+		'$ resend-cli broadcast send --output json --broadcast-id="..." | jq \'.\'',
+		'$ RESEND_API_KEY="re_xxxxx" resend-cli broadcast send --broadcast-id="..."',
+	];
+
+	configureCustomHelp(sendCommand, fields, sendExamples);
+
+	return sendCommand;
+}
+
 export const broadcastSendCommand = new Command('send')
 	.alias('s')
 	.description('Send a broadcast to your audience')
 	.action(handleSendCommand);
-
-// Add CLI options
-fields.forEach((field) => {
-	const flags = `${field.cliShortFlag}, ${field.cliFlag} <value>`;
-	broadcastSendCommand.option(flags, field.helpText, field.placeholder);
-});

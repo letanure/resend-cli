@@ -184,15 +184,15 @@ Usage: resend-cli broadcasts [options] [command]
 Broadcast operations
 
 Options:
-  -h, --help          display help for command
+  -h, --help  display help for command
 
 Commands:
-  create|c [options]  Create a new broadcast to send to your audience
-  delete|d [options]  Delete a broadcast (only draft or scheduled broadcasts)
-  list|l              List all broadcasts
-  retrieve [options]  Retrieve a broadcast by ID from Resend API
-  send|s [options]    Send a broadcast to your audience
-  update|u [options]  Update a broadcast to send to your audience
+  create|c    Create a new broadcast to send to your audience
+  delete|d    Delete a broadcast (only draft or scheduled broadcasts)
+  list|l      List all broadcasts
+  retrieve    Retrieve a broadcast by ID from Resend API
+  send|s      Send a broadcast to your audience
+  update|u    Update a broadcast to send to your audience
 
 ```
 ### contacts
