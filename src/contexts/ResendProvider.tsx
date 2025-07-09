@@ -10,15 +10,17 @@ const ResendContext = createContext<ResendContextType | null>(null);
 
 interface ResendProviderProps {
 	children: ReactNode;
+	apiKey?: string; // Optional API key from command line or other sources
 }
 
-export const ResendProvider = ({ children }: ResendProviderProps) => {
-	const apiKey = getResendApiKeyOrNull();
+export const ResendProvider = ({ children, apiKey: providedApiKey }: ResendProviderProps) => {
+	// Priority order: 1) Environment variable, 2) Provided API key
+	const apiKey = getResendApiKeyOrNull() || providedApiKey;
 
 	if (!apiKey) {
 		return (
 			<Alert variant="warning">
-				Missing RESEND_API_KEY environment variable. Please set it to use the CLI.{'\n'}
+				Missing RESEND_API_KEY environment variable or --api-key option. Please set one to use the CLI.{'\n'}
 				Get your API key at {getResendApiKeyDocsUrl()}
 			</Alert>
 		);

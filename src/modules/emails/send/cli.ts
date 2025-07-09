@@ -18,7 +18,7 @@ async function handleSendCommand(options: Record<string, unknown>, command: Comm
 	const allOptions = { ...globalOptions, ...options };
 
 	try {
-		const apiKey = getResendApiKey();
+		const apiKey = getResendApiKey(allOptions.apiKey as string);
 
 		// Extract output format and validate email data
 		const outputFormat = (allOptions.output as OutputFormat) || 'text';
@@ -77,5 +77,6 @@ const sendExamples = [
 	'$ resend-cli email send --output json --from="..." --to="..." --subject="..." --html="..." | jq \'.\'',
 	"$ EMAIL_ID=$(resend-cli email send --output json ... | jq -r '.data.id')",
 	'$ RESEND_API_KEY="re_xxxxx" resend-cli email send --from="..." --to="..." --subject="..." --html="..."',
+	'$ resend-cli email send --api-key="re_xxxxx" --from="..." --to="..." --subject="..." --html="..."',
 ];
 configureCustomHelp(emailSendCommand, fields, sendExamples);

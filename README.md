@@ -116,19 +116,23 @@ Usage: resend-cli [options] [command]
 
 Resend CLI - Send emails, manage domains, and more
 
+API Key: Set RESEND_API_KEY environment variable or use --api-key option
+
 Options:
-  -V, --version   output the version number
-  --dry-run       Enable dry-run mode for all operations (default: false)
-  -h, --help      display help for command
+  -V, --version    output the version number
+  --dry-run        Enable dry-run mode for all operations (default: false)
+  --api-key <key>  Resend API key (overrides RESEND_API_KEY environment
+                   variable)
+  -h, --help       display help for command
 
 Commands:
-  apikeys         Manage API keys
-  audiences       Audience operations
-  broadcasts      Broadcast operations
-  contacts        Manage contacts in your audiences
-  domains         Domain operations
-  email           Email operations
-  help [command]  display help for command
+  apikeys          Manage API keys
+  audiences        Audience operations
+  broadcasts       Broadcast operations
+  contacts         Manage contacts in your audiences
+  domains          Domain operations
+  email            Email operations
+  help [command]   display help for command
 
 ```
 
@@ -279,6 +283,7 @@ OPTIONS:
   --text, -x <value>          Plain text version
   --output <value>            Output format (text, json)
   --dry-run                   Validate and preview without sending
+  --api-key <value>           Resend API key (overrides RESEND_API_KEY environment variable)
 
 EXAMPLES:
   $ resend-cli email send --from="Acme <onboarding@resend.dev>" --to="user@example.com" --subject="Hello World" --html="<h1>it works!</h1>"
@@ -286,6 +291,7 @@ EXAMPLES:
   $ resend-cli email send --output json --from="..." --to="..." --subject="..." --html="..." | jq '.'
   $ EMAIL_ID=$(resend-cli email send --output json ... | jq -r '.data.id')
   $ RESEND_API_KEY="re_xxxxx" resend-cli email send --from="..." --to="..." --subject="..." --html="..."
+  $ resend-cli email send --api-key="re_xxxxx" --from="..." --to="..." --subject="..." --html="..."
 
 ```
 

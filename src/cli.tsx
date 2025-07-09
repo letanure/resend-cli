@@ -19,7 +19,9 @@ const createRootCommand = (): Command => {
 	const program = new Command();
 	return program
 		.name('resend-cli')
-		.description('Resend CLI - Send emails, manage domains, and more')
+		.description(
+			'Resend CLI - Send emails, manage domains, and more\n\nAPI Key: Set RESEND_API_KEY environment variable or use --api-key option',
+		)
 		.version(getVersion());
 };
 
@@ -69,14 +71,25 @@ const main = (): void => {
 	const args = process.argv.slice(2);
 	const isDryRunOnly = args.length === 1 && args[0] === '--dry-run';
 
-	if (process.argv.length === 2 || isDryRunOnly) {
-		// Pass dry-run flag to TUI
-		render(<AppMain isDryRun={isDryRunOnly} />);
+	// Check for API key in args for TUI mode
+	const apiKeyIndex = args.findIndex((arg) => arg === '--api-key');
+	const apiKey = apiKeyIndex !== -1 && args[apiKeyIndex + 1] ? args[apiKeyIndex + 1] : undefined;
+
+	// Check if we should enter TUI mode (no arguments or just global options)
+	const validTuiArgs = ['--dry-run', '--api-key'];
+	const shouldEnterTui =
+		process.argv.length === 2 ||
+		args.every((arg) => validTuiArgs.includes(arg) || (apiKeyIndex !== -1 && arg === args[apiKeyIndex + 1]));
+
+	if (shouldEnterTui) {
+		// Pass dry-run flag and API key to TUI
+		render(<AppMain isDryRun={isDryRunOnly || args.includes('--dry-run')} apiKey={apiKey} />);
 	} else {
 		const program = createRootCommand();
 
-		// Add global dry-run option to root command
+		// Add global options to root command
 		program.option('--dry-run', 'Enable dry-run mode for all operations', false);
+		program.option('--api-key <key>', 'Resend API key (overrides RESEND_API_KEY environment variable)');
 
 		const moduleList = Object.values(modules);
 

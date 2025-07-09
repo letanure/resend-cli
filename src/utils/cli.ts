@@ -261,6 +261,7 @@ export function registerFieldOptions(command: Command, fields: Array<CliField>):
 	// Add global options first
 	command.option('--output <format>', 'Output format (text, json)', validateOutputFormat, 'text');
 	command.option('--dry-run', 'Validate and preview without sending');
+	command.option('--api-key <key>', 'Resend API key (overrides RESEND_API_KEY environment variable)');
 
 	// Add field-specific options
 	for (const field of fields) {

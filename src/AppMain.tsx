@@ -13,16 +13,17 @@ import { ResendProvider } from './contexts/ResendProvider.js';
 
 interface AppMainProps {
 	isDryRun?: boolean;
+	apiKey?: string;
 }
 
-export const AppMain = ({ isDryRun = false }: AppMainProps) => {
+export const AppMain = ({ isDryRun = false, apiKey }: AppMainProps) => {
 	const { exit } = useApp();
 	const [screenState, setScreenState] = useState<Module>(Module.main);
 	const [lastSelectedMainMenuItem, setLastSelectedMainMenuItem] = useState<Module>();
 
 	return (
 		<DryRunProvider isDryRun={isDryRun}>
-			<ResendProvider>
+			<ResendProvider apiKey={apiKey}>
 				{screenState === Module.main && (
 					<MainMenu
 						onSelect={(menuId) => setScreenState(menuId)}
