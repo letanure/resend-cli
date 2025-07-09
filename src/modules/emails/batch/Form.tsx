@@ -15,7 +15,11 @@ export const Form = ({ onExit }: FormProps) => {
 	});
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Emails - Batch Send`}>
+		<Layout
+			headerText={`${config.baseTitle} - Emails - Batch Send`}
+			showNavigationInstructions={true}
+			navigationContext="result"
+		>
 			<Box flexDirection="column" gap={1}>
 				<Alert variant="info">Batch email functionality is coming soon!</Alert>
 				<Text>This feature will allow you to send multiple emails in a single request.</Text>

@@ -19,13 +19,15 @@ interface ListDisplayProps<T, D = Record<string, unknown>> {
 	noDataMessage?: string;
 }
 
+const DEFAULT_LOAD_DATA = {} as Record<string, unknown>;
+
 export function ListDisplay<T, D = Record<string, unknown>>({
 	title,
 	onExit,
 	loadFunction,
 	displayFields,
 	formatData,
-	loadData = {} as D,
+	loadData = DEFAULT_LOAD_DATA as D,
 	noDataMessage = 'No items found.',
 }: ListDisplayProps<T, D>) {
 	const [result, setResult] = React.useState<ApiResult<T> | null>(null);
@@ -47,17 +49,22 @@ export function ListDisplay<T, D = Record<string, unknown>>({
 	}, [handleLoad, isDryRun]);
 
 	useInput((input, key) => {
-		if ((input === 'q' || key.escape) && !loading) {
+		if ((input === 'q' || key.escape || key.leftArrow) && !loading) {
 			onExit();
 		}
 		if (input === 'r' && !loading) {
 			handleLoad();
 		}
+		// Prevent Enter key from doing anything (no default action for lists)
+		if (key.return && !loading) {
+			// Do nothing - just consume the key event
+			return;
+		}
 	});
 
 	if (loading) {
 		return (
-			<Layout headerText={`${config.baseTitle} - ${title}`}>
+			<Layout headerText={`${config.baseTitle} - ${title}`} showNavigationInstructions={false} navigationContext="none">
 				<Box marginBottom={1}>
 					<Spinner label={`Loading ${title.toLowerCase()}...`} />
 				</Box>
@@ -69,7 +76,12 @@ export function ListDisplay<T, D = Record<string, unknown>>({
 		if (result.success && result.data) {
 			const tableData = formatData(result.data);
 			return (
-				<Layout headerText={`${config.baseTitle} - ${title}`}>
+				<Layout
+					headerText={`${config.baseTitle} - ${title}`}
+					showNavigationInstructions={true}
+					navigationContext="result"
+					footerText="Press r to refresh"
+				>
 					<Box flexDirection="column">
 						{tableData.length === 0 ? (
 							<Box marginBottom={1}>
@@ -78,40 +90,34 @@ export function ListDisplay<T, D = Record<string, unknown>>({
 						) : (
 							<Table data={tableData} fields={displayFields} title={title} />
 						)}
-						<Box marginTop={1}>
-							<Text>
-								Press <Text color="yellow">r</Text> to refresh, <Text color="yellow">Esc</Text> or{' '}
-								<Text color="yellow">q</Text> to go back
-							</Text>
-						</Box>
 					</Box>
 				</Layout>
 			);
 		}
 		return (
-			<Layout headerText={`${config.baseTitle} - ${title}`}>
+			<Layout
+				headerText={`${config.baseTitle} - ${title}`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+				footerText="Press r to retry"
+			>
 				<ErrorDisplay message={result.error || `Failed to load ${title.toLowerCase()}`} />
-				<Box marginTop={1}>
-					<Text>
-						Press <Text color="yellow">r</Text> to retry, <Text color="yellow">Esc</Text> or{' '}
-						<Text color="yellow">q</Text> to go back
-					</Text>
-				</Box>
 			</Layout>
 		);
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - ${title}`}>
+		<Layout
+			headerText={`${config.baseTitle} - ${title}`}
+			showNavigationInstructions={true}
+			navigationContext="result"
+			footerText="Press r to load"
+		>
 			{isDryRun && (
 				<Box marginBottom={1}>
 					<Alert variant="warning">DRY RUN MODE - No API calls will be made</Alert>
 				</Box>
 			)}
-			<Text>
-				Press <Text color="yellow">r</Text> to load {title.toLowerCase()}, <Text color="yellow">Esc</Text> or{' '}
-				<Text color="yellow">q</Text> to go back
-			</Text>
 		</Layout>
 	);
 }

@@ -52,7 +52,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (loading) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Broadcasts - Retrieve`}>
+			<Layout
+				headerText={`${config.baseTitle} - Broadcasts - Retrieve`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Box marginBottom={1}>
 					<Spinner label="Retrieving broadcast..." />
 				</Box>
@@ -65,7 +69,11 @@ export const Form = ({ onExit }: FormProps) => {
 			return <BroadcastRetrieveDisplay result={result.data} onExit={onExit} />;
 		}
 		return (
-			<Layout headerText={`${config.baseTitle} - Broadcasts - Retrieve`}>
+			<Layout
+				headerText={`${config.baseTitle} - Broadcasts - Retrieve`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<ErrorDisplay message={result.error || 'Failed to retrieve broadcast'} />
 				<Box marginTop={1}>
 					<Text>
@@ -77,7 +85,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Broadcasts - Retrieve`}>
+		<Layout
+			headerText={`${config.baseTitle} - Broadcasts - Retrieve`}
+			showNavigationInstructions={true}
+			navigationContext="form-single"
+		>
 			{isDryRun && (
 				<Box marginBottom={1}>
 					<Alert variant="warning">DRY RUN MODE - No API calls will be made</Alert>
@@ -122,7 +134,11 @@ const BroadcastRetrieveDisplay = ({ result, onExit }: BroadcastRetrieveDisplayPr
 	};
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Broadcasts - Retrieve`}>
+		<Layout
+			headerText={`${config.baseTitle} - Broadcasts - Retrieve`}
+			showNavigationInstructions={true}
+			navigationContext="result"
+		>
 			<Box flexDirection="column" gap={1}>
 				<Box>
 					<Alert variant="success">Broadcast retrieved successfully</Alert>

@@ -23,10 +23,10 @@ export const Form = ({ onExit }: FormProps) => {
 	const [showDryRunData, setShowDryRunData] = useState<Record<string, unknown> | null>(null);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
 
-	// Handle Esc key to go back from result screens
+	// Handle Esc/Left arrow key to go back from result screens
 	useInput(
 		(_input, key) => {
-			if (key.escape && (apiKeyData || showDryRunData || error)) {
+			if ((key.escape || key.leftArrow) && (apiKeyData || showDryRunData || error)) {
 				setApiKeyData(null);
 				setShowDryRunData(null);
 				setError(null);
@@ -75,7 +75,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (isSubmitting) {
 		return (
-			<Layout headerText={`${config.baseTitle} - API Keys - Delete`}>
+			<Layout
+				headerText={`${config.baseTitle} - API Keys - Delete`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Spinner label="Deleting API key..." />
 			</Layout>
 		);
@@ -83,7 +87,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (apiKeyData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - API Keys - Delete - Success`}>
+			<Layout
+				headerText={`${config.baseTitle} - API Keys - Delete - Success`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<Text bold={true}>API Key Deleted Successfully</Text>
@@ -95,9 +103,6 @@ export const Form = ({ onExit }: FormProps) => {
 							</Text>
 						</Box>
 					))}
-					<Box marginTop={1}>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
 				</Box>
 			</Layout>
 		);
@@ -105,7 +110,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - API Keys - Delete - Dry Run`}>
+			<Layout
+				headerText={`${config.baseTitle} - API Keys - Delete - Dry Run`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<Text bold={true}>DRY RUN - API key deletion data (validation only)</Text>
@@ -117,9 +126,6 @@ export const Form = ({ onExit }: FormProps) => {
 							</Text>
 						</Box>
 					))}
-					<Box marginTop={1}>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
 				</Box>
 			</Layout>
 		);
@@ -127,13 +133,14 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - API Keys - Delete - Error`}>
+			<Layout
+				headerText={`${config.baseTitle} - API Keys - Delete - Error`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>
@@ -141,7 +148,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - API Keys - Delete`}>
+		<Layout
+			headerText={`${config.baseTitle} - API Keys - Delete`}
+			showNavigationInstructions={true}
+			navigationContext="form-single"
+		>
 			<Box flexDirection="column">
 				<SimpleForm<DeleteApiKeyData>
 					fields={fields}

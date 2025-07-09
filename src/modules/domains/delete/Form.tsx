@@ -43,7 +43,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (loading) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Domains - Delete`}>
+			<Layout
+				headerText={`${config.baseTitle} - Domains - Delete`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Box marginBottom={1}>
 					<Spinner label="Deleting domain..." />
 				</Box>
@@ -56,7 +60,11 @@ export const Form = ({ onExit }: FormProps) => {
 			return <DomainDeleteDisplay result={result.data} onExit={onExit} />;
 		}
 		return (
-			<Layout headerText={`${config.baseTitle} - Domains - Delete`}>
+			<Layout
+				headerText={`${config.baseTitle} - Domains - Delete`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<ErrorDisplay message={result.error || 'Failed to delete domain'} />
 				<Box marginTop={1}>
 					<Text>
@@ -68,7 +76,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Domains - Delete`}>
+		<Layout
+			headerText={`${config.baseTitle} - Domains - Delete`}
+			showNavigationInstructions={true}
+			navigationContext="form-single"
+		>
 			{isDryRun && (
 				<Box marginBottom={1}>
 					<Alert variant="warning">DRY RUN MODE - No API calls will be made</Alert>
@@ -97,7 +109,11 @@ const DomainDeleteDisplay = ({ result, onExit }: DomainDeleteDisplayProps) => {
 	});
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Domains - Delete`}>
+		<Layout
+			headerText={`${config.baseTitle} - Domains - Delete`}
+			showNavigationInstructions={true}
+			navigationContext="result"
+		>
 			<Box flexDirection="column" gap={1}>
 				<Box>
 					<Alert variant="success">Domain deleted successfully</Alert>

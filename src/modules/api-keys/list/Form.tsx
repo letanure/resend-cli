@@ -25,7 +25,7 @@ export const Form = ({ onExit }: FormProps) => {
 	// Handle Esc key to go back
 	useInput(
 		(_input, key) => {
-			if (key.escape) {
+			if (key.escape || key.leftArrow) {
 				onExit();
 			}
 		},
@@ -98,7 +98,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (isLoading) {
 		return (
-			<Layout headerText={`${config.baseTitle} - API Keys - List`}>
+			<Layout
+				headerText={`${config.baseTitle} - API Keys - List`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Spinner label="Loading API keys..." />
 			</Layout>
 		);
@@ -106,13 +110,14 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - API Keys - List - Error`}>
+			<Layout
+				headerText={`${config.baseTitle} - API Keys - List - Error`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>
@@ -121,7 +126,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - API Keys - List - Dry Run`}>
+			<Layout
+				headerText={`${config.baseTitle} - API Keys - List - Dry Run`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<Text bold={true} color="yellow">
@@ -129,21 +138,19 @@ export const Form = ({ onExit }: FormProps) => {
 						</Text>
 					</Box>
 					<Table data={showDryRunData} fields={displayFields} title="API Keys" />
-					<Box marginTop={1}>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
 				</Box>
 			</Layout>
 		);
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - API Keys - List`}>
+		<Layout
+			headerText={`${config.baseTitle} - API Keys - List`}
+			showNavigationInstructions={true}
+			navigationContext="result"
+		>
 			<Box flexDirection="column">
 				<Table data={apiKeyList || []} fields={displayFields} title="API Keys" />
-				<Box marginTop={1}>
-					<Text dimColor={true}>Press Esc to go back</Text>
-				</Box>
 			</Box>
 		</Layout>
 	);

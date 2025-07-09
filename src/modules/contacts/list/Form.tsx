@@ -27,7 +27,7 @@ export const Form = ({ onExit }: FormProps) => {
 	// Handle Esc key to go back from result screens
 	useInput(
 		(_input, key) => {
-			if (key.escape && (contactsList || showDryRunData || error)) {
+			if ((key.escape || key.leftArrow) && (contactsList || showDryRunData || error)) {
 				setContactsList(null);
 				setShowDryRunData(null);
 				setError(null);
@@ -96,7 +96,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (isLoading) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - List`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - List`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Spinner label="Loading contacts..." />
 			</Layout>
 		);
@@ -104,7 +108,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - List - Error`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - List - Error`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
@@ -119,7 +127,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - List - Dry Run`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - List - Dry Run`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<Text bold={true} color="yellow">
@@ -137,7 +149,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (contactsList) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - List`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - List`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Table data={contactsList} fields={displayFields} title="Contacts" />
 					<Box marginTop={1}>
@@ -149,7 +165,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Contacts - List`}>
+		<Layout
+			headerText={`${config.baseTitle} - Contacts - List`}
+			showNavigationInstructions={true}
+			navigationContext="form-single"
+		>
 			<SimpleForm<ListContactsOptionsType>
 				fields={fields}
 				onSubmit={handleSubmit}

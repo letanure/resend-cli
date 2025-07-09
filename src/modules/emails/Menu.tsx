@@ -47,7 +47,7 @@ interface MenuProps {
 
 export const Menu = ({ onExit, onSelect, initialSelectedKey }: MenuProps) => {
 	return (
-		<Layout headerText={`${config.baseTitle} - Emails`} showNavigationInstructions={true}>
+		<Layout headerText={`${config.baseTitle} - Emails`} showNavigationInstructions={true} navigationContext="menu">
 			<UIMenu
 				menuItems={MAIN_MENU_ITEMS}
 				onSelect={(menuId) => {

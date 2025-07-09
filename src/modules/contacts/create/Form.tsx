@@ -23,10 +23,10 @@ export const Form = ({ onExit }: FormProps) => {
 	const [showDryRunData, setShowDryRunData] = useState<Record<string, unknown> | null>(null);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
 
-	// Handle Esc key to go back from result screens
+	// Handle Esc/Left arrow key to go back from result screens
 	useInput(
 		(_input, key) => {
-			if (key.escape && (createdContactData || showDryRunData || error)) {
+			if ((key.escape || key.leftArrow) && (createdContactData || showDryRunData || error)) {
 				setCreatedContactData(null);
 				setShowDryRunData(null);
 				setError(null);
@@ -79,7 +79,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (isSubmitting) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - Create - ${isDryRun ? 'Dry Run' : 'Submitting'}`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - Create - ${isDryRun ? 'Dry Run' : 'Submitting'}`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Spinner label={isDryRun ? 'Validating contact data...' : 'Creating contact...'} />
 			</Layout>
 		);
@@ -88,7 +92,11 @@ export const Form = ({ onExit }: FormProps) => {
 	// Show success result (dry run)
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - Create - Dry Run`} footerText="Press Esc to go back">
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - Create - Dry Run`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column" marginTop={1}>
 					<Text color="green" bold={true}>
 						✓ DRY RUN - Contact Create (validation only)
@@ -112,7 +120,11 @@ export const Form = ({ onExit }: FormProps) => {
 	// Show success result (actual contact created)
 	if (createdContactData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - Create - Success`} footerText="Press Esc to go back">
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - Create - Success`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column" marginTop={1}>
 					<Text color="green" bold={true}>
 						✓ Contact Created Successfully
@@ -136,14 +148,22 @@ export const Form = ({ onExit }: FormProps) => {
 	// Show error
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - Create - Error`} footerText="Press Esc to go back">
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - Create - Error`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
 			</Layout>
 		);
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Contacts - Create`}>
+		<Layout
+			headerText={`${config.baseTitle} - Contacts - Create`}
+			showNavigationInstructions={true}
+			navigationContext="form"
+		>
 			<SimpleForm<CreateContactOptionsType>
 				fields={fields}
 				validateWith={CreateContactOptionsSchema}

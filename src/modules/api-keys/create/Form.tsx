@@ -91,10 +91,10 @@ export const Form = ({ onExit }: FormProps) => {
 		return start;
 	};
 
-	// Handle Esc key to go back from result screens
+	// Handle Esc/Left arrow key to go back from result screens
 	useInput(
 		(_input, key) => {
-			if (key.escape && (createResult || showDryRunData || error)) {
+			if ((key.escape || key.leftArrow) && (createResult || showDryRunData || error)) {
 				setCreateResult(null);
 				setShowDryRunData(null);
 				setError(null);
@@ -113,6 +113,8 @@ export const Form = ({ onExit }: FormProps) => {
 
 		const keyHandlers: Array<{ condition: () => boolean; action: () => void }> = [
 			{ condition: () => key.escape, action: onExit },
+			// Left arrow to exit form - only if NOT on a select field
+			{ condition: () => key.leftArrow && !isSelectField, action: onExit },
 			{ condition: () => key.shift && key.tab, action: () => setCurrentField(findNextField(currentField, -1)) },
 			{
 				condition: () => key.tab && !key.shift,
@@ -249,13 +251,14 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (createResult) {
 		return (
-			<Layout headerText={`${config.baseTitle} - API Keys - Create - Success`}>
+			<Layout
+				headerText={`${config.baseTitle} - API Keys - Create - Success`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ApiKeyDisplay data={createResult} title="API Key Created Successfully" />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>
@@ -264,13 +267,14 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - API Keys - Create - Dry Run`}>
+			<Layout
+				headerText={`${config.baseTitle} - API Keys - Create - Dry Run`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ApiKeyDisplay data={showDryRunData} title="DRY RUN - API key creation data (validation only)" />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>
@@ -279,13 +283,14 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - API Keys - Create - Error`}>
+			<Layout
+				headerText={`${config.baseTitle} - API Keys - Create - Error`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>
@@ -293,7 +298,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - API Keys - Create`}>
+		<Layout
+			headerText={`${config.baseTitle} - API Keys - Create`}
+			showNavigationInstructions={true}
+			navigationContext="form"
+		>
 			<Box flexDirection="column" marginTop={1}>
 				{formError && (
 					<Box marginBottom={1}>
@@ -332,16 +341,6 @@ export const Form = ({ onExit }: FormProps) => {
 						/>
 					);
 				})}
-
-				<Box marginTop={1} flexDirection="column">
-					<Text dimColor={true}>
-						<Text color="yellow">Tab/↓</Text> Next field · <Text color="yellow">Shift+Tab/↑</Text> Previous field
-					</Text>
-					<Text dimColor={true}>
-						<Text color="yellow">←/→/Space</Text> Toggle radio · <Text color="yellow">Enter</Text> Submit ·{' '}
-						<Text color="yellow">Esc</Text> Cancel
-					</Text>
-				</Box>
 			</Box>
 		</Layout>
 	);

@@ -76,7 +76,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (isSubmitting) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Audiences - Retrieve`}>
+			<Layout
+				headerText={`${config.baseTitle} - Audiences - Retrieve`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Spinner label="Retrieving audience..." />
 			</Layout>
 		);
@@ -84,7 +88,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (audienceData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Audiences - Retrieve - Success`}>
+			<Layout
+				headerText={`${config.baseTitle} - Audiences - Retrieve - Success`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<Text bold={true}>Audience Retrieved Successfully</Text>
@@ -96,9 +104,6 @@ export const Form = ({ onExit }: FormProps) => {
 							</Text>
 						</Box>
 					))}
-					<Box marginTop={1}>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
 				</Box>
 			</Layout>
 		);
@@ -106,7 +111,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Audiences - Retrieve - Dry Run`}>
+			<Layout
+				headerText={`${config.baseTitle} - Audiences - Retrieve - Dry Run`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<Text bold={true}>DRY RUN - Audience retrieval data (validation only)</Text>
@@ -118,9 +127,6 @@ export const Form = ({ onExit }: FormProps) => {
 							</Text>
 						</Box>
 					))}
-					<Box marginTop={1}>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
 				</Box>
 			</Layout>
 		);
@@ -128,13 +134,14 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Audiences - Retrieve - Error`}>
+			<Layout
+				headerText={`${config.baseTitle} - Audiences - Retrieve - Error`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>
@@ -142,7 +149,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Audiences - Retrieve`}>
+		<Layout
+			headerText={`${config.baseTitle} - Audiences - Retrieve`}
+			showNavigationInstructions={true}
+			navigationContext="form-single"
+		>
 			<SimpleForm<RetrieveAudienceOptionsType>
 				fields={fields}
 				onSubmit={handleSubmit}

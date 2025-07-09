@@ -79,7 +79,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (isSubmitting) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Update`}>
+			<Layout
+				headerText={`${config.baseTitle} - Emails - Update`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Spinner label="Updating email..." />
 			</Layout>
 		);
@@ -87,7 +91,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (updateResult) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Update - Success`}>
+			<Layout
+				headerText={`${config.baseTitle} - Emails - Update - Success`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<EmailDisplay data={updateResult} title="Email Updated Successfully" />
@@ -102,7 +110,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Update - Dry Run`}>
+			<Layout
+				headerText={`${config.baseTitle} - Emails - Update - Dry Run`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<EmailDisplay data={showDryRunData} title="DRY RUN - Email update data (validation only)" />
@@ -117,7 +129,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Update - Error`}>
+			<Layout
+				headerText={`${config.baseTitle} - Emails - Update - Error`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
@@ -131,7 +147,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Emails - Update`}>
+		<Layout
+			headerText={`${config.baseTitle} - Emails - Update`}
+			showNavigationInstructions={true}
+			navigationContext="form"
+		>
 			<SimpleForm<UpdateEmailOptionsType>
 				fields={fields}
 				onSubmit={handleSubmit}

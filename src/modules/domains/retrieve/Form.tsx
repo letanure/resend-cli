@@ -38,7 +38,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (loading) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Domains - Retrieve`}>
+			<Layout
+				headerText={`${config.baseTitle} - Domains - Retrieve`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Box marginBottom={1}>
 					<Spinner label="Retrieving domain..." />
 				</Box>
@@ -51,7 +55,11 @@ export const Form = ({ onExit }: FormProps) => {
 			return <DomainDisplay domain={result.data} onExit={onExit} />;
 		}
 		return (
-			<Layout headerText={`${config.baseTitle} - Domains - Retrieve`}>
+			<Layout
+				headerText={`${config.baseTitle} - Domains - Retrieve`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<ErrorDisplay message={result.error || 'Failed to retrieve domain'} />
 				<Box marginTop={1}>
 					<Text>
@@ -63,7 +71,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Domains - Retrieve`}>
+		<Layout
+			headerText={`${config.baseTitle} - Domains - Retrieve`}
+			showNavigationInstructions={true}
+			navigationContext="form-single"
+		>
 			{isDryRun && (
 				<Box marginBottom={1}>
 					<Alert variant="warning">DRY RUN MODE - No API calls will be made</Alert>
@@ -123,7 +135,11 @@ const DomainDisplay = ({ domain, onExit }: DomainDisplayProps) => {
 	};
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Domains - Retrieve`}>
+		<Layout
+			headerText={`${config.baseTitle} - Domains - Retrieve`}
+			showNavigationInstructions={true}
+			navigationContext="result"
+		>
 			<Box flexDirection="column" gap={1}>
 				<Box>
 					<Alert variant="success">Domain retrieved successfully</Alert>

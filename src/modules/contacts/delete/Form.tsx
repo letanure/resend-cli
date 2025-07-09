@@ -78,7 +78,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (isSubmitting) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - Delete`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - Delete`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Spinner label="Deleting contact..." />
 			</Layout>
 		);
@@ -86,7 +90,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (contactData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - Delete - Success`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - Delete - Success`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<Text bold={true}>Contact Deleted Successfully</Text>
@@ -108,7 +116,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - Delete - Dry Run`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - Delete - Dry Run`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<Text bold={true}>DRY RUN - Contact deletion data (validation only)</Text>
@@ -130,7 +142,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - Delete - Error`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - Delete - Error`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
@@ -144,7 +160,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Contacts - Delete`}>
+		<Layout
+			headerText={`${config.baseTitle} - Contacts - Delete`}
+			showNavigationInstructions={true}
+			navigationContext="form"
+		>
 			<Box flexDirection="column">
 				<SimpleForm<DeleteContactOptionsType>
 					fields={fields}

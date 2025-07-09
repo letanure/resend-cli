@@ -42,7 +42,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (loading) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - Update`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - Update`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Box marginBottom={1}>
 					<Spinner label="Updating contact..." />
 				</Box>
@@ -55,7 +59,11 @@ export const Form = ({ onExit }: FormProps) => {
 			return <ContactUpdateDisplay result={result.data} onExit={onExit} />;
 		}
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - Update`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - Update`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<ErrorDisplay message={result.error || 'Failed to update contact'} />
 				<Box marginTop={1}>
 					<Text>
@@ -67,7 +75,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Contacts - Update`}>
+		<Layout
+			headerText={`${config.baseTitle} - Contacts - Update`}
+			showNavigationInstructions={true}
+			navigationContext="form"
+		>
 			{isDryRun && (
 				<Box marginBottom={1}>
 					<Alert variant="warning">DRY RUN MODE - No API calls will be made</Alert>
@@ -96,7 +108,11 @@ const ContactUpdateDisplay = ({ result, onExit }: ContactUpdateDisplayProps) => 
 	});
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Contacts - Update`}>
+		<Layout
+			headerText={`${config.baseTitle} - Contacts - Update`}
+			showNavigationInstructions={true}
+			navigationContext="result"
+		>
 			<Box flexDirection="column" gap={1}>
 				<Box>
 					<Alert variant="success">Contact updated successfully</Alert>

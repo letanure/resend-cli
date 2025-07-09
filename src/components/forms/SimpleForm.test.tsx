@@ -36,8 +36,7 @@ describe('SimpleForm', () => {
 		const { lastFrame } = render(<SimpleForm fields={textFields} onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
 		expect(lastFrame()).toContain('Email');
-		expect(lastFrame()).toContain('Tab/↓');
-		expect(lastFrame()).toContain('Enter');
+		expect(lastFrame()).toContain('Enter your email address');
 	});
 
 	it('should render select fields', () => {
@@ -46,7 +45,7 @@ describe('SimpleForm', () => {
 		expect(lastFrame()).toContain('Subscription');
 		expect(lastFrame()).toContain('[✓] Yes');
 		expect(lastFrame()).toContain('[ ] No');
-		expect(lastFrame()).toContain('←/→/Space');
+		expect(lastFrame()).toContain('Use ←/→ or Space');
 	});
 
 	it('should render mixed field types', () => {

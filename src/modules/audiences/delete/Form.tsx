@@ -75,7 +75,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (isSubmitting) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Audiences - Delete`}>
+			<Layout
+				headerText={`${config.baseTitle} - Audiences - Delete`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Spinner label="Deleting audience..." />
 			</Layout>
 		);
@@ -83,7 +87,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (audienceData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Audiences - Delete - Success`}>
+			<Layout
+				headerText={`${config.baseTitle} - Audiences - Delete - Success`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<Text bold={true}>Audience Deleted Successfully</Text>
@@ -95,9 +103,6 @@ export const Form = ({ onExit }: FormProps) => {
 							</Text>
 						</Box>
 					))}
-					<Box marginTop={1}>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
 				</Box>
 			</Layout>
 		);
@@ -105,7 +110,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Audiences - Delete - Dry Run`}>
+			<Layout
+				headerText={`${config.baseTitle} - Audiences - Delete - Dry Run`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<Text bold={true}>DRY RUN - Audience deletion data (validation only)</Text>
@@ -117,9 +126,6 @@ export const Form = ({ onExit }: FormProps) => {
 							</Text>
 						</Box>
 					))}
-					<Box marginTop={1}>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
 				</Box>
 			</Layout>
 		);
@@ -127,13 +133,14 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Audiences - Delete - Error`}>
+			<Layout
+				headerText={`${config.baseTitle} - Audiences - Delete - Error`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>
@@ -141,15 +148,17 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Audiences - Delete`}>
-			<Box flexDirection="column">
-				<SimpleForm<DeleteAudienceOptionsType>
-					fields={fields}
-					onSubmit={handleSubmit}
-					onCancel={onExit}
-					validateWith={DeleteAudienceOptionsSchema}
-				/>
-			</Box>
+		<Layout
+			headerText={`${config.baseTitle} - Audiences - Delete`}
+			showNavigationInstructions={true}
+			navigationContext="form-single"
+		>
+			<SimpleForm<DeleteAudienceOptionsType>
+				fields={fields}
+				onSubmit={handleSubmit}
+				onCancel={onExit}
+				validateWith={DeleteAudienceOptionsSchema}
+			/>
 		</Layout>
 	);
 };

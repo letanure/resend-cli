@@ -50,10 +50,10 @@ export const Form = ({ onExit }: FormProps) => {
 	const [showDryRunData, setShowDryRunData] = useState<Record<string, unknown> | null>(null);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
 
-	// Handle Esc key to go back from result screens
+	// Handle Esc/Left arrow key to go back from result screens
 	useInput(
 		(_input, key) => {
-			if (key.escape && (createResult || showDryRunData || error)) {
+			if ((key.escape || key.leftArrow) && (createResult || showDryRunData || error)) {
 				setCreateResult(null);
 				setShowDryRunData(null);
 				setError(null);
@@ -102,7 +102,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (isSubmitting) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Audiences - Create`}>
+			<Layout
+				headerText={`${config.baseTitle} - Audiences - Create`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Spinner label="Creating audience..." />
 			</Layout>
 		);
@@ -110,13 +114,14 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (createResult) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Audiences - Create - Success`}>
+			<Layout
+				headerText={`${config.baseTitle} - Audiences - Create - Success`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<AudienceDisplay data={createResult} title="Audience Created Successfully" />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>
@@ -125,13 +130,14 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Audiences - Create - Dry Run`}>
+			<Layout
+				headerText={`${config.baseTitle} - Audiences - Create - Dry Run`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<AudienceDisplay data={showDryRunData} title="DRY RUN - Audience creation data (validation only)" />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>
@@ -140,13 +146,14 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Audiences - Create - Error`}>
+			<Layout
+				headerText={`${config.baseTitle} - Audiences - Create - Error`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>
@@ -154,7 +161,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Audiences - Create`}>
+		<Layout
+			headerText={`${config.baseTitle} - Audiences - Create`}
+			showNavigationInstructions={true}
+			navigationContext="form-single"
+		>
 			<SimpleForm<CreateAudienceOptionsType>
 				fields={fields}
 				onSubmit={handleSubmit}

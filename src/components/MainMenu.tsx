@@ -44,7 +44,7 @@ const MENU_ITEMS: Array<MenuItem<Module>> = [
 
 export const MainMenu = ({ onSelect, onExit, initialSelectedKey }: MainMenuProps) => {
 	return (
-		<Layout headerText={`${config.baseTitle}`} showNavigationInstructions={true}>
+		<Layout headerText={`${config.baseTitle}`} showNavigationInstructions={true} navigationContext="root-menu">
 			<Menu
 				menuItems={MENU_ITEMS}
 				onSelect={(menuId) => {
@@ -52,6 +52,7 @@ export const MainMenu = ({ onSelect, onExit, initialSelectedKey }: MainMenuProps
 				}}
 				onExit={() => onExit()}
 				initialSelectedKey={initialSelectedKey}
+				isRootMenu={true}
 			/>
 		</Layout>
 	);

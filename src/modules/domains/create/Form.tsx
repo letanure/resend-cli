@@ -23,10 +23,10 @@ export const Form = ({ onExit }: FormProps) => {
 	const [showDryRunData, setShowDryRunData] = useState<Record<string, unknown> | null>(null);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
 
-	// Handle Esc key to go back from result screens
+	// Handle Esc/Left arrow key to go back from result screens
 	useInput(
 		(_input, key) => {
-			if (key.escape && (domainData || showDryRunData || error)) {
+			if ((key.escape || key.leftArrow) && (domainData || showDryRunData || error)) {
 				setDomainData(null);
 				setShowDryRunData(null);
 				setError(null);
@@ -80,7 +80,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (isSubmitting) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Domains - Create`}>
+			<Layout
+				headerText={`${config.baseTitle} - Domains - Create`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Spinner label="Creating domain..." />
 			</Layout>
 		);
@@ -88,7 +92,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (domainData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Domains - Create - Success`}>
+			<Layout
+				headerText={`${config.baseTitle} - Domains - Create - Success`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<Text bold={true}>Domain Created Successfully</Text>
@@ -100,9 +108,6 @@ export const Form = ({ onExit }: FormProps) => {
 							</Text>
 						</Box>
 					))}
-					<Box marginTop={1}>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
 				</Box>
 			</Layout>
 		);
@@ -110,7 +115,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Domains - Create - Dry Run`}>
+			<Layout
+				headerText={`${config.baseTitle} - Domains - Create - Dry Run`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<Text bold={true}>DRY RUN - Domain creation data (validation only)</Text>
@@ -122,9 +131,6 @@ export const Form = ({ onExit }: FormProps) => {
 							</Text>
 						</Box>
 					))}
-					<Box marginTop={1}>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
 				</Box>
 			</Layout>
 		);
@@ -132,13 +138,14 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Domains - Create - Error`}>
+			<Layout
+				headerText={`${config.baseTitle} - Domains - Create - Error`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>
@@ -146,7 +153,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Domains - Create`}>
+		<Layout
+			headerText={`${config.baseTitle} - Domains - Create`}
+			showNavigationInstructions={true}
+			navigationContext="form"
+		>
 			<Box flexDirection="column">
 				<SimpleForm<CreateDomainData>
 					fields={fields}

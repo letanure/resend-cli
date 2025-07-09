@@ -41,7 +41,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (loading) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Broadcasts - Send`}>
+			<Layout
+				headerText={`${config.baseTitle} - Broadcasts - Send`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Box marginBottom={1}>
 					<Spinner label="Sending broadcast..." />
 				</Box>
@@ -54,7 +58,11 @@ export const Form = ({ onExit }: FormProps) => {
 			return <BroadcastSendDisplay result={result.data} onExit={onExit} />;
 		}
 		return (
-			<Layout headerText={`${config.baseTitle} - Broadcasts - Send`}>
+			<Layout
+				headerText={`${config.baseTitle} - Broadcasts - Send`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<ErrorDisplay message={result.error || 'Failed to send broadcast'} />
 				<Box marginTop={1}>
 					<Text>
@@ -66,7 +74,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Broadcasts - Send`}>
+		<Layout
+			headerText={`${config.baseTitle} - Broadcasts - Send`}
+			showNavigationInstructions={true}
+			navigationContext="form"
+		>
 			{isDryRun && (
 				<Box marginBottom={1}>
 					<Alert variant="warning">DRY RUN MODE - No API calls will be made</Alert>
@@ -95,7 +107,11 @@ const BroadcastSendDisplay = ({ result, onExit }: BroadcastSendDisplayProps) => 
 	});
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Broadcasts - Send`}>
+		<Layout
+			headerText={`${config.baseTitle} - Broadcasts - Send`}
+			showNavigationInstructions={true}
+			navigationContext="result"
+		>
 			<Box flexDirection="column" gap={1}>
 				<Box>
 					<Alert variant="success">Broadcast sent successfully</Alert>

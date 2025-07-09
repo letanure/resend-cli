@@ -14,9 +14,16 @@ interface MainMenuProps<T extends string> {
 	onExit: (lastSelectedKey?: T) => void;
 	title?: string;
 	initialSelectedKey?: T;
+	isRootMenu?: boolean;
 }
 
-export const Menu = <T extends string>({ menuItems, onSelect, onExit, initialSelectedKey }: MainMenuProps<T>) => {
+export const Menu = <T extends string>({
+	menuItems,
+	onSelect,
+	onExit,
+	initialSelectedKey,
+	isRootMenu = false,
+}: MainMenuProps<T>) => {
 	const initialIndex = initialSelectedKey ? menuItems.findIndex((item) => item.id === initialSelectedKey) : 0;
 	const [selectedIndex, setSelectedIndex] = useState(Math.max(0, initialIndex));
 
@@ -36,7 +43,14 @@ export const Menu = <T extends string>({ menuItems, onSelect, onExit, initialSel
 			}
 		}
 
-		if (input === 'q' || key.escape || key.leftArrow) {
+		// Root menu: only respond to 'q' and 'escape', not left arrow
+		if (isRootMenu) {
+			if (input === 'q' || key.escape) {
+				const currentSelectedItem = menuItems[selectedIndex];
+				onExit(currentSelectedItem?.id);
+			}
+		} else if (input === 'q' || key.escape || key.leftArrow) {
+			// Non-root menu: respond to 'q', 'escape', and left arrow
 			const currentSelectedItem = menuItems[selectedIndex];
 			onExit(currentSelectedItem?.id);
 		}

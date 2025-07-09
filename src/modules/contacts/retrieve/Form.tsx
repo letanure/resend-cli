@@ -81,7 +81,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (isSubmitting) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - Retrieve`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - Retrieve`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Spinner label="Retrieving contact..." />
 			</Layout>
 		);
@@ -89,7 +93,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (contactData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - Retrieve - Success`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - Retrieve - Success`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<Text bold={true}>Contact Retrieved Successfully</Text>
@@ -111,7 +119,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - Retrieve - Dry Run`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - Retrieve - Dry Run`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<Text bold={true}>DRY RUN - Contact retrieval data (validation only)</Text>
@@ -133,7 +145,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Contacts - Retrieve - Error`}>
+			<Layout
+				headerText={`${config.baseTitle} - Contacts - Retrieve - Error`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
@@ -147,7 +163,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Contacts - Retrieve`}>
+		<Layout
+			headerText={`${config.baseTitle} - Contacts - Retrieve`}
+			showNavigationInstructions={true}
+			navigationContext="form"
+		>
 			<SimpleForm<RetrieveContactOptionsType>
 				fields={fields}
 				onSubmit={handleSubmit}

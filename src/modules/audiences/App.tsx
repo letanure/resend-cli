@@ -2,31 +2,60 @@ import { useState } from 'react';
 import { Form as CreateForm } from './create/Form.js';
 import { Form as DeleteForm } from './delete/Form.js';
 import { Form as ListForm } from './list/Form.js';
-import { Menu, MenuState } from './Menu.js';
+import { Menu, MenuState, type MenuState as MenuStateType } from './Menu.js';
 import { Form as RetrieveForm } from './retrieve/Form.js';
+
+type MenuStateWithMenu = 'menu' | MenuStateType;
 
 interface AppProps {
 	onExit: () => void;
 }
 
 export const App = ({ onExit }: AppProps) => {
-	const [currentView, setCurrentView] = useState<MenuState | 'menu'>('menu');
+	const [screenState, setScreenState] = useState<MenuStateWithMenu>('menu');
+	const [lastSelectedAudienceMenuItem, setLastSelectedAudienceMenuItem] = useState<MenuStateType>();
 
-	if (currentView === MenuState.create) {
-		return <CreateForm onExit={() => setCurrentView('menu')} />;
-	}
+	const handleMenuSelect = (menuId: MenuStateWithMenu) => {
+		setScreenState(menuId);
+	};
 
-	if (currentView === MenuState.retrieve) {
-		return <RetrieveForm onExit={() => setCurrentView('menu')} />;
-	}
-
-	if (currentView === MenuState.delete) {
-		return <DeleteForm onExit={() => setCurrentView('menu')} />;
-	}
-
-	if (currentView === MenuState.list) {
-		return <ListForm onExit={() => setCurrentView('menu')} />;
-	}
-
-	return <Menu onSelect={setCurrentView} onExit={onExit} />;
+	return (
+		<>
+			{screenState === 'menu' && (
+				<Menu onSelect={handleMenuSelect} onExit={() => onExit()} initialSelectedKey={lastSelectedAudienceMenuItem} />
+			)}
+			{screenState === 'create' && (
+				<CreateForm
+					onExit={() => {
+						setLastSelectedAudienceMenuItem(MenuState.create);
+						setScreenState('menu');
+					}}
+				/>
+			)}
+			{screenState === 'retrieve' && (
+				<RetrieveForm
+					onExit={() => {
+						setLastSelectedAudienceMenuItem(MenuState.retrieve);
+						setScreenState('menu');
+					}}
+				/>
+			)}
+			{screenState === 'delete' && (
+				<DeleteForm
+					onExit={() => {
+						setLastSelectedAudienceMenuItem(MenuState.delete);
+						setScreenState('menu');
+					}}
+				/>
+			)}
+			{screenState === 'list' && (
+				<ListForm
+					onExit={() => {
+						setLastSelectedAudienceMenuItem(MenuState.list);
+						setScreenState('menu');
+					}}
+				/>
+			)}
+		</>
+	);
 };

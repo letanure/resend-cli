@@ -1,5 +1,5 @@
 import { Alert } from '@inkjs/ui';
-import { Box, Text, useInput } from 'ink';
+import { Box, useInput } from 'ink';
 import { useState } from 'react';
 import type { z } from 'zod';
 import type { FormField } from '@/types/index.js';
@@ -40,9 +40,12 @@ export const SimpleForm = <T = Record<string, unknown>>({
 		const currentFieldData = fields[currentField];
 		const isSelectField = currentFieldData?.type === 'select';
 		const isStackedSelect = isSelectField && currentFieldData?.display === 'stacked';
+		const isInlineSelect = isSelectField && currentFieldData?.display !== 'stacked';
 
 		const keyHandlers: Array<{ condition: () => boolean; action: () => void }> = [
 			{ condition: () => key.escape, action: onCancel },
+			// Left arrow to exit form - only if NOT on an inline select field
+			{ condition: () => key.leftArrow && !isInlineSelect, action: onCancel },
 			{ condition: () => key.shift && key.tab, action: () => setCurrentField(Math.max(currentField - 1, 0)) },
 			{
 				condition: () => key.tab && !key.shift,
@@ -66,8 +69,9 @@ export const SimpleForm = <T = Record<string, unknown>>({
 				condition: () => key.upArrow && !isStackedSelect,
 				action: () => setCurrentField(Math.max(currentField - 1, 0)),
 			},
+			// Left/Right arrow for inline select fields only
 			{
-				condition: () => (key.leftArrow || key.rightArrow) && isSelectField,
+				condition: () => (key.leftArrow || key.rightArrow) && isInlineSelect,
 				action: () => currentFieldData && handleSelectToggle(currentFieldData),
 			},
 			{
@@ -235,16 +239,6 @@ export const SimpleForm = <T = Record<string, unknown>>({
 					<Alert variant="error">{formError}</Alert>
 				</Box>
 			)}
-
-			<Box marginTop={1} flexDirection="column">
-				<Text dimColor={true}>
-					<Text color="yellow">Tab/↓</Text> Next field · <Text color="yellow">Shift+Tab/↑</Text> Previous field
-				</Text>
-				<Text dimColor={true}>
-					<Text color="yellow">←/→/Space</Text> Toggle select · <Text color="yellow">Enter</Text> Submit ·{' '}
-					<Text color="yellow">Esc</Text> Cancel
-				</Text>
-			</Box>
 		</Box>
 	);
 };

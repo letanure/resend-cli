@@ -41,7 +41,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (loading) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Broadcasts - Update`}>
+			<Layout
+				headerText={`${config.baseTitle} - Broadcasts - Update`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Box marginBottom={1}>
 					<Spinner label="Updating broadcast..." />
 				</Box>
@@ -54,7 +58,11 @@ export const Form = ({ onExit }: FormProps) => {
 			return <BroadcastUpdateDisplay result={result.data} onExit={onExit} />;
 		}
 		return (
-			<Layout headerText={`${config.baseTitle} - Broadcasts - Update`}>
+			<Layout
+				headerText={`${config.baseTitle} - Broadcasts - Update`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<ErrorDisplay message={result.error || 'Failed to update broadcast'} />
 				<Box marginTop={1}>
 					<Text>
@@ -66,7 +74,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Broadcasts - Update`}>
+		<Layout
+			headerText={`${config.baseTitle} - Broadcasts - Update`}
+			showNavigationInstructions={true}
+			navigationContext="form"
+		>
 			{isDryRun && (
 				<Box marginBottom={1}>
 					<Alert variant="warning">DRY RUN MODE - No API calls will be made</Alert>
@@ -95,7 +107,11 @@ const BroadcastUpdateDisplay = ({ result, onExit }: BroadcastUpdateDisplayProps)
 	});
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Broadcasts - Update`}>
+		<Layout
+			headerText={`${config.baseTitle} - Broadcasts - Update`}
+			showNavigationInstructions={true}
+			navigationContext="result"
+		>
 			<Box flexDirection="column" gap={1}>
 				<Box>
 					<Alert variant="success">Broadcast updated successfully</Alert>

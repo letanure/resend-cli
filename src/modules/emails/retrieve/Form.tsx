@@ -1,5 +1,5 @@
 import { Spinner } from '@inkjs/ui';
-import { Box, Text, useInput } from 'ink';
+import { Box, useInput } from 'ink';
 import { useState } from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
 import { ErrorDisplay } from '@/components/ui/ErrorDisplay.js';
@@ -25,10 +25,10 @@ export const Form = ({ onExit }: FormProps) => {
 	const [showDryRunData, setShowDryRunData] = useState<Record<string, unknown> | null>(null);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
 
-	// Handle Esc key to go back from result screens
+	// Handle Esc/Left arrow key to go back from result screens
 	useInput(
 		(_input, key) => {
-			if (key.escape && (emailData || showDryRunData || error)) {
+			if ((key.escape || key.leftArrow) && (emailData || showDryRunData || error)) {
 				setEmailData(null);
 				setShowDryRunData(null);
 				setError(null);
@@ -81,13 +81,14 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (emailData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Retrieve - Success`}>
+			<Layout
+				headerText={`${config.baseTitle} - Emails - Retrieve - Success`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<EmailDisplay data={emailData} title="Email Retrieved Successfully" fieldsToShow={EMAIL_FULL_FIELDS} />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>
@@ -96,13 +97,14 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Retrieve - Dry Run`}>
+			<Layout
+				headerText={`${config.baseTitle} - Emails - Retrieve - Dry Run`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<EmailDisplay data={showDryRunData} title="DRY RUN - Email retrieval data (validation only)" />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>
@@ -111,13 +113,14 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Retrieve - Error`}>
+			<Layout
+				headerText={`${config.baseTitle} - Emails - Retrieve - Error`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
 					</Box>
 				</Box>
 			</Layout>
@@ -125,7 +128,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Emails - Retrieve`}>
+		<Layout
+			headerText={`${config.baseTitle} - Emails - Retrieve`}
+			showNavigationInstructions={true}
+			navigationContext="form-single"
+		>
 			<SimpleForm<GetEmailOptionsType>
 				fields={fields}
 				onSubmit={handleSubmit}

@@ -43,7 +43,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (loading) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Broadcasts - Delete`}>
+			<Layout
+				headerText={`${config.baseTitle} - Broadcasts - Delete`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Box marginBottom={1}>
 					<Spinner label="Deleting broadcast..." />
 				</Box>
@@ -56,7 +60,11 @@ export const Form = ({ onExit }: FormProps) => {
 			return <BroadcastDeleteDisplay result={result.data} onExit={onExit} />;
 		}
 		return (
-			<Layout headerText={`${config.baseTitle} - Broadcasts - Delete`}>
+			<Layout
+				headerText={`${config.baseTitle} - Broadcasts - Delete`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<ErrorDisplay message={result.error || 'Failed to delete broadcast'} />
 				<Box marginTop={1}>
 					<Text>
@@ -68,7 +76,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Broadcasts - Delete`}>
+		<Layout
+			headerText={`${config.baseTitle} - Broadcasts - Delete`}
+			showNavigationInstructions={true}
+			navigationContext="form-single"
+		>
 			{isDryRun && (
 				<Box marginBottom={1}>
 					<Alert variant="warning">DRY RUN MODE - No API calls will be made</Alert>
@@ -103,7 +115,11 @@ const BroadcastDeleteDisplay = ({ result, onExit }: BroadcastDeleteDisplayProps)
 	});
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Broadcasts - Delete`}>
+		<Layout
+			headerText={`${config.baseTitle} - Broadcasts - Delete`}
+			showNavigationInstructions={true}
+			navigationContext="result"
+		>
 			<Box flexDirection="column" gap={1}>
 				<Box>
 					<Alert variant="success">Broadcast {result.deleted ? 'deleted' : 'processed'} successfully</Alert>

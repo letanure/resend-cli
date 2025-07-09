@@ -77,7 +77,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (isSubmitting) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Cancel`}>
+			<Layout
+				headerText={`${config.baseTitle} - Emails - Cancel`}
+				showNavigationInstructions={false}
+				navigationContext="none"
+			>
 				<Spinner label="Cancelling email..." />
 			</Layout>
 		);
@@ -85,7 +89,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (cancelResult) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Cancel - Success`}>
+			<Layout
+				headerText={`${config.baseTitle} - Emails - Cancel - Success`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<EmailDisplay data={cancelResult} title="Email Cancelled Successfully" />
@@ -100,7 +108,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (showDryRunData) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Cancel - Dry Run`}>
+			<Layout
+				headerText={`${config.baseTitle} - Emails - Cancel - Dry Run`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<EmailDisplay data={showDryRunData} title="DRY RUN - Email cancellation data (validation only)" />
@@ -115,7 +127,11 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout headerText={`${config.baseTitle} - Emails - Cancel - Error`}>
+			<Layout
+				headerText={`${config.baseTitle} - Emails - Cancel - Error`}
+				showNavigationInstructions={true}
+				navigationContext="result"
+			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
 						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
@@ -129,7 +145,11 @@ export const Form = ({ onExit }: FormProps) => {
 	}
 
 	return (
-		<Layout headerText={`${config.baseTitle} - Emails - Cancel`}>
+		<Layout
+			headerText={`${config.baseTitle} - Emails - Cancel`}
+			showNavigationInstructions={true}
+			navigationContext="form-single"
+		>
 			<SimpleForm<CancelEmailOptionsType>
 				fields={fields}
 				onSubmit={handleSubmit}
