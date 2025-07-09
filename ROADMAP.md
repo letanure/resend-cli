@@ -7,8 +7,9 @@ This roadmap outlines the planned features and improvements for the Resend CLI. 
 ## ✅ Completed Features
 
 ### Core Email Operations
+
 - [x] Email sending functionality
-- [x] Email retrieval functionality  
+- [x] Email retrieval functionality
 - [x] Email cancellation (cancel scheduled emails)
 - [x] Email updates (modify scheduled emails)
 - [x] Dry-run mode for all operations
@@ -18,17 +19,20 @@ This roadmap outlines the planned features and improvements for the Resend CLI. 
 - [x] Environment variable configuration
 
 ### Domain Management
+
 - [x] Domain creation and setup
 - [x] Domain listing and status
 - [x] Domain retrieval with DNS records
-- [x] Domain verification ✨ *Recently added*
+- [x] Domain verification ✨ _Recently added_
 
-### API Key Management  
+### API Key Management
+
 - [x] API key creation and listing
 - [x] API key deletion
 - [x] Dry-run support for all operations
 
 ### Contact & Audience Management
+
 - [x] Contact creation and management
 - [x] Contact retrieval and deletion
 - [x] Contact listing with audience filtering
@@ -39,11 +43,13 @@ This roadmap outlines the planned features and improvements for the Resend CLI. 
 ## 🚧 Next Phase - UX Improvements (High Priority)
 
 ### Navigation & User Experience
+
 - [ ] **Show only relevant navigation tips in footer** (context-aware help)
 - [ ] **Fix back navigation from lists** (currently stuck in loading state)
 - [ ] Enhanced TUI with better state management
 
-### Component Enhancements  
+### Component Enhancements
+
 - [ ] **File selector component** (for attachments and imports)
 - [ ] **Domain ID selector component** (based on user's domain list)
 - [ ] **API key name validation** (show warnings for repeated names)
@@ -51,11 +57,13 @@ This roadmap outlines the planned features and improvements for the Resend CLI. 
 ## 📋 Planned Features
 
 ### Batch Operations
+
 - [ ] **Batch email sending based on JSON input** (send multiple emails at once)
 - [ ] Contact import/export (CSV, JSON)
 - [ ] Bulk contact operations
 
 ### List Enhancements
+
 - [ ] **Add actions to all lists** (delete/update directly from list views)
 - [ ] Search and filtering capabilities
 - [ ] Pagination for large datasets
@@ -63,6 +71,7 @@ This roadmap outlines the planned features and improvements for the Resend CLI. 
 ## 🔮 Future Features
 
 ### Advanced Email Features
+
 - [ ] Email templates and reusable content
 - [ ] Email scheduling with cron-like syntax
 - [ ] Webhook management and testing
@@ -70,6 +79,7 @@ This roadmap outlines the planned features and improvements for the Resend CLI. 
 - [ ] Email status tracking and events
 
 ### Developer Experience
+
 - [ ] Shell completion (bash, zsh, fish)
 - [ ] Configuration file support (.resendrc)
 - [ ] Better error messages and suggestions
@@ -77,6 +87,7 @@ This roadmap outlines the planned features and improvements for the Resend CLI. 
 - [ ] CI/CD integration examples
 
 ### Technical Improvements
+
 - [ ] Performance optimizations for large datasets
 - [ ] Multi-account support
 - [ ] DKIM configuration management
@@ -85,19 +96,24 @@ This roadmap outlines the planned features and improvements for the Resend CLI. 
 
 These features are being considered but not yet committed to the roadmap:
 
-- [ ] Email template builder (interactive)
-- [ ] Integration with popular frameworks (Next.js, Express)
-- [ ] Performance optimizations for large datasets
-- [ ] Multi-account support
-- [ ] Email preview and testing tools
-- [ ] Broadcast campaign management
-- [ ] A/B testing functionality
-- [ ] Email bounce and complaint handling
-- [ ] Integration with external tools (Zapier, etc.)
+- [ ] email send tag
+- [ ] email send header
+- [ ] component select date
+- [ ] component select audience ID
+- [ ] component select domain ID
+- [ ] component select broadcast ID
+- [ ] lists with actions
+- [ ] file selector for react component, validated
+- [ ] validate html field
+- [ ] email batch loading json, validated
+- [ ] Email html view in browser
+- [ ] refactor tests, focus e2e ?
+- [ ] lint dead code
 
 ## Community Requests
 
 Have an idea or feature request? Please:
+
 1. Check existing [GitHub Issues](https://github.com/anthropics/claude-code/issues)
 2. Create a new issue with the `enhancement` label
 3. Join discussions in existing feature requests
@@ -109,7 +125,8 @@ We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for deta
 ---
 
 **Legend:**
+
 - ✅ Completed
-- 🚧 In Progress  
+- 🚧 In Progress
 - 📋 Planned
 - 💡 Under Consideration
