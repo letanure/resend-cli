@@ -12,9 +12,15 @@ async function handleCreateCommand(options: Record<string, unknown>, command: Co
 	try {
 		const apiKey = getResendApiKey();
 
-		const outputFormat = (options.output as OutputFormat) || 'text';
+		// Get global options from the root program (need to go up two levels)
+		const rootProgram = command.parent?.parent;
+		const globalOptions = rootProgram?.opts() || {};
+		// Merge local and global options
+		const allOptions = { ...globalOptions, ...options };
+
+		const outputFormat = (allOptions.output as OutputFormat) || 'text';
 		const validatedData = validateOptions<CreateApiKeyOptionsType>(
-			options,
+			allOptions,
 			CreateApiKeyOptionsSchema,
 			outputFormat,
 			fields,
@@ -25,7 +31,7 @@ async function handleCreateCommand(options: Record<string, unknown>, command: Co
 		const createData =
 			validatedData.permission === 'full_access' ? { ...validatedData, domain_id: undefined } : validatedData;
 
-		const isDryRun = Boolean(options.dryRun);
+		const isDryRun = Boolean(allOptions.dryRun);
 
 		const result = isDryRun ? undefined : await createApiKey(createData, apiKey);
 

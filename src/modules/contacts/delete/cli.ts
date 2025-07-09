@@ -13,10 +13,16 @@ async function handleDeleteCommand(options: Record<string, unknown>, command: Co
 	try {
 		const apiKey = getResendApiKey();
 
+		// Get global options from the root program (need to go up two levels)
+		const rootProgram = command.parent?.parent;
+		const globalOptions = rootProgram?.opts() || {};
+		// Merge local and global options
+		const allOptions = { ...globalOptions, ...options };
+
 		// Extract output format and validate delete data
-		const outputFormat = (options.output as OutputFormat) || 'text';
+		const outputFormat = (allOptions.output as OutputFormat) || 'text';
 		const deleteData = validateOptions<DeleteContactOptionsType>(
-			options,
+			allOptions,
 			DeleteContactOptionsSchema,
 			outputFormat,
 			fields,
@@ -24,7 +30,7 @@ async function handleDeleteCommand(options: Record<string, unknown>, command: Co
 		);
 
 		// Check if dry-run mode is enabled
-		const isDryRun = Boolean(options.dryRun);
+		const isDryRun = Boolean(allOptions.dryRun);
 
 		// Use generic displayResults function
 		const result = isDryRun ? undefined : await deleteContact(deleteData, apiKey);

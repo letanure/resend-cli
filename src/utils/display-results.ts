@@ -1,6 +1,5 @@
 import type { ApiResult, CliField } from '@/types/index.js';
 import { displayCLIError, displayCLIResults } from '@/utils/cli.js';
-import { logDryRunResults } from '@/utils/dry-run.js';
 import type { OutputFormat } from '@/utils/output.js';
 
 export interface OperationMessages<T = unknown> {
@@ -45,13 +44,8 @@ export function displayResults<TData extends Record<string, unknown>, TResult = 
 		}
 		metadata['Dry Run'] = 'true';
 
-		if (outputFormat === 'json') {
-			// For JSON output, still use displayCLIResults for consistency
-			displayCLIResults(data, fields, outputFormat, operation.dryRun.title, metadata, operation.dryRun.message);
-		} else {
-			// For text output, use the specialized dry-run utility
-			logDryRunResults(data, fields, operation.dryRun.title, metadata, operation.dryRun.message);
-		}
+		// Use unified displayCLIResults for both JSON and text output
+		displayCLIResults(data, fields, outputFormat, operation.dryRun.title, metadata, operation.dryRun.message);
 		return;
 	}
 

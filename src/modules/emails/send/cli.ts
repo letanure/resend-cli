@@ -11,13 +11,19 @@ import { CreateEmailOptionsSchema, type CreateEmailOptionsType } from './schema.
 
 // Main handler for send command
 async function handleSendCommand(options: Record<string, unknown>, command: Command): Promise<void> {
+	// Get global options from the root program (need to go up two levels)
+	const rootProgram = command.parent?.parent;
+	const globalOptions = rootProgram?.opts() || {};
+	// Merge local and global options
+	const allOptions = { ...globalOptions, ...options };
+
 	try {
 		const apiKey = getResendApiKey();
 
 		// Extract output format and validate email data
-		const outputFormat = (options.output as OutputFormat) || 'text';
+		const outputFormat = (allOptions.output as OutputFormat) || 'text';
 		const emailData = validateOptions<CreateEmailOptionsType>(
-			options,
+			allOptions,
 			CreateEmailOptionsSchema,
 			outputFormat,
 			fields,
@@ -25,8 +31,7 @@ async function handleSendCommand(options: Record<string, unknown>, command: Comm
 		);
 
 		// Check if dry-run mode is enabled
-		// TODO: Fix global --dry-run flag not being passed to subcommands
-		const isDryRun = Boolean(options.dryRun);
+		const isDryRun = Boolean(allOptions.dryRun);
 
 		// Use generic displayResults function
 		const result = isDryRun ? undefined : await sendEmail(emailData as CreateEmailOptions, apiKey);

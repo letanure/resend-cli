@@ -13,10 +13,16 @@ async function handleCreateAudienceCommand(options: Record<string, unknown>, com
 	try {
 		const apiKey = getResendApiKey();
 
+		// Get global options from the root program (need to go up two levels)
+		const rootProgram = command.parent?.parent;
+		const globalOptions = rootProgram?.opts() || {};
+		// Merge local and global options
+		const allOptions = { ...globalOptions, ...options };
+
 		// Extract output format and validate audience data
-		const outputFormat = (options.output as OutputFormat) || 'text';
+		const outputFormat = (allOptions.output as OutputFormat) || 'text';
 		const audienceData = validateOptions<CreateAudienceOptionsType>(
-			options,
+			allOptions,
 			CreateAudienceOptionsSchema,
 			outputFormat,
 			fields,
@@ -24,8 +30,7 @@ async function handleCreateAudienceCommand(options: Record<string, unknown>, com
 		);
 
 		// Check if dry-run mode is enabled
-		// TODO: Fix global --dry-run flag not being passed to subcommands
-		const isDryRun = Boolean(options.dryRun);
+		const isDryRun = Boolean(allOptions.dryRun);
 
 		// Use generic displayResults function
 		const result = isDryRun ? undefined : await createAudience(audienceData, apiKey);

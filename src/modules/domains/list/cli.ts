@@ -9,16 +9,22 @@ import { displayFields, fields } from './fields.js';
 import { ListDomainsOptionsSchema, type ListDomainsOptionsType } from './schema.js';
 
 // Main handler for list command
-async function handleListCommand(options: Record<string, unknown>): Promise<void> {
+async function handleListCommand(options: Record<string, unknown>, command: Command): Promise<void> {
 	try {
 		const apiKey = getResendApiKey();
 
+		// Get global options from the root program (need to go up two levels)
+		const rootProgram = command.parent?.parent;
+		const globalOptions = rootProgram?.opts() || {};
+		// Merge local and global options
+		const allOptions = { ...globalOptions, ...options };
+
 		// Extract output format and validate list data
-		const outputFormat = (options.output as OutputFormat) || 'text';
-		const listData = validateOptions<ListDomainsOptionsType>(options, ListDomainsOptionsSchema, outputFormat);
+		const outputFormat = (allOptions.output as OutputFormat) || 'text';
+		const listData = validateOptions<ListDomainsOptionsType>(allOptions, ListDomainsOptionsSchema, outputFormat);
 
 		// Check if dry-run mode is enabled
-		const isDryRun = Boolean(options.dryRun);
+		const isDryRun = Boolean(allOptions.dryRun);
 
 		// Use generic displayResults function
 		const result = isDryRun ? undefined : await listDomains(listData, apiKey);
@@ -66,7 +72,7 @@ export function registerListDomainsCommand(domainsCommand: Command) {
 	const listCommand = domainsCommand
 		.command('list')
 		.description('List all domains from Resend API')
-		.action(handleListCommand);
+		.action((options: Record<string, unknown>, command: Command) => handleListCommand(options, command));
 
 	// Add all the field options to the list command (none needed for domains list)
 	registerFieldOptions(listCommand, fields);
