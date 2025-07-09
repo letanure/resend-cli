@@ -1,3 +1,10 @@
+## [0.31.1](https://github.com/letanure/resend-cli/compare/v0.31.0...v0.31.1) (2025-07-09)
+
+
+### Bug Fixes
+
+* footers and arrow nav in forms and lists ([cbf8585](https://github.com/letanure/resend-cli/commit/cbf8585b62e2f35d700e1d76be1e41bafa4619b7))
+
 # [0.31.0](https://github.com/letanure/resend-cli/compare/v0.30.2...v0.31.0) (2025-07-09)
 
 
