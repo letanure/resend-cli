@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { validateOptions } from '@/utils/cli.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
@@ -18,48 +19,21 @@ async function handleRetrieveCommand(options: Record<string, unknown>, command: 
 		// Only get API key if not in dry-run mode
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
-		// Validate required data
-		const data: RetrieveBroadcastData = {
-			broadcastId: allOptions.broadcastId as string,
-		};
-
-		// Validate the data
-		const validationResult = retrieveBroadcastSchema.safeParse(data);
-		if (!validationResult.success) {
-			displayResults({
-				data,
-				result: {
-					success: false,
-					error: `Validation failed: ${validationResult.error.errors.map((e) => e.message).join(', ')}`,
-				},
-				fields,
-				outputFormat,
-				apiKey,
-				isDryRun,
-				operation: {
-					success: {
-						title: 'Broadcast Retrieved',
-						message: () => '',
-					},
-					error: {
-						title: 'Validation Error',
-						message: 'Invalid input data',
-					},
-					dryRun: {
-						title: 'DRY RUN - Broadcast Retrieve',
-						message: 'Validation failed',
-					},
-				},
-			});
-			return;
-		}
+		// Validate the data using unified validation
+		const validatedData = validateOptions<RetrieveBroadcastData>(
+			allOptions,
+			retrieveBroadcastSchema,
+			outputFormat,
+			fields,
+			command,
+		);
 
 		// Execute action or simulate dry-run
-		const result = isDryRun ? undefined : await retrieveBroadcast(validationResult.data, apiKey);
+		const result = isDryRun ? undefined : await retrieveBroadcast(validatedData, apiKey);
 
 		// Display results
 		displayResults({
-			data: validationResult.data,
+			data: validatedData,
 			result,
 			fields,
 			outputFormat,

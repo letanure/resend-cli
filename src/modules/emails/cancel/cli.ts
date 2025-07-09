@@ -9,13 +9,19 @@ import { fields } from './fields.js';
 import { CancelEmailOptionsSchema, type CancelEmailOptionsType } from './schema.js';
 
 // Main handler for cancel command
-async function handleCancelCommand(options: Record<string, unknown>): Promise<void> {
+async function handleCancelCommand(options: Record<string, unknown>, command: Command): Promise<void> {
 	try {
 		const apiKey = getResendApiKey();
 
 		// Extract output format and validate cancel data
 		const outputFormat = (options.output as OutputFormat) || 'text';
-		const cancelData = validateOptions<CancelEmailOptionsType>(options, CancelEmailOptionsSchema, outputFormat);
+		const cancelData = validateOptions<CancelEmailOptionsType>(
+			options,
+			CancelEmailOptionsSchema,
+			outputFormat,
+			fields,
+			command,
+		);
 
 		// Check if dry-run mode is enabled
 		// TODO: Fix global --dry-run flag not being passed to subcommands

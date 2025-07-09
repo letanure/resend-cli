@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { registerFieldOptions } from '@/utils/cli.js';
+import { registerFieldOptions, validateOptions } from '@/utils/cli.js';
 import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
@@ -20,17 +20,16 @@ async function handleListCommand(options: Record<string, unknown>, command: Comm
 		// Only get API key if not in dry-run mode
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
-		// List has no input parameters
-		const data: ListBroadcastsData = {};
+		// Validate the data using unified validation
+		const validatedData = validateOptions<ListBroadcastsData>(
+			allOptions,
+			listBroadcastsSchema,
+			outputFormat,
+			fields,
+			command,
+		);
 
-		// Validate the data (empty object)
-		const validationResult = listBroadcastsSchema.safeParse(data);
-		if (!validationResult.success) {
-			console.error('Validation failed:', validationResult.error.issues.map((issue) => issue.message).join(', '));
-			process.exit(1);
-		}
-
-		const result = isDryRun ? undefined : await listBroadcasts(validationResult.data, apiKey);
+		const result = isDryRun ? undefined : await listBroadcasts(validatedData, apiKey);
 
 		displayResults({
 			data: {},

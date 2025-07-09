@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { registerFieldOptions, validateOptions } from '@/utils/cli.js';
+import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
@@ -20,55 +22,30 @@ async function handleUpdateCommand(options: Record<string, unknown>, command: Co
 		// Only get API key if not in dry-run mode
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
-		// Validate required data - convert CLI flags to schema format
-		const data: UpdateDomainData = {
-			domainId: allOptions.id as string,
-			clickTracking: allOptions.clickTracking
-				? ['yes', 'true', '1'].includes(String(allOptions.clickTracking).toLowerCase())
-				: undefined,
-			openTracking: allOptions.openTracking
-				? ['yes', 'true', '1'].includes(String(allOptions.openTracking).toLowerCase())
-				: undefined,
-			tls: allOptions.tls as 'opportunistic' | 'enforced' | undefined,
-		};
-
-		// Validate the data
-		const validationResult = updateDomainSchema.safeParse(data);
-		if (!validationResult.success) {
-			displayResults({
-				data,
-				result: {
-					success: false,
-					error: `Validation failed: ${validationResult.error.errors.map((e) => e.message).join(', ')}`,
-				},
-				fields,
-				outputFormat,
-				apiKey,
-				isDryRun,
-				operation: {
-					success: {
-						title: 'Domain Updated',
-						message: () => '',
-					},
-					error: {
-						title: 'Validation Error',
-						message: 'Invalid input data',
-					},
-					dryRun: {
-						title: 'DRY RUN - Domain Update',
-						message: 'Validation failed',
-					},
-				},
-			});
-			return;
+		// Convert string boolean values to actual booleans for validation
+		const processedOptions = { ...allOptions };
+		if (typeof processedOptions.clickTracking === 'string') {
+			processedOptions.clickTracking = ['yes', 'true', '1'].includes(processedOptions.clickTracking.toLowerCase());
+		}
+		if (typeof processedOptions.openTracking === 'string') {
+			processedOptions.openTracking = ['yes', 'true', '1'].includes(processedOptions.openTracking.toLowerCase());
 		}
 
+		// Validate the data using unified validation
+		const validatedData = validateOptions(
+			processedOptions,
+			updateDomainSchema,
+			outputFormat,
+			fields,
+			command,
+		) as UpdateDomainData;
+
 		// Execute action or simulate dry-run
-		const result = isDryRun ? undefined : await updateDomain(validationResult.data, apiKey);
+		const result = isDryRun ? undefined : await updateDomain(validatedData, apiKey);
 
 		// Display results
 		displayResults({
-			data: validationResult.data,
+			data: validatedData,
 			result,
 			fields,
 			outputFormat,
@@ -116,11 +93,24 @@ async function handleUpdateCommand(options: Record<string, unknown>, command: Co
 	}
 }
 
-export const domainUpdateCommand = new Command('update')
-	.description('Update a domain configuration using Resend API')
-	.option('--id <id>', 'Domain ID')
-	.option('--click-tracking <boolean>', 'Enable/disable click tracking (yes/no)')
-	.option('--open-tracking <boolean>', 'Enable/disable open tracking (yes/no)')
-	.option('--tls <mode>', 'TLS configuration (opportunistic/enforced)')
-	.option('--dry-run', 'Validate input without calling API', false)
-	.action(handleUpdateCommand);
+export function createUpdateDomainCommand(): Command {
+	const updateCommand = new Command('update')
+		.description('Update a domain configuration using Resend API')
+		.action(handleUpdateCommand);
+
+	registerFieldOptions(updateCommand, fields);
+
+	const updateExamples = [
+		'$ resend-cli domains update --id "example.com" --click-tracking yes',
+		'$ resend-cli domains update --id "example.com" --open-tracking no --tls enforced',
+		'$ resend-cli domains update --id "example.com" --click-tracking yes --output json',
+		'$ resend-cli domains update --id "example.com" --tls opportunistic --dry-run',
+		'$ RESEND_API_KEY="re_xxxxx" resend-cli domains update --id "example.com" --click-tracking yes',
+	];
+
+	configureCustomHelp(updateCommand, fields, updateExamples);
+
+	return updateCommand;
+}
+
+export const domainUpdateCommand = createUpdateDomainCommand();

@@ -9,13 +9,19 @@ import { fields } from './fields.js';
 import { CreateAudienceOptionsSchema, type CreateAudienceOptionsType } from './schema.js';
 
 // Main handler for create audience command
-async function handleCreateAudienceCommand(options: Record<string, unknown>): Promise<void> {
+async function handleCreateAudienceCommand(options: Record<string, unknown>, command: Command): Promise<void> {
 	try {
 		const apiKey = getResendApiKey();
 
 		// Extract output format and validate audience data
 		const outputFormat = (options.output as OutputFormat) || 'text';
-		const audienceData = validateOptions<CreateAudienceOptionsType>(options, CreateAudienceOptionsSchema, outputFormat);
+		const audienceData = validateOptions<CreateAudienceOptionsType>(
+			options,
+			CreateAudienceOptionsSchema,
+			outputFormat,
+			fields,
+			command,
+		);
 
 		// Check if dry-run mode is enabled
 		// TODO: Fix global --dry-run flag not being passed to subcommands

@@ -2,12 +2,12 @@ import type { CliField, FormField } from '@/types/index.js';
 
 export const fields: Array<CliField> = [
 	{
-		name: 'id',
+		name: 'domainId',
 		label: 'Domain ID',
 		placeholder: 'd91cd9bd-1176-453e-8fc1-35364d380206',
 		helpText: 'The ID of the domain to verify',
-		cliFlag: '--id',
-		cliShortFlag: '-i',
+		cliFlag: 'id',
+		cliShortFlag: 'i',
 	},
 ];
 

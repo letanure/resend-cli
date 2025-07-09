@@ -2,36 +2,36 @@ import type { CliField, FormField } from '@/types/index.js';
 
 export const fields: Array<CliField> = [
 	{
-		name: 'id',
+		name: 'domainId',
 		label: 'Domain ID',
 		placeholder: 'b8617ad3-b712-41d9-81a0-f7c3d879314e',
 		helpText: 'The ID of the domain to update',
-		cliFlag: '--id',
-		cliShortFlag: '-i',
+		cliFlag: 'id',
+		cliShortFlag: 'i',
 	},
 	{
-		name: 'click-tracking',
+		name: 'clickTracking',
 		label: 'Click Tracking',
 		placeholder: 'yes',
 		helpText: 'Track clicks within the body of each HTML email (yes/no)',
-		cliFlag: '--click-tracking',
-		cliShortFlag: '-c',
+		cliFlag: 'click-tracking',
+		cliShortFlag: 'c',
 	},
 	{
-		name: 'open-tracking',
+		name: 'openTracking',
 		label: 'Open Tracking',
 		placeholder: 'yes',
 		helpText: 'Track the open rate of each email (yes/no)',
-		cliFlag: '--open-tracking',
-		cliShortFlag: '-o',
+		cliFlag: 'open-tracking',
+		cliShortFlag: 'o',
 	},
 	{
 		name: 'tls',
 		label: 'TLS Configuration',
 		placeholder: 'opportunistic',
 		helpText: 'TLS configuration: "opportunistic" or "enforced"',
-		cliFlag: '--tls',
-		cliShortFlag: '-t',
+		cliFlag: 'tls',
+		cliShortFlag: 't',
 	},
 ];
 

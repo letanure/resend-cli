@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { validateOptions } from '@/utils/cli.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
@@ -20,48 +21,21 @@ async function handleDeleteCommand(options: Record<string, unknown>, command: Co
 		// Only get API key if not in dry-run mode
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
-		// Validate required data
-		const data: DeleteDomainData = {
-			domainId: allOptions.id as string,
-		};
-
-		// Validate the data
-		const validationResult = deleteDomainSchema.safeParse(data);
-		if (!validationResult.success) {
-			displayResults({
-				data,
-				result: {
-					success: false,
-					error: `Validation failed: ${validationResult.error.errors.map((e) => e.message).join(', ')}`,
-				},
-				fields,
-				outputFormat,
-				apiKey,
-				isDryRun,
-				operation: {
-					success: {
-						title: 'Domain Deleted',
-						message: () => '',
-					},
-					error: {
-						title: 'Validation Error',
-						message: 'Invalid input data',
-					},
-					dryRun: {
-						title: 'DRY RUN - Domain Delete',
-						message: 'Validation failed',
-					},
-				},
-			});
-			return;
-		}
+		// Validate the data using unified validation
+		const validatedData = validateOptions(
+			allOptions,
+			deleteDomainSchema,
+			outputFormat,
+			fields,
+			command,
+		) as DeleteDomainData;
 
 		// Execute action or simulate dry-run
-		const result = isDryRun ? undefined : await deleteDomain(validationResult.data, apiKey);
+		const result = isDryRun ? undefined : await deleteDomain(validatedData, apiKey);
 
 		// Display results
 		displayResults({
-			data: validationResult.data,
+			data: validatedData,
 			result,
 			fields,
 			outputFormat,
@@ -112,5 +86,6 @@ async function handleDeleteCommand(options: Record<string, unknown>, command: Co
 export const domainDeleteCommand = new Command('delete')
 	.description('Delete a domain by ID using Resend API')
 	.option('--id <id>', 'Domain ID')
+	.option('--output <format>', 'Output format (text, json)', 'text')
 	.option('--dry-run', 'Validate input without calling API', false)
 	.action(handleDeleteCommand);

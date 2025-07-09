@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { registerFieldOptions, validateOptions } from '@/utils/cli.js';
+import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
@@ -20,48 +22,21 @@ async function handleVerifyCommand(options: Record<string, unknown>, command: Co
 		// Only get API key if not in dry-run mode
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
-		// Validate required data
-		const data: VerifyDomainData = {
-			domainId: allOptions.id as string,
-		};
-
-		// Validate the data
-		const validationResult = verifyDomainSchema.safeParse(data);
-		if (!validationResult.success) {
-			displayResults({
-				data,
-				result: {
-					success: false,
-					error: `Validation failed: ${validationResult.error.errors.map((e) => e.message).join(', ')}`,
-				},
-				fields,
-				outputFormat,
-				apiKey,
-				isDryRun,
-				operation: {
-					success: {
-						title: 'Domain Verified',
-						message: () => '',
-					},
-					error: {
-						title: 'Validation Error',
-						message: 'Invalid input data',
-					},
-					dryRun: {
-						title: 'DRY RUN - Domain Verify',
-						message: 'Validation failed',
-					},
-				},
-			});
-			return;
-		}
+		// Validate the data using unified validation
+		const validatedData = validateOptions(
+			allOptions,
+			verifyDomainSchema,
+			outputFormat,
+			fields,
+			command,
+		) as VerifyDomainData;
 
 		// Execute action or simulate dry-run
-		const result = isDryRun ? undefined : await verifyDomain(validationResult.data, apiKey);
+		const result = isDryRun ? undefined : await verifyDomain(validatedData, apiKey);
 
 		// Display results
 		displayResults({
-			data: validationResult.data,
+			data: validatedData,
 			result,
 			fields,
 			outputFormat,
@@ -109,8 +84,23 @@ async function handleVerifyCommand(options: Record<string, unknown>, command: Co
 	}
 }
 
-export const domainVerifyCommand = new Command('verify')
-	.description('Verify a domain by ID using Resend API')
-	.option('--id <id>', 'Domain ID')
-	.option('--dry-run', 'Validate input without calling API', false)
-	.action(handleVerifyCommand);
+export function createVerifyDomainCommand(): Command {
+	const verifyCommand = new Command('verify')
+		.description('Verify a domain by ID using Resend API')
+		.action(handleVerifyCommand);
+
+	registerFieldOptions(verifyCommand, fields);
+
+	const verifyExamples = [
+		'$ resend-cli domains verify --id "example.com"',
+		'$ resend-cli domains verify --id "example.com" --output json',
+		'$ resend-cli domains verify --id "example.com" --dry-run',
+		'$ RESEND_API_KEY="re_xxxxx" resend-cli domains verify --id "example.com"',
+	];
+
+	configureCustomHelp(verifyCommand, fields, verifyExamples);
+
+	return verifyCommand;
+}
+
+export const domainVerifyCommand = createVerifyDomainCommand();

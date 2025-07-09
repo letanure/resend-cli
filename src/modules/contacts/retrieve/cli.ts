@@ -9,7 +9,7 @@ import { displayFields, fields } from './fields.js';
 import { RetrieveContactOptionsSchema, type RetrieveContactOptionsType } from './schema.js';
 
 // Main handler for retrieve command
-async function handleRetrieveCommand(options: Record<string, unknown>): Promise<void> {
+async function handleRetrieveCommand(options: Record<string, unknown>, command: Command): Promise<void> {
 	try {
 		const apiKey = getResendApiKey();
 
@@ -19,6 +19,8 @@ async function handleRetrieveCommand(options: Record<string, unknown>): Promise<
 			options,
 			RetrieveContactOptionsSchema,
 			outputFormat,
+			fields,
+			command,
 		);
 
 		// Check if dry-run mode is enabled

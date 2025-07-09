@@ -9,13 +9,19 @@ import { displayFields, fields } from './fields.js';
 import { ListContactsOptionsSchema, type ListContactsOptionsType } from './schema.js';
 
 // Main handler for list command
-async function handleListCommand(options: Record<string, unknown>): Promise<void> {
+async function handleListCommand(options: Record<string, unknown>, command: Command): Promise<void> {
 	try {
 		const apiKey = getResendApiKey();
 
 		// Extract output format and validate list data
 		const outputFormat = (options.output as OutputFormat) || 'text';
-		const listData = validateOptions<ListContactsOptionsType>(options, ListContactsOptionsSchema, outputFormat);
+		const listData = validateOptions<ListContactsOptionsType>(
+			options,
+			ListContactsOptionsSchema,
+			outputFormat,
+			fields,
+			command,
+		);
 
 		// Check if dry-run mode is enabled
 		const isDryRun = Boolean(options.dryRun);

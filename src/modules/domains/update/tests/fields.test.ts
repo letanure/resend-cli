@@ -5,36 +5,36 @@ describe('domains update fields configuration', () => {
 	it('should have CLI fields configured', () => {
 		expect(fields).toHaveLength(4);
 		expect(fields[0]).toEqual({
-			name: 'id',
+			name: 'domainId',
 			label: 'Domain ID',
 			placeholder: 'b8617ad3-b712-41d9-81a0-f7c3d879314e',
 			helpText: 'The ID of the domain to update',
-			cliFlag: '--id',
-			cliShortFlag: '-i',
+			cliFlag: 'id',
+			cliShortFlag: 'i',
 		});
 		expect(fields[1]).toEqual({
-			name: 'click-tracking',
+			name: 'clickTracking',
 			label: 'Click Tracking',
 			placeholder: 'yes',
 			helpText: 'Track clicks within the body of each HTML email (yes/no)',
-			cliFlag: '--click-tracking',
-			cliShortFlag: '-c',
+			cliFlag: 'click-tracking',
+			cliShortFlag: 'c',
 		});
 		expect(fields[2]).toEqual({
-			name: 'open-tracking',
+			name: 'openTracking',
 			label: 'Open Tracking',
 			placeholder: 'yes',
 			helpText: 'Track the open rate of each email (yes/no)',
-			cliFlag: '--open-tracking',
-			cliShortFlag: '-o',
+			cliFlag: 'open-tracking',
+			cliShortFlag: 'o',
 		});
 		expect(fields[3]).toEqual({
 			name: 'tls',
 			label: 'TLS Configuration',
 			placeholder: 'opportunistic',
 			helpText: 'TLS configuration: "opportunistic" or "enforced"',
-			cliFlag: '--tls',
-			cliShortFlag: '-t',
+			cliFlag: 'tls',
+			cliShortFlag: 't',
 		});
 	});
 
@@ -104,12 +104,12 @@ describe('domains update fields configuration', () => {
 	});
 
 	it('should maintain consistency between CLI and form field names', () => {
-		// CLI fields use kebab-case but form fields use camelCase to match schema
-		expect(fields[0]?.name).toBe('id');
+		// Both CLI and form fields use camelCase to match schema
+		expect(fields[0]?.name).toBe('domainId');
 		expect(updateDomainFields[0]?.name).toBe('domainId');
-		expect(fields[1]?.name).toBe('click-tracking');
+		expect(fields[1]?.name).toBe('clickTracking');
 		expect(updateDomainFields[1]?.name).toBe('clickTracking');
-		expect(fields[2]?.name).toBe('open-tracking');
+		expect(fields[2]?.name).toBe('openTracking');
 		expect(updateDomainFields[2]?.name).toBe('openTracking');
 		expect(fields[3]?.name).toBe('tls');
 		expect(updateDomainFields[3]?.name).toBe('tls');

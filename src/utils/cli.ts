@@ -230,7 +230,7 @@ function buildFieldToFlagMapping(fields: Array<CliField>): Record<string, string
 	for (const field of fields) {
 		if (field.name && field.cliFlag) {
 			// Map both the field name and snake_case version
-			const flagName = `--${field.cliFlag}`;
+			const flagName = field.cliFlag.startsWith('--') ? field.cliFlag : `--${field.cliFlag}`;
 			mapping[field.name] = flagName;
 
 			// Also map snake_case version of field name

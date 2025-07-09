@@ -5,12 +5,12 @@ describe('domains verify fields configuration', () => {
 	it('should have CLI fields configured', () => {
 		expect(fields).toHaveLength(1);
 		expect(fields[0]).toEqual({
-			name: 'id',
+			name: 'domainId',
 			label: 'Domain ID',
 			placeholder: 'd91cd9bd-1176-453e-8fc1-35364d380206',
 			helpText: 'The ID of the domain to verify',
-			cliFlag: '--id',
-			cliShortFlag: '-i',
+			cliFlag: 'id',
+			cliShortFlag: 'i',
 		});
 	});
 
@@ -46,8 +46,8 @@ describe('domains verify fields configuration', () => {
 	});
 
 	it('should maintain consistency between CLI and form field names', () => {
-		// CLI fields use 'id' but form fields use 'domainId' to match schema
-		expect(fields[0]?.name).toBe('id');
+		// Both CLI and form fields use 'domainId' to match schema
+		expect(fields[0]?.name).toBe('domainId');
 		expect(verifyDomainFields[0]?.name).toBe('domainId');
 	});
 

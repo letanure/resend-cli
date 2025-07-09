@@ -9,13 +9,19 @@ import { displayFields, fields } from './fields.js';
 import { GetEmailOptionsSchema, type GetEmailOptionsType } from './schema.js';
 
 // Main handler for retrieve command
-async function handleRetrieveCommand(options: Record<string, unknown>): Promise<void> {
+async function handleRetrieveCommand(options: Record<string, unknown>, command: Command): Promise<void> {
 	try {
 		const apiKey = getResendApiKey();
 
 		// Extract output format and validate retrieve data
 		const outputFormat = (options.output as OutputFormat) || 'text';
-		const retrieveData = validateOptions<GetEmailOptionsType>(options, GetEmailOptionsSchema, outputFormat);
+		const retrieveData = validateOptions<GetEmailOptionsType>(
+			options,
+			GetEmailOptionsSchema,
+			outputFormat,
+			fields,
+			command,
+		);
 
 		// Check if dry-run mode is enabled
 		const isDryRun = Boolean(options.dryRun);

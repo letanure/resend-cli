@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { validateOptions } from '@/utils/cli.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
@@ -18,29 +19,19 @@ async function handleUpdateCommand(options: Record<string, unknown>, command: Co
 		// Only get API key if not in dry-run mode
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
-		// Convert CLI option names to schema field names
-		const data: UpdateBroadcastData = {
-			broadcastId: allOptions.broadcastId as string,
-			audienceId: allOptions.audienceId as string,
-			from: allOptions.from as string,
-			subject: allOptions.subject as string,
-			replyTo: allOptions.replyTo as string,
-			html: allOptions.html as string,
-			text: allOptions.text as string,
-			name: allOptions.name as string,
-		};
+		// Validate the data using unified validation
+		const validatedData = validateOptions<UpdateBroadcastData>(
+			allOptions,
+			updateBroadcastSchema,
+			outputFormat,
+			fields,
+			command,
+		);
 
-		// Validate the data
-		const validationResult = updateBroadcastSchema.safeParse(data);
-		if (!validationResult.success) {
-			console.error('Validation failed:', validationResult.error.issues.map((issue) => issue.message).join(', '));
-			process.exit(1);
-		}
-
-		const result = isDryRun ? undefined : await updateBroadcast(validationResult.data, apiKey);
+		const result = isDryRun ? undefined : await updateBroadcast(validatedData, apiKey);
 
 		displayResults({
-			data: validationResult.data,
+			data: validatedData,
 			result,
 			fields,
 			outputFormat,

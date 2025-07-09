@@ -10,13 +10,19 @@ import { fields } from './fields.js';
 import { CreateEmailOptionsSchema, type CreateEmailOptionsType } from './schema.js';
 
 // Main handler for send command
-async function handleSendCommand(options: Record<string, unknown>): Promise<void> {
+async function handleSendCommand(options: Record<string, unknown>, command: Command): Promise<void> {
 	try {
 		const apiKey = getResendApiKey();
 
 		// Extract output format and validate email data
 		const outputFormat = (options.output as OutputFormat) || 'text';
-		const emailData = validateOptions<CreateEmailOptionsType>(options, CreateEmailOptionsSchema, outputFormat);
+		const emailData = validateOptions<CreateEmailOptionsType>(
+			options,
+			CreateEmailOptionsSchema,
+			outputFormat,
+			fields,
+			command,
+		);
 
 		// Check if dry-run mode is enabled
 		// TODO: Fix global --dry-run flag not being passed to subcommands

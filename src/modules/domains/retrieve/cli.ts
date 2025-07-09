@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { registerFieldOptions, validateOptions } from '@/utils/cli.js';
+import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
@@ -20,48 +22,21 @@ async function handleRetrieveCommand(options: Record<string, unknown>, command: 
 		// Only get API key if not in dry-run mode
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
-		// Validate required data
-		const data: RetrieveDomainData = {
-			domainId: allOptions.id as string,
-		};
-
-		// Validate the data
-		const validationResult = retrieveDomainSchema.safeParse(data);
-		if (!validationResult.success) {
-			displayResults({
-				data,
-				result: {
-					success: false,
-					error: `Validation failed: ${validationResult.error.errors.map((e) => e.message).join(', ')}`,
-				},
-				fields,
-				outputFormat,
-				apiKey,
-				isDryRun,
-				operation: {
-					success: {
-						title: 'Domain Retrieved',
-						message: () => '',
-					},
-					error: {
-						title: 'Validation Error',
-						message: 'Invalid input data',
-					},
-					dryRun: {
-						title: 'DRY RUN - Domain Retrieve',
-						message: 'Validation failed',
-					},
-				},
-			});
-			return;
-		}
+		// Validate the data using unified validation
+		const validatedData = validateOptions(
+			allOptions,
+			retrieveDomainSchema,
+			outputFormat,
+			fields,
+			command,
+		) as RetrieveDomainData;
 
 		// Execute action or simulate dry-run
-		const result = isDryRun ? undefined : await retrieveDomain(validationResult.data, apiKey);
+		const result = isDryRun ? undefined : await retrieveDomain(validatedData, apiKey);
 
 		// Display results
 		displayResults({
-			data: validationResult.data,
+			data: validatedData,
 			result,
 			fields,
 			outputFormat,
@@ -109,8 +84,23 @@ async function handleRetrieveCommand(options: Record<string, unknown>, command: 
 	}
 }
 
-export const domainRetrieveCommand = new Command('retrieve')
-	.description('Retrieve a domain by ID from Resend API')
-	.option('--id <id>', 'Domain ID')
-	.option('--dry-run', 'Validate input without calling API', false)
-	.action(handleRetrieveCommand);
+export function createRetrieveDomainCommand(): Command {
+	const retrieveCommand = new Command('retrieve')
+		.description('Retrieve a domain by ID from Resend API')
+		.action(handleRetrieveCommand);
+
+	registerFieldOptions(retrieveCommand, fields);
+
+	const retrieveExamples = [
+		'$ resend-cli domains retrieve --id "example.com"',
+		'$ resend-cli domains retrieve --id "example.com" --output json',
+		'$ resend-cli domains retrieve --id "example.com" --dry-run',
+		'$ RESEND_API_KEY="re_xxxxx" resend-cli domains retrieve --id "example.com"',
+	];
+
+	configureCustomHelp(retrieveCommand, fields, retrieveExamples);
+
+	return retrieveCommand;
+}
+
+export const domainRetrieveCommand = createRetrieveDomainCommand();

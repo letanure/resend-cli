@@ -30,6 +30,8 @@ async function handleCreateCommand(options: Record<string, unknown>, command: Co
 			processedOptions,
 			CreateContactOptionsSchema,
 			outputFormat,
+			fields,
+			command,
 		) as CreateContactOptionsType;
 
 		// Check if dry-run mode is enabled

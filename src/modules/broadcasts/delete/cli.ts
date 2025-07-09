@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { validateOptions } from '@/utils/cli.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
@@ -18,22 +19,19 @@ async function handleDeleteCommand(options: Record<string, unknown>, command: Co
 		// Only get API key if not in dry-run mode
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
-		// Convert CLI option names to schema field names
-		const data: DeleteBroadcastData = {
-			broadcastId: allOptions.broadcastId as string,
-		};
+		// Validate the data using unified validation
+		const validatedData = validateOptions<DeleteBroadcastData>(
+			allOptions,
+			deleteBroadcastSchema,
+			outputFormat,
+			fields,
+			command,
+		);
 
-		// Validate the data
-		const validationResult = deleteBroadcastSchema.safeParse(data);
-		if (!validationResult.success) {
-			console.error('Validation failed:', validationResult.error.issues.map((issue) => issue.message).join(', '));
-			process.exit(1);
-		}
-
-		const result = isDryRun ? undefined : await deleteBroadcast(validationResult.data, apiKey);
+		const result = isDryRun ? undefined : await deleteBroadcast(validatedData, apiKey);
 
 		displayResults({
-			data: validationResult.data,
+			data: validatedData,
 			result,
 			fields,
 			outputFormat,

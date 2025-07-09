@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { registerFieldOptions, validateOptions } from '@/utils/cli.js';
+import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
@@ -20,24 +22,19 @@ async function handleCreateCommand(options: Record<string, unknown>, command: Co
 		// Only get API key if not in dry-run mode
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
-		// Validate required data
-		const data: CreateDomainData = {
-			name: allOptions.name as string,
-			region: allOptions.region as CreateDomainData['region'],
-			custom_return_path: allOptions.customReturnPath as string,
-		};
+		// Validate the data using unified validation
+		const validatedData = validateOptions(
+			allOptions,
+			createDomainSchema,
+			outputFormat,
+			fields,
+			command,
+		) as CreateDomainData;
 
-		// Validate the data
-		const validationResult = createDomainSchema.safeParse(data);
-		if (!validationResult.success) {
-			console.error('Validation failed:', validationResult.error.issues.map((issue) => issue.message).join(', '));
-			process.exit(1);
-		}
-
-		const result = isDryRun ? undefined : await createDomain(validationResult.data, apiKey);
+		const result = isDryRun ? undefined : await createDomain(validatedData, apiKey);
 
 		displayResults({
-			data: validationResult.data,
+			data: validatedData,
 			result,
 			fields,
 			outputFormat,
@@ -77,21 +74,7 @@ function createCreateDomainCommand(): Command {
 		.description('Create a domain through the Resend Email API')
 		.action(handleCreateCommand);
 
-	// Add field-based options
-	for (const field of fields) {
-		if (field.cliFlag) {
-			const optionFlag = field.cliShortFlag ? `${field.cliShortFlag}, ${field.cliFlag}` : field.cliFlag;
-			let flagWithValue = `${optionFlag} <value>`;
-
-			// For select fields, add the options to the help text
-			if (field.type === 'select' && field.options) {
-				const optionsText = field.options.map((opt) => opt.value).join('|');
-				flagWithValue = `${optionFlag} <${optionsText}>`;
-			}
-
-			createCommand.option(flagWithValue, field.helpText);
-		}
-	}
+	registerFieldOptions(createCommand, fields);
 
 	const createExamples = [
 		'$ resend-cli domains create --name "example.com"',
@@ -101,7 +84,7 @@ function createCreateDomainCommand(): Command {
 		'$ RESEND_API_KEY="re_xxxxx" resend-cli domains create -n "example.com"',
 	];
 
-	createCommand.addHelpText('after', `\nExamples:\n${createExamples.map((example) => `  ${example}`).join('\n')}`);
+	configureCustomHelp(createCommand, fields, createExamples);
 
 	return createCommand;
 }
