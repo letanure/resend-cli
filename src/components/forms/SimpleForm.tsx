@@ -199,11 +199,6 @@ export const SimpleForm = <T = Record<string, unknown>>({
 
 	return (
 		<Box flexDirection="column" marginTop={1}>
-			{formError && (
-				<Box marginBottom={1}>
-					<Alert variant="error">{formError}</Alert>
-				</Box>
-			)}
 			{fields.map((field, index) => {
 				if (field.type === 'select' && field.options) {
 					return (
@@ -234,6 +229,12 @@ export const SimpleForm = <T = Record<string, unknown>>({
 					/>
 				);
 			})}
+
+			{formError && (
+				<Box marginTop={1}>
+					<Alert variant="error">{formError}</Alert>
+				</Box>
+			)}
 
 			<Box marginTop={1} flexDirection="column">
 				<Text dimColor={true}>
