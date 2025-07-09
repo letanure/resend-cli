@@ -1,3 +1,11 @@
+## [0.30.2](https://github.com/letanure/resend-cli/compare/v0.30.1...v0.30.2) (2025-07-09)
+
+
+### Bug Fixes
+
+* dry run not working in some commands ([1d530e3](https://github.com/letanure/resend-cli/commit/1d530e326f772d7f7ea062440afa47647bdb52df))
+* reposition error SimpleForm ([c8ef63c](https://github.com/letanure/resend-cli/commit/c8ef63cb311bca75d695f1b2a23b84b9509b764b))
+
 ## [0.30.1](https://github.com/letanure/resend-cli/compare/v0.30.0...v0.30.1) (2025-07-09)
 
 
