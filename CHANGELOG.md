@@ -1,3 +1,10 @@
+## [0.30.1](https://github.com/letanure/resend-cli/compare/v0.30.0...v0.30.1) (2025-07-09)
+
+
+### Bug Fixes
+
+* use same list and error for all cli ([0979071](https://github.com/letanure/resend-cli/commit/097907109d16bd985b6a1124684dc236887f1432))
+
 # [0.30.0](https://github.com/letanure/resend-cli/compare/v0.29.0...v0.30.0) (2025-07-09)
 
 
