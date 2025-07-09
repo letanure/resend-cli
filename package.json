@@ -8,6 +8,7 @@
   },
   "files": [
     "dist",
+    "scripts",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
@@ -25,6 +26,7 @@
     "build": "tsc && tsc-alias",
     "build:clean": "npm run clean && npm run build",
     "postbuild": "chmod +x dist/src/cli.js",
+    "postinstall": "node scripts/postinstall.cjs",
     "build:watch": "tsc --watch",
     "dev": "tsx --watch src/cli.tsx",
     "dev:dry": "tsx --watch src/cli.tsx --dry-run",
