@@ -1,3 +1,10 @@
+## [0.31.2](https://github.com/letanure/resend-cli/compare/v0.31.1...v0.31.2) (2025-07-09)
+
+
+### Bug Fixes
+
+* laod api key from env or as param ([db785b1](https://github.com/letanure/resend-cli/commit/db785b15f50e3350b7d2b62165ad1b031566b22c))
+
 ## [0.31.1](https://github.com/letanure/resend-cli/compare/v0.31.0...v0.31.1) (2025-07-09)
 
 
