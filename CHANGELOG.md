@@ -1,3 +1,10 @@
+# [0.29.0](https://github.com/letanure/resend-cli/compare/v0.28.0...v0.29.0) (2025-07-09)
+
+
+### Features
+
+* add cli autocomplete on postinstall ([5041d43](https://github.com/letanure/resend-cli/commit/5041d43da606d3b279648af6a38e36fd8f017ea4))
+
 # [0.28.0](https://github.com/letanure/resend-cli/compare/v0.27.0...v0.28.0) (2025-07-08)
 
 
