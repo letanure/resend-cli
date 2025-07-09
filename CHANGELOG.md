@@ -1,3 +1,16 @@
+# [0.30.0](https://github.com/letanure/resend-cli/compare/v0.29.0...v0.30.0) (2025-07-09)
+
+
+### Bug Fixes
+
+* unify error log on comand param validation ([fd4c819](https://github.com/letanure/resend-cli/commit/fd4c8194db0203c1bc4f260be5fcb8a1a5d99185))
+
+
+### Features
+
+* update cli lists results ([57b4e23](https://github.com/letanure/resend-cli/commit/57b4e23fce29b8e6d1fab9a0abd9fe185c6ba16f))
+* use table to display all lists ([e70908d](https://github.com/letanure/resend-cli/commit/e70908de11abf332ae8d2eb399331ee8fb8e498f))
+
 # [0.29.0](https://github.com/letanure/resend-cli/compare/v0.28.0...v0.29.0) (2025-07-09)
 
 
