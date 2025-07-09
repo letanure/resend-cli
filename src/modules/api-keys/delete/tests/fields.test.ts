@@ -9,7 +9,7 @@ describe('Delete API Key Fields', () => {
 		expect(apiKeyIdField).toBeDefined();
 		expect(apiKeyIdField?.name).toBe('api_key_id');
 		expect(apiKeyIdField?.label).toBe('API Key ID');
-		expect(apiKeyIdField?.cliFlag).toBe('--api-key-id');
+		expect(apiKeyIdField?.cliFlag).toBe('api-key-id');
 		expect(apiKeyIdField?.cliShortFlag).toBe('-i');
 	});
 

@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { registerFieldOptions, validateOptions } from '@/utils/cli.js';
+import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
@@ -20,22 +22,19 @@ async function handleDeleteCommand(options: Record<string, unknown>, command: Co
 		// Only get API key if not in dry-run mode
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
-		// Validate required data
-		const data: DeleteApiKeyData = {
-			api_key_id: allOptions.apiKeyId as string,
-		};
+		// Validate the data using the standard validation approach
+		const validatedData = validateOptions<DeleteApiKeyData>(
+			allOptions,
+			deleteApiKeySchema,
+			outputFormat,
+			fields,
+			command,
+		);
 
-		// Validate the data
-		const validationResult = deleteApiKeySchema.safeParse(data);
-		if (!validationResult.success) {
-			console.error('Validation failed:', validationResult.error.issues.map((issue) => issue.message).join(', '));
-			process.exit(1);
-		}
-
-		const result = isDryRun ? undefined : await deleteApiKey(validationResult.data, apiKey);
+		const result = isDryRun ? undefined : await deleteApiKey(validatedData, apiKey);
 
 		displayResults({
-			data: validationResult.data,
+			data: validatedData,
 			result,
 			fields,
 			outputFormat,
@@ -73,15 +72,9 @@ export function registerDeleteApiKeyCommand(apiKeysCommand: Command): void {
 function createDeleteApiKeyCommand(): Command {
 	const deleteCommand = new Command('delete')
 		.description('Delete an existing API key from Resend')
-		.action(handleDeleteCommand);
+		.action((options: Record<string, unknown>, command: Command) => handleDeleteCommand(options, command));
 
-	// Add field-based options
-	for (const field of fields) {
-		if (field.cliFlag) {
-			const optionFlag = field.cliShortFlag ? `${field.cliShortFlag}, ${field.cliFlag}` : field.cliFlag;
-			deleteCommand.option(`${optionFlag} <value>`, field.helpText);
-		}
-	}
+	registerFieldOptions(deleteCommand, fields);
 
 	const deleteExamples = [
 		'$ resend-cli apiKeys delete --api-key-id "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"',
@@ -90,7 +83,7 @@ function createDeleteApiKeyCommand(): Command {
 		'$ RESEND_API_KEY="re_xxxxx" resend-cli apiKeys delete -i "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"',
 	];
 
-	deleteCommand.addHelpText('after', `\nExamples:\n${deleteExamples.map((example) => `  ${example}`).join('\n')}`);
+	configureCustomHelp(deleteCommand, fields, deleteExamples);
 
 	return deleteCommand;
 }

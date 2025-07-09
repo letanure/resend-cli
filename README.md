@@ -150,7 +150,7 @@ Options:
 Commands:
   create [options]  Create a new API key in Resend
   delete [options]  Delete an existing API key from Resend
-  list              List all API keys in Resend
+  list [options]    List all API keys in Resend
 
 ```
 ### audiences
@@ -277,6 +277,8 @@ OPTIONS:
   --reply-to, -r <value>      Reply-to address(es) - comma separated
   --html, -h <value>          HTML version of the message
   --text, -x <value>          Plain text version
+  --output <value>            Output format (text, json)
+  --dry-run                   Validate and preview without sending
 
 EXAMPLES:
   $ resend-cli email send --from="Acme <onboarding@resend.dev>" --to="user@example.com" --subject="Hello World" --html="<h1>it works!</h1>"

@@ -8,12 +8,18 @@ import { createApiKey } from './action.js';
 import { displayFields, fields } from './fields.js';
 import { CreateApiKeyOptionsSchema, type CreateApiKeyOptionsType } from './schema.js';
 
-async function handleCreateCommand(options: Record<string, unknown>): Promise<void> {
+async function handleCreateCommand(options: Record<string, unknown>, command: Command): Promise<void> {
 	try {
 		const apiKey = getResendApiKey();
 
 		const outputFormat = (options.output as OutputFormat) || 'text';
-		const validatedData = validateOptions<CreateApiKeyOptionsType>(options, CreateApiKeyOptionsSchema, outputFormat);
+		const validatedData = validateOptions<CreateApiKeyOptionsType>(
+			options,
+			CreateApiKeyOptionsSchema,
+			outputFormat,
+			fields,
+			command,
+		);
 
 		// Business logic: If permission is full_access, clear domain_id
 		const createData =
@@ -57,7 +63,9 @@ export function registerCreateApiKeyCommand(apiKeysCommand: Command): void {
 }
 
 function createCreateApiKeyCommand(): Command {
-	const createCommand = new Command('create').description('Create a new API key in Resend').action(handleCreateCommand);
+	const createCommand = new Command('create')
+		.description('Create a new API key in Resend')
+		.action((options: Record<string, unknown>, command: Command) => handleCreateCommand(options, command));
 
 	registerFieldOptions(createCommand, fields);
 

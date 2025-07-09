@@ -6,7 +6,7 @@ export const fields: Array<CliField> = [
 		label: 'API Key ID',
 		placeholder: 'Enter the API key ID to delete',
 		helpText: 'The unique identifier of the API key to remove',
-		cliFlag: '--api-key-id',
+		cliFlag: 'api-key-id',
 		cliShortFlag: '-i',
 	},
 ];

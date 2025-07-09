@@ -12,27 +12,58 @@ export function formatFieldOption(field: CliField, maxFlagWidth: number): string
 	return `  ${flags}${padding}  ${description}`;
 }
 
-// Calculate the maximum width needed for flags
-function getMaxFlagWidth(fields: Array<CliField>): number {
-	return Math.max(...fields.map((field) => `--${field.cliFlag}, -${field.cliShortFlag} <value>`.length));
-}
-
 // Generate custom help text
-export function generateCustomHelp(fields: Array<CliField>, examples?: Array<string>): string {
+export function generateCustomHelp(fields: Array<CliField>, examples?: Array<string>, command?: Command): string {
 	let helpText = '\n';
 
-	// Add options header
-	helpText += `${chalk.cyan.bold('OPTIONS:')}\n`;
+	// Get all options from the command (including global ones)
+	const allOptions: Array<{ flag: string; description: string }> = [];
 
-	// Calculate max width for proper alignment
-	const maxFlagWidth = getMaxFlagWidth(fields);
-
-	// Add all fields with proper alignment
+	// Add command-specific fields
 	for (const field of fields) {
-		helpText += `${formatFieldOption(field, maxFlagWidth)}\n`;
+		if (field.cliFlag && field.cliShortFlag) {
+			allOptions.push({
+				flag: `--${field.cliFlag}, -${field.cliShortFlag} <value>`,
+				description: field.helpText,
+			});
+		}
 	}
 
-	helpText += '\n';
+	// Add global options if command is provided
+	if (command) {
+		const options = command.options;
+		for (const option of options) {
+			// Skip if it's already in our fields
+			const alreadyAdded = fields.some(
+				(field) => option.long === `--${field.cliFlag}` || option.short === `-${field.cliShortFlag}`,
+			);
+			if (!alreadyAdded) {
+				const flagText = option.short ? `${option.long}, ${option.short}` : option.long;
+				const flagWithValue = option.required ? `${flagText} <value>` : flagText;
+				allOptions.push({
+					flag: flagWithValue,
+					description: option.description || '',
+				} as { flag: string; description: string });
+			}
+		}
+	}
+
+	// Only show OPTIONS section if there are options
+	if (allOptions.length > 0) {
+		helpText += `${chalk.cyan.bold('OPTIONS:')}\n`;
+
+		// Calculate max width for proper alignment
+		const maxFlagWidth = Math.max(...allOptions.map((opt) => opt.flag.length));
+
+		// Add all options with proper alignment
+		for (const option of allOptions) {
+			const flags = chalk.cyan.bold(option.flag);
+			const padding = ' '.repeat(Math.max(0, maxFlagWidth - option.flag.length));
+			helpText += `  ${flags}${padding}  ${option.description}\n`;
+		}
+
+		helpText += '\n';
+	}
 
 	// Add examples if provided
 	if (examples && examples.length > 0) {
@@ -62,7 +93,7 @@ export function configureCustomHelp(command: Command, fields: Array<CliField>, e
 			}
 
 			// Custom formatted options
-			output += generateCustomHelp(fields, examples);
+			output += generateCustomHelp(fields, examples, cmd);
 
 			return output;
 		},

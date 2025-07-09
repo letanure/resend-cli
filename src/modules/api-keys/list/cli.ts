@@ -1,9 +1,11 @@
 import { Command } from 'commander';
+import { registerFieldOptions } from '@/utils/cli.js';
+import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
 import { listApiKeys } from './action.js';
-import { displayFields } from './fields.js';
+import { displayFields, fields } from './fields.js';
 
 async function handleListCommand(options: Record<string, unknown>, command: Command): Promise<void> {
 	// Get global options from the root program (need to go up two levels)
@@ -63,6 +65,8 @@ export function registerListApiKeysCommand(apiKeysCommand: Command): void {
 function createListApiKeysCommand(): Command {
 	const listCommand = new Command('list').description('List all API keys in Resend').action(handleListCommand);
 
+	registerFieldOptions(listCommand, fields);
+
 	const listExamples = [
 		'$ resend-cli api-keys list',
 		"$ resend-cli api-keys list --output json | jq '.'",
@@ -70,7 +74,7 @@ function createListApiKeysCommand(): Command {
 		'$ RESEND_API_KEY="re_xxxxx" resend-cli api-keys list',
 	];
 
-	listCommand.addHelpText('after', `\nExamples:\n${listExamples.map((example) => `  ${example}`).join('\n')}`);
+	configureCustomHelp(listCommand, fields, listExamples);
 
 	return listCommand;
 }

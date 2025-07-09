@@ -3,12 +3,7 @@ import type { Command } from 'commander';
 import type { ZodSchema } from 'zod';
 import type { CliField } from '@/types/index.js';
 import { formatDataWithFields, formatForCLI } from '@/utils/display-formatter.js';
-import {
-	displayInvalidOptionError,
-	displayMissingEnvError,
-	displayUnknownOptionError,
-	displayValidationError,
-} from './error-formatting.js';
+import { displayInvalidOptionError, displayMissingEnvError, displayUnknownOptionError } from './error-formatting.js';
 import { type OutputFormat, outputSuccess, outputValidationErrors } from './output.js';
 
 // Convert camelCase keys to snake_case for CLI compatibility
@@ -31,7 +26,13 @@ function transformCliOptions(options: Record<string, unknown>): Record<string, u
 }
 
 // Validate options using a Zod schema
-export function validateOptions<T>(options: unknown, schema: ZodSchema<T>, format: OutputFormat = 'text'): T {
+export function validateOptions<T>(
+	options: unknown,
+	schema: ZodSchema<T>,
+	format: OutputFormat = 'text',
+	fields: Array<CliField> = [],
+	command?: Command,
+): T {
 	// Transform camelCase keys to snake_case if options is an object
 	const transformedOptions =
 		options && typeof options === 'object' ? transformCliOptions(options as Record<string, unknown>) : options;
@@ -45,7 +46,7 @@ export function validateOptions<T>(options: unknown, schema: ZodSchema<T>, forma
 		}));
 
 		outputValidationErrors(errors, format, () => {
-			displayValidationErrors(errors);
+			displayValidationErrors(errors, fields, command);
 		});
 
 		process.exit(1);
@@ -156,13 +157,51 @@ export function displayCLIError(
 }
 
 // Display validation errors
-export function displayValidationErrors(errors: Array<{ path: string | number; message: string }>): void {
-	displayValidationError(
-		errors.map((err) => ({
-			field: String(err.path) || 'unknown',
-			message: err.message,
-		})),
-	);
+export function displayValidationErrors(
+	errors: Array<{ path: string | number; message: string }>,
+	fields: Array<CliField> = [],
+	command?: Command,
+): void {
+	const errorCount = errors.length;
+	const title = errorCount === 1 ? 'Validation Error' : 'Validation Errors';
+
+	console.error(chalk.red(`✗ ${title}`));
+
+	const fieldMapping = buildFieldToFlagMapping(fields);
+
+	for (const error of errors) {
+		const flagName = fieldMapping[String(error.path)] || `--${String(error.path)}`;
+		console.error(chalk.red(`  ${flagName} is required`));
+	}
+
+	console.error('');
+
+	if (command) {
+		command.help();
+	} else {
+		console.error(chalk.cyan('Use --help for usage information'));
+	}
+}
+
+// Build field-to-flag mapping from provided fields
+function buildFieldToFlagMapping(fields: Array<CliField>): Record<string, string> {
+	const mapping: Record<string, string> = {};
+
+	for (const field of fields) {
+		if (field.name && field.cliFlag) {
+			// Map both the field name and snake_case version
+			const flagName = `--${field.cliFlag}`;
+			mapping[field.name] = flagName;
+
+			// Also map snake_case version of field name
+			const snakeCaseName = field.name.replace(/([A-Z])/g, '_$1').toLowerCase();
+			if (snakeCaseName !== field.name) {
+				mapping[snakeCaseName] = flagName;
+			}
+		}
+	}
+
+	return mapping;
 }
 
 // Validate required environment variable
