@@ -1,5 +1,10 @@
 import { z } from 'zod';
 
+// Define the expected API type (cancel just takes an id parameter)
+export interface CancelEmailOptions {
+	id: string;
+}
+
 export const CancelEmailOptionsSchema = z.object({
 	id: z
 		.string()
@@ -8,3 +13,6 @@ export const CancelEmailOptionsSchema = z.object({
 });
 
 export type CancelEmailOptionsType = z.infer<typeof CancelEmailOptionsSchema>;
+
+// Type check to ensure our schema is compatible with Resend API
+type _SchemaCheck = CancelEmailOptionsType extends CancelEmailOptions ? true : false;

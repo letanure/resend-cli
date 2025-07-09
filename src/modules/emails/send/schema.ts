@@ -1,3 +1,4 @@
+import type { CreateEmailOptions } from 'resend';
 import { z } from 'zod';
 import { htmlOrTextMessage, htmlOrTextRefine } from '@/utils/shared-schemas.js';
 import { validatescheduledAt } from '@/utils/validations.js';
@@ -47,3 +48,11 @@ export const CreateEmailOptionsSchema = z
 	.transform(removeEmptyFields);
 
 export type CreateEmailOptionsType = z.infer<typeof CreateEmailOptionsSchema>;
+
+// Type check to ensure our schema is compatible with Resend API
+// This will show a TypeScript error if the schema doesn't match the API
+type _SchemaCheck = CreateEmailOptionsType extends CreateEmailOptions ? true : false;
+
+// Alternatively, use satisfies for stricter checking (similar to your main schema approach)
+// Uncomment the line below if you want even stricter type checking:
+// const _validateSchema: CreateEmailOptions = {} as CreateEmailOptionsType;

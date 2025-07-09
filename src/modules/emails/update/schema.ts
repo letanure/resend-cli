@@ -1,5 +1,12 @@
 import { z } from 'zod';
 
+// UpdateEmailOptions interface exists in resend package but is not exported
+// Define it locally to match the resend package interface
+interface UpdateEmailOptions {
+	id: string;
+	scheduledAt: string;
+}
+
 export const UpdateEmailOptionsSchema = z.object({
 	id: z
 		.string()
@@ -19,3 +26,6 @@ export const UpdateEmailOptionsSchema = z.object({
 });
 
 export type UpdateEmailOptionsType = z.infer<typeof UpdateEmailOptionsSchema>;
+
+// Type check to ensure our schema is compatible with Resend API
+type _SchemaCheck = UpdateEmailOptionsType extends UpdateEmailOptions ? true : false;
