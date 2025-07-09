@@ -24,7 +24,7 @@ async function handleListCommand(options: Record<string, unknown>): Promise<void
 		const result = isDryRun ? undefined : await listDomains(listData, apiKey);
 
 		displayResults({
-			data: listData,
+			data: {},
 			result,
 			fields: displayFields, // Use display fields for result formatting
 			outputFormat,
@@ -32,18 +32,22 @@ async function handleListCommand(options: Record<string, unknown>): Promise<void
 			isDryRun,
 			operation: {
 				success: {
-					title: 'Domain Search Completed',
-					message: (data: { data: Array<{ id: string; name: string; status: string }> }) => {
-						const domainData = data;
-						if (domainData.data && domainData.data.length === 0) {
-							return 'No domains found (0 results).';
+					title: 'Domains Retrieved Successfully',
+					message: (data: unknown) => {
+						// Handle the API response structure - data should have a 'data' property with the array
+						const responseData = data as { data?: Array<unknown> };
+						const domains = responseData.data || [];
+
+						if (Array.isArray(domains) && domains.length === 0) {
+							return 'No domains found (0 results). Create your first domain to get started.';
 						}
-						return `Found ${domainData.data.length} domain${domainData.data.length === 1 ? '' : 's'}`;
+						const count = Array.isArray(domains) ? domains.length : 0;
+						return `Found ${count} domain${count === 1 ? '' : 's'}`;
 					},
 				},
 				error: {
 					title: 'Failed to Retrieve Domains',
-					message: 'Domains list retrieval failed',
+					message: 'Domains retrieval failed',
 				},
 				dryRun: {
 					title: 'DRY RUN - Domains List (validation only)',

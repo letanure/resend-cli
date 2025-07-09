@@ -24,7 +24,7 @@ async function handleListCommand(options: Record<string, unknown>): Promise<void
 		const result = isDryRun ? undefined : await listContacts(listData, apiKey);
 
 		displayResults({
-			data: listData,
+			data: {},
 			result,
 			fields: displayFields, // Use display fields for result formatting
 			outputFormat,
@@ -32,18 +32,22 @@ async function handleListCommand(options: Record<string, unknown>): Promise<void
 			isDryRun,
 			operation: {
 				success: {
-					title: 'Contact Search Completed',
-					message: (data: { data: Array<{ id: string; email: string; first_name?: string; last_name?: string }> }) => {
-						const contactData = data;
-						if (contactData.data && contactData.data.length === 0) {
-							return 'No contacts found in this audience (0 results).';
+					title: 'Contacts Retrieved Successfully',
+					message: (data: unknown) => {
+						// Handle the API response structure - data should have a 'data' property with the array
+						const responseData = data as { data?: Array<unknown> };
+						const contacts = responseData.data || [];
+
+						if (Array.isArray(contacts) && contacts.length === 0) {
+							return 'No contacts found in this audience (0 results). Create your first contact to get started.';
 						}
-						return `Found ${contactData.data.length} contact${contactData.data.length === 1 ? '' : 's'}`;
+						const count = Array.isArray(contacts) ? contacts.length : 0;
+						return `Found ${count} contact${count === 1 ? '' : 's'}`;
 					},
 				},
 				error: {
-					title: 'Failed to List Contacts',
-					message: 'Contact listing failed',
+					title: 'Failed to Retrieve Contacts',
+					message: 'Contacts retrieval failed',
 				},
 				dryRun: {
 					title: 'DRY RUN - Contact List (validation only)',
