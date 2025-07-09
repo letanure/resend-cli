@@ -1,3 +1,15 @@
+# [0.31.0](https://github.com/letanure/resend-cli/compare/v0.30.2...v0.31.0) (2025-07-09)
+
+
+### Bug Fixes
+
+* apikeys cli command, add missing help ([9d3f487](https://github.com/letanure/resend-cli/commit/9d3f487c56f83b19a19c305e10a2a3523212d167))
+
+
+### Features
+
+* add broadcast command help ([61f3e82](https://github.com/letanure/resend-cli/commit/61f3e82c85b3727143385732c6b56c1e3dc65ea7))
+
 ## [0.30.2](https://github.com/letanure/resend-cli/compare/v0.30.1...v0.30.2) (2025-07-09)
 
 
