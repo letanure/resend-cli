@@ -109,6 +109,7 @@ These features are being considered but not yet committed to the roadmap:
 - [ ] Email html view in browser
 - [ ] refactor tests, focus e2e ?
 - [ ] lint dead code
+- [ ] upgrade zod 4
 
 ## Community Requests
 
