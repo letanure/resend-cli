@@ -1,4 +1,4 @@
-import type { Command } from 'commander';
+import { Command } from 'commander';
 import { registerFieldOptions, validateOptions } from '@/utils/cli.js';
 import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
@@ -8,20 +8,22 @@ import { cancelEmail } from './action.js';
 import { fields } from './fields.js';
 import { CancelEmailOptionsSchema, type CancelEmailOptionsType } from './schema.js';
 
-// Main handler for cancel command
 async function handleCancelCommand(options: Record<string, unknown>, command: Command): Promise<void> {
+	// Get global options from the root program (need to go up two levels)
+	const rootProgram = command.parent?.parent;
+	const globalOptions = rootProgram?.opts() || {};
+	// Merge local and global options
+	const allOptions = { ...globalOptions, ...options };
+
 	try {
-		const apiKey = getResendApiKey();
-
-		// Get global options from the root program (need to go up two levels)
-		const rootProgram = command.parent?.parent;
-		const globalOptions = rootProgram?.opts() || {};
-		// Merge local and global options
-		const allOptions = { ...globalOptions, ...options };
-
-		// Extract output format and validate cancel data
 		const outputFormat = (allOptions.output as OutputFormat) || 'text';
-		const cancelData = validateOptions<CancelEmailOptionsType>(
+		const isDryRun = Boolean(allOptions.dryRun);
+
+		// Only get API key if not in dry-run mode
+		const apiKey = isDryRun ? '' : getResendApiKey();
+
+		// Validate the data using unified validation
+		const validatedData = validateOptions<CancelEmailOptionsType>(
 			allOptions,
 			CancelEmailOptionsSchema,
 			outputFormat,
@@ -29,14 +31,12 @@ async function handleCancelCommand(options: Record<string, unknown>, command: Co
 			command,
 		);
 
-		// Check if dry-run mode is enabled
-		const isDryRun = Boolean(allOptions.dryRun);
+		// Execute action or simulate dry-run
+		const result = isDryRun ? undefined : await cancelEmail(validatedData.id, apiKey);
 
-		// Use generic displayResults function
-		const result = isDryRun ? undefined : await cancelEmail(cancelData.id, apiKey);
-
+		// Display results
 		displayResults({
-			data: cancelData,
+			data: validatedData,
 			result,
 			fields,
 			outputFormat,
@@ -44,42 +44,48 @@ async function handleCancelCommand(options: Record<string, unknown>, command: Co
 			isDryRun,
 			operation: {
 				success: {
-					title: 'Email Cancelled Successfully',
-					message: () => `Email ${cancelData.id} has been cancelled`,
+					title: 'Email Cancelled',
+					message: () => `Email ${validatedData.id} has been cancelled`,
 				},
 				error: {
 					title: 'Failed to Cancel Email',
-					message: 'Email cancellation failed',
+					message: 'Failed to cancel email with Resend',
 				},
 				dryRun: {
-					title: 'DRY RUN - Email Cancellation (validation only)',
+					title: 'DRY RUN - Email Cancel',
 					message: 'Validation successful! (Email not cancelled due to --dry-run flag)',
 				},
 			},
 		});
 	} catch (error) {
-		console.error('Unexpected error:', error instanceof Error ? error.message : error);
-		process.exit(1);
+		displayResults({
+			data: {},
+			result: { success: false, error: error instanceof Error ? error.message : 'Unknown error occurred' },
+			fields,
+			outputFormat: (allOptions.output as OutputFormat) || 'text',
+			apiKey: '',
+			isDryRun: false,
+			operation: {
+				success: { title: '', message: () => '' },
+				error: { title: 'Unexpected Error', message: 'An unexpected error occurred' },
+				dryRun: { title: 'DRY RUN Failed', message: 'Dry run failed' },
+			},
+		});
 	}
 }
 
-export function registerCancelCommand(emailCommand: Command): void {
-	// Register the cancel subcommand
-	const cancelCommand = emailCommand
-		.command('cancel')
-		.description('Cancel a scheduled email via Resend API')
-		.action(handleCancelCommand);
+export const emailCancelCommand = new Command('cancel')
+	.description('Cancel a scheduled email via Resend API')
+	.action(handleCancelCommand);
 
-	// Add all the field options to the cancel command
-	registerFieldOptions(cancelCommand, fields);
+registerFieldOptions(emailCancelCommand, fields);
 
-	const cancelExamples = [
-		'$ resend-cli email cancel --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794"',
-		'$ resend-cli email cancel -i "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794"',
-		'$ resend-cli email cancel --output json --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" | jq \'.\'',
-		'$ resend-cli email cancel --dry-run --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794"',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli email cancel --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794"',
-	];
+const cancelExamples = [
+	'$ resend-cli email cancel --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794"',
+	'$ resend-cli email cancel --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" --output json',
+	'$ resend-cli email cancel --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" --dry-run',
+	'$ RESEND_API_KEY="re_xxxxx" resend-cli email cancel --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794"',
+	'$ resend-cli email cancel --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" | jq \'.\'',
+];
 
-	configureCustomHelp(cancelCommand, fields, cancelExamples);
-}
+configureCustomHelp(emailCancelCommand, fields, cancelExamples);

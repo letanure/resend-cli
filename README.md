@@ -122,7 +122,7 @@ Options:
   -h, --help      display help for command
 
 Commands:
-  apiKeys         Manage API keys
+  apikeys         Manage API keys
   audiences       Audience operations
   broadcasts      Broadcast operations
   contacts        Manage contacts in your audiences
@@ -134,13 +134,13 @@ Commands:
 
 ## Commands
 
-### apiKeys
+### apikeys
 
 Manage API keys
 
 ```bash
-$ resend-cli apiKeys --help
-Usage: resend-cli apiKeys [options] [command]
+$ resend-cli apikeys --help
+Usage: resend-cli apikeys [options] [command]
 
 Manage API keys
 
@@ -184,15 +184,15 @@ Usage: resend-cli broadcasts [options] [command]
 Broadcast operations
 
 Options:
-  -h, --help  display help for command
+  -h, --help          display help for command
 
 Commands:
-  create|c    Create a new broadcast to send to your audience
-  delete|d    Delete a broadcast (only draft or scheduled broadcasts)
-  list|l      List all broadcasts
-  retrieve    Retrieve a broadcast by ID from Resend API
-  send|s      Send a broadcast to your audience
-  update|u    Update a broadcast to send to your audience
+  create|c [options]  Create a new broadcast to send to your audience
+  delete|d [options]  Delete a broadcast (only draft or scheduled broadcasts)
+  list|l              List all broadcasts
+  retrieve [options]  Retrieve a broadcast by ID from Resend API
+  send|s [options]    Send a broadcast to your audience
+  update|u [options]  Update a broadcast to send to your audience
 
 ```
 ### contacts

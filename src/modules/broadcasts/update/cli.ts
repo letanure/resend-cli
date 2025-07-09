@@ -62,34 +62,21 @@ async function handleUpdateCommand(options: Record<string, unknown>, command: Co
 	}
 }
 
-export function registerUpdateBroadcastCommand(broadcastsCommand: Command): void {
-	const updateCommand = createUpdateBroadcastCommand();
-	broadcastsCommand.addCommand(updateCommand);
-}
-
-function createUpdateBroadcastCommand(): Command {
-	const updateCommand = new Command('update')
-		.alias('u')
-		.description('Update a broadcast to send to your audience')
-		.action(handleUpdateCommand);
-
-	registerFieldOptions(updateCommand, fields);
-
-	const updateExamples = [
-		'$ resend-cli broadcast update --broadcast-id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" --subject="Updated Subject"',
-		'$ resend-cli broadcast update -b 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 -s "New Subject" --html="<h1>Updated content</h1>"',
-		'$ resend-cli broadcast update --broadcast-id="..." --from="new-sender@example.com" --reply-to="support@example.com"',
-		'$ resend-cli broadcast update --broadcast-id="..." --name="Updated Campaign Name"',
-		'$ resend-cli broadcast update --output json --broadcast-id="..." --subject="..." | jq \'.\'',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli broadcast update --broadcast-id="..." --subject="..."',
-	];
-
-	configureCustomHelp(updateCommand, fields, updateExamples);
-
-	return updateCommand;
-}
-
 export const broadcastUpdateCommand = new Command('update')
 	.alias('u')
 	.description('Update a broadcast to send to your audience')
 	.action(handleUpdateCommand);
+
+// Add CLI options
+registerFieldOptions(broadcastUpdateCommand, fields);
+
+const updateExamples = [
+	'$ resend-cli broadcast update --broadcast-id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" --subject="Updated Subject"',
+	'$ resend-cli broadcast update -b 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 -s "New Subject" --html="<h1>Updated content</h1>"',
+	'$ resend-cli broadcast update --broadcast-id="..." --from="new-sender@example.com" --reply-to="support@example.com"',
+	'$ resend-cli broadcast update --broadcast-id="..." --name="Updated Campaign Name"',
+	'$ resend-cli broadcast update --output json --broadcast-id="..." --subject="..." | jq \'.\'',
+	'$ RESEND_API_KEY="re_xxxxx" resend-cli broadcast update --broadcast-id="..." --subject="..."',
+];
+
+configureCustomHelp(broadcastUpdateCommand, fields, updateExamples);

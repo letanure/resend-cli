@@ -85,31 +85,19 @@ async function handleRetrieveCommand(options: Record<string, unknown>, command: 
 	}
 }
 
-export function registerRetrieveBroadcastCommand(broadcastsCommand: Command): void {
-	const retrieveCommand = createRetrieveBroadcastCommand();
-	broadcastsCommand.addCommand(retrieveCommand);
-}
-
-function createRetrieveBroadcastCommand(): Command {
-	const retrieveCommand = new Command('retrieve')
-		.description('Retrieve a broadcast by ID from Resend API')
-		.action(handleRetrieveCommand);
-
-	registerFieldOptions(retrieveCommand, fields);
-
-	const retrieveExamples = [
-		'$ resend-cli broadcast retrieve --broadcast-id="559ac32e-9ef5-46fb-82a1-b76b840c0f7b"',
-		'$ resend-cli broadcast retrieve -b 559ac32e-9ef5-46fb-82a1-b76b840c0f7b',
-		'$ resend-cli broadcast retrieve --broadcast-id="..." --dry-run',
-		'$ resend-cli broadcast retrieve --output json --broadcast-id="..." | jq \'.\'',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli broadcast retrieve --broadcast-id="..."',
-	];
-
-	configureCustomHelp(retrieveCommand, fields, retrieveExamples);
-
-	return retrieveCommand;
-}
-
 export const broadcastRetrieveCommand = new Command('retrieve')
 	.description('Retrieve a broadcast by ID from Resend API')
 	.action(handleRetrieveCommand);
+
+// Add CLI options
+registerFieldOptions(broadcastRetrieveCommand, fields);
+
+const retrieveExamples = [
+	'$ resend-cli broadcast retrieve --broadcast-id="559ac32e-9ef5-46fb-82a1-b76b840c0f7b"',
+	'$ resend-cli broadcast retrieve -b 559ac32e-9ef5-46fb-82a1-b76b840c0f7b',
+	'$ resend-cli broadcast retrieve --broadcast-id="..." --dry-run',
+	'$ resend-cli broadcast retrieve --output json --broadcast-id="..." | jq \'.\'',
+	'$ RESEND_API_KEY="re_xxxxx" resend-cli broadcast retrieve --broadcast-id="..."',
+];
+
+configureCustomHelp(broadcastRetrieveCommand, fields, retrieveExamples);

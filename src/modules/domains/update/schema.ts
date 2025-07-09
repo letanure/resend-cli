@@ -2,7 +2,11 @@ import { z } from 'zod';
 
 // TLS configuration enum - matches Resend's UpdateDomainsOptions['tls']
 const tlsSchema = z
-	.union([z.enum(['opportunistic', 'enforced'] as const), z.literal('').transform(() => undefined), z.undefined()])
+	.union([
+		z.enum(['opportunistic', 'enforced'] as const, { message: 'Invalid input' }),
+		z.literal('').transform(() => undefined),
+		z.undefined(),
+	])
 	.optional();
 
 export const updateDomainSchema = z.object({

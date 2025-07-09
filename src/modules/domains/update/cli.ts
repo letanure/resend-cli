@@ -32,13 +32,14 @@ async function handleUpdateCommand(options: Record<string, unknown>, command: Co
 		}
 
 		// Validate the data using unified validation
-		const validatedData = validateOptions(
+		const validatedData = validateOptions<UpdateDomainData>(
 			processedOptions,
-			updateDomainSchema,
+			// biome-ignore lint/suspicious/noExplicitAny: Type assertion needed for complex union type
+			updateDomainSchema as any,
 			outputFormat,
 			fields,
 			command,
-		) as UpdateDomainData;
+		);
 
 		// Execute action or simulate dry-run
 		const result = isDryRun ? undefined : await updateDomain(validatedData, apiKey);
@@ -67,50 +68,35 @@ async function handleUpdateCommand(options: Record<string, unknown>, command: Co
 			},
 		});
 	} catch (error) {
-		const outputFormat = (allOptions.output as OutputFormat) || 'text';
 		displayResults({
 			data: {},
 			result: { success: false, error: error instanceof Error ? error.message : 'Unknown error occurred' },
 			fields,
-			outputFormat,
+			outputFormat: (allOptions.output as OutputFormat) || 'text',
 			apiKey: '',
 			isDryRun: false,
 			operation: {
-				success: {
-					title: 'Domain Updated',
-					message: () => '',
-				},
-				error: {
-					title: 'Unexpected Error',
-					message: 'An unexpected error occurred',
-				},
-				dryRun: {
-					title: 'DRY RUN - Domain Update',
-					message: 'Dry run failed',
-				},
+				success: { title: '', message: () => '' },
+				error: { title: 'Unexpected Error', message: 'An unexpected error occurred' },
+				dryRun: { title: 'DRY RUN Failed', message: 'Dry run failed' },
 			},
 		});
 	}
 }
 
-export function createUpdateDomainCommand(): Command {
-	const updateCommand = new Command('update')
-		.description('Update a domain configuration using Resend API')
-		.action(handleUpdateCommand);
+export const domainUpdateCommand = new Command('update')
+	.description('Update a domain configuration using Resend API')
+	.action(handleUpdateCommand);
 
-	registerFieldOptions(updateCommand, fields);
+// Add CLI options
+registerFieldOptions(domainUpdateCommand, fields);
 
-	const updateExamples = [
-		'$ resend-cli domains update --id "example.com" --click-tracking yes',
-		'$ resend-cli domains update --id "example.com" --open-tracking no --tls enforced',
-		'$ resend-cli domains update --id "example.com" --click-tracking yes --output json',
-		'$ resend-cli domains update --id "example.com" --tls opportunistic --dry-run',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli domains update --id "example.com" --click-tracking yes',
-	];
+const updateExamples = [
+	'$ resend-cli domain update --id="example.com" --click-tracking yes',
+	'$ resend-cli domain update --id="example.com" --open-tracking no --tls enforced',
+	'$ resend-cli domain update --id="example.com" --click-tracking yes --output json',
+	'$ resend-cli domain update --id="example.com" --tls opportunistic --dry-run',
+	'$ RESEND_API_KEY="re_xxxxx" resend-cli domain update --id="example.com" --click-tracking yes',
+];
 
-	configureCustomHelp(updateCommand, fields, updateExamples);
-
-	return updateCommand;
-}
-
-export const domainUpdateCommand = createUpdateDomainCommand();
+configureCustomHelp(domainUpdateCommand, fields, updateExamples);

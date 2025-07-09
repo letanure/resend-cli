@@ -1,4 +1,4 @@
-import type { Command } from 'commander';
+import { Command } from 'commander';
 import { registerFieldOptions, validateOptions } from '@/utils/cli.js';
 import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
@@ -8,20 +8,22 @@ import { getEmail } from './action.js';
 import { displayFields, fields } from './fields.js';
 import { GetEmailOptionsSchema, type GetEmailOptionsType } from './schema.js';
 
-// Main handler for retrieve command
 async function handleRetrieveCommand(options: Record<string, unknown>, command: Command): Promise<void> {
+	// Get global options from the root program (need to go up two levels)
+	const rootProgram = command.parent?.parent;
+	const globalOptions = rootProgram?.opts() || {};
+	// Merge local and global options
+	const allOptions = { ...globalOptions, ...options };
+
 	try {
-		const apiKey = getResendApiKey();
-
-		// Get global options from the root program (need to go up two levels)
-		const rootProgram = command.parent?.parent;
-		const globalOptions = rootProgram?.opts() || {};
-		// Merge local and global options
-		const allOptions = { ...globalOptions, ...options };
-
-		// Extract output format and validate retrieve data
 		const outputFormat = (allOptions.output as OutputFormat) || 'text';
-		const retrieveData = validateOptions<GetEmailOptionsType>(
+		const isDryRun = Boolean(allOptions.dryRun);
+
+		// Only get API key if not in dry-run mode
+		const apiKey = isDryRun ? '' : getResendApiKey();
+
+		// Validate the data using unified validation
+		const validatedData = validateOptions<GetEmailOptionsType>(
 			allOptions,
 			GetEmailOptionsSchema,
 			outputFormat,
@@ -29,14 +31,12 @@ async function handleRetrieveCommand(options: Record<string, unknown>, command: 
 			command,
 		);
 
-		// Check if dry-run mode is enabled
-		const isDryRun = Boolean(allOptions.dryRun);
+		// Execute action or simulate dry-run
+		const result = isDryRun ? undefined : await getEmail(validatedData.id, apiKey);
 
-		// Use generic displayResults function
-		const result = isDryRun ? undefined : await getEmail(retrieveData.id, apiKey);
-
+		// Display results
 		displayResults({
-			data: retrieveData,
+			data: validatedData,
 			result,
 			fields: displayFields, // Use display fields for result formatting
 			outputFormat,
@@ -44,41 +44,48 @@ async function handleRetrieveCommand(options: Record<string, unknown>, command: 
 			isDryRun,
 			operation: {
 				success: {
-					title: 'Email Retrieved Successfully',
+					title: 'Email Retrieved',
 					message: () => '',
 				},
 				error: {
 					title: 'Failed to Retrieve Email',
-					message: 'Email retrieval failed',
+					message: 'Failed to retrieve email from Resend',
 				},
 				dryRun: {
-					title: 'DRY RUN - Email Retrieval (validation only)',
+					title: 'DRY RUN - Email Retrieve',
 					message: 'Validation successful! (Email not retrieved due to --dry-run flag)',
 				},
 			},
 		});
 	} catch (error) {
-		console.error('Unexpected error:', error instanceof Error ? error.message : error);
-		process.exit(1);
+		displayResults({
+			data: {},
+			result: { success: false, error: error instanceof Error ? error.message : 'Unknown error occurred' },
+			fields: displayFields,
+			outputFormat: (allOptions.output as OutputFormat) || 'text',
+			apiKey: '',
+			isDryRun: false,
+			operation: {
+				success: { title: '', message: () => '' },
+				error: { title: 'Unexpected Error', message: 'An unexpected error occurred' },
+				dryRun: { title: 'DRY RUN Failed', message: 'Dry run failed' },
+			},
+		});
 	}
 }
 
-export function registerRetrieveCommand(emailCommand: Command) {
-	// Register the retrieve subcommand
-	const retrieveCommand = emailCommand
-		.command('retrieve')
-		.description('Retrieve an email by ID from Resend API')
-		.action(handleRetrieveCommand);
+export const emailRetrieveCommand = new Command('retrieve')
+	.description('Retrieve an email by ID from Resend API')
+	.action(handleRetrieveCommand);
 
-	// Add all the field options to the retrieve command
-	registerFieldOptions(retrieveCommand, fields);
+registerFieldOptions(emailRetrieveCommand, fields);
 
-	const retrieveExamples = [
-		'$ resend-cli email retrieve --id="402a4ef4-3bd0-43fe-8e12-f6142bd2bd0f"',
-		'$ resend-cli email retrieve -i "402a4ef4-3bd0-43fe-8e12-f6142bd2bd0f"',
-		'$ resend-cli email retrieve --output json --id="402a4ef4-3bd0-43fe-8e12-f6142bd2bd0f" | jq \'.\'',
-		'$ resend-cli email retrieve --dry-run --id="402a4ef4-3bd0-43fe-8e12-f6142bd2bd0f"',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli email retrieve --id="402a4ef4-3bd0-43fe-8e12-f6142bd2bd0f"',
-	];
-	configureCustomHelp(retrieveCommand, fields, retrieveExamples);
-}
+const retrieveExamples = [
+	'$ resend-cli email retrieve --id="402a4ef4-3bd0-43fe-8e12-f6142bd2bd0f"',
+	'$ resend-cli email retrieve --id="402a4ef4-3bd0-43fe-8e12-f6142bd2bd0f" --output json',
+	'$ resend-cli email retrieve --id="402a4ef4-3bd0-43fe-8e12-f6142bd2bd0f" --dry-run',
+	'$ RESEND_API_KEY="re_xxxxx" resend-cli email retrieve --id="402a4ef4-3bd0-43fe-8e12-f6142bd2bd0f"',
+	'$ resend-cli email retrieve --id="402a4ef4-3bd0-43fe-8e12-f6142bd2bd0f" | jq \'.\'',
+];
+
+configureCustomHelp(emailRetrieveCommand, fields, retrieveExamples);

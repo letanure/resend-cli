@@ -64,27 +64,19 @@ async function handleCreateCommand(options: Record<string, unknown>, command: Co
 	}
 }
 
-export function registerCreateDomainCommand(domainsCommand: Command): void {
-	const createCommand = createCreateDomainCommand();
-	domainsCommand.addCommand(createCommand);
-}
+export const domainCreateCommand = new Command('create')
+	.description('Create a domain through the Resend Email API')
+	.action(handleCreateCommand);
 
-function createCreateDomainCommand(): Command {
-	const createCommand = new Command('create')
-		.description('Create a domain through the Resend Email API')
-		.action(handleCreateCommand);
+// Add CLI options
+registerFieldOptions(domainCreateCommand, fields);
 
-	registerFieldOptions(createCommand, fields);
+const createExamples = [
+	'$ resend-cli domains create --name "example.com"',
+	'$ resend-cli domains create -n "example.com" --region "eu-west-1"',
+	'$ resend-cli domains create --name "example.com" --custom-return-path "mail" --output json',
+	'$ resend-cli domains create --name "example.com" --dry-run',
+	'$ RESEND_API_KEY="re_xxxxx" resend-cli domains create -n "example.com"',
+];
 
-	const createExamples = [
-		'$ resend-cli domains create --name "example.com"',
-		'$ resend-cli domains create -n "example.com" --region "eu-west-1"',
-		'$ resend-cli domains create --name "example.com" --custom-return-path "mail" --output json',
-		'$ resend-cli domains create --name "example.com" --dry-run',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli domains create -n "example.com"',
-	];
-
-	configureCustomHelp(createCommand, fields, createExamples);
-
-	return createCommand;
-}
+configureCustomHelp(domainCreateCommand, fields, createExamples);

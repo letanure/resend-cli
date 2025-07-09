@@ -23,13 +23,13 @@ async function handleVerifyCommand(options: Record<string, unknown>, command: Co
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
 		// Validate the data using unified validation
-		const validatedData = validateOptions(
+		const validatedData = validateOptions<VerifyDomainData>(
 			allOptions,
 			verifyDomainSchema,
 			outputFormat,
 			fields,
 			command,
-		) as VerifyDomainData;
+		);
 
 		// Execute action or simulate dry-run
 		const result = isDryRun ? undefined : await verifyDomain(validatedData, apiKey);
@@ -58,49 +58,35 @@ async function handleVerifyCommand(options: Record<string, unknown>, command: Co
 			},
 		});
 	} catch (error) {
-		const outputFormat = (allOptions.output as OutputFormat) || 'text';
 		displayResults({
 			data: {},
 			result: { success: false, error: error instanceof Error ? error.message : 'Unknown error occurred' },
 			fields,
-			outputFormat,
+			outputFormat: (allOptions.output as OutputFormat) || 'text',
 			apiKey: '',
 			isDryRun: false,
 			operation: {
-				success: {
-					title: 'Domain Verified',
-					message: () => '',
-				},
-				error: {
-					title: 'Unexpected Error',
-					message: 'An unexpected error occurred',
-				},
-				dryRun: {
-					title: 'DRY RUN - Domain Verify',
-					message: 'Dry run failed',
-				},
+				success: { title: '', message: () => '' },
+				error: { title: 'Unexpected Error', message: 'An unexpected error occurred' },
+				dryRun: { title: 'DRY RUN Failed', message: 'Dry run failed' },
 			},
 		});
 	}
 }
 
-export function createVerifyDomainCommand(): Command {
-	const verifyCommand = new Command('verify')
-		.description('Verify a domain by ID using Resend API')
-		.action(handleVerifyCommand);
+export const domainVerifyCommand = new Command('verify')
+	.description('Verify a domain by ID using Resend API')
+	.action(handleVerifyCommand);
 
-	registerFieldOptions(verifyCommand, fields);
+// Add CLI options
+registerFieldOptions(domainVerifyCommand, fields);
 
-	const verifyExamples = [
-		'$ resend-cli domains verify --id "example.com"',
-		'$ resend-cli domains verify --id "example.com" --output json',
-		'$ resend-cli domains verify --id "example.com" --dry-run',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli domains verify --id "example.com"',
-	];
+const verifyExamples = [
+	'$ resend-cli domain verify --id="example.com"',
+	'$ resend-cli domain verify --id="example.com" --output json',
+	'$ resend-cli domain verify --id="example.com" --dry-run',
+	'$ RESEND_API_KEY="re_xxxxx" resend-cli domain verify --id="example.com"',
+	'$ resend-cli domain verify --id="example.com" | jq \'.\'',
+];
 
-	configureCustomHelp(verifyCommand, fields, verifyExamples);
-
-	return verifyCommand;
-}
-
-export const domainVerifyCommand = createVerifyDomainCommand();
+configureCustomHelp(domainVerifyCommand, fields, verifyExamples);

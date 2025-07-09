@@ -1,4 +1,4 @@
-import type { Command } from 'commander';
+import { Command } from 'commander';
 import { registerFieldOptions, validateOptions } from '@/utils/cli.js';
 import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
@@ -67,22 +67,19 @@ async function handleListCommand(options: Record<string, unknown>, command: Comm
 	}
 }
 
-export function registerListDomainsCommand(domainsCommand: Command) {
-	// Register the list subcommand
-	const listCommand = domainsCommand
-		.command('list')
-		.description('List all domains from Resend API')
-		.action((options: Record<string, unknown>, command: Command) => handleListCommand(options, command));
+export const domainListCommand = new Command('list')
+	.description('List all domains from Resend API')
+	.action(handleListCommand);
 
-	// Add all the field options to the list command (none needed for domains list)
-	registerFieldOptions(listCommand, fields);
+// Add CLI options
+registerFieldOptions(domainListCommand, fields);
 
-	const listExamples = [
-		'$ resend-cli domains list',
-		'$ resend-cli domains list --output json',
-		"$ resend-cli domains list --output json | jq '.'",
-		'$ resend-cli domains list --dry-run',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli domains list',
-	];
-	configureCustomHelp(listCommand, fields, listExamples);
-}
+const listExamples = [
+	'$ resend-cli domains list',
+	'$ resend-cli domains list --output json',
+	"$ resend-cli domains list --output json | jq '.'",
+	'$ resend-cli domains list --dry-run',
+	'$ RESEND_API_KEY="re_xxxxx" resend-cli domains list',
+];
+
+configureCustomHelp(domainListCommand, fields, listExamples);

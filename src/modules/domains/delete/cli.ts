@@ -1,5 +1,6 @@
 import { Command } from 'commander';
-import { validateOptions } from '@/utils/cli.js';
+import { registerFieldOptions, validateOptions } from '@/utils/cli.js';
+import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
 import type { OutputFormat } from '@/utils/output.js';
 import { getResendApiKey } from '@/utils/resend-api.js';
@@ -22,13 +23,13 @@ async function handleDeleteCommand(options: Record<string, unknown>, command: Co
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
 		// Validate the data using unified validation
-		const validatedData = validateOptions(
+		const validatedData = validateOptions<DeleteDomainData>(
 			allOptions,
 			deleteDomainSchema,
 			outputFormat,
 			fields,
 			command,
-		) as DeleteDomainData;
+		);
 
 		// Execute action or simulate dry-run
 		const result = isDryRun ? undefined : await deleteDomain(validatedData, apiKey);
@@ -57,27 +58,17 @@ async function handleDeleteCommand(options: Record<string, unknown>, command: Co
 			},
 		});
 	} catch (error) {
-		const outputFormat = (allOptions.output as OutputFormat) || 'text';
 		displayResults({
 			data: {},
 			result: { success: false, error: error instanceof Error ? error.message : 'Unknown error occurred' },
 			fields,
-			outputFormat,
+			outputFormat: (allOptions.output as OutputFormat) || 'text',
 			apiKey: '',
 			isDryRun: false,
 			operation: {
-				success: {
-					title: 'Domain Deleted',
-					message: () => '',
-				},
-				error: {
-					title: 'Unexpected Error',
-					message: 'An unexpected error occurred',
-				},
-				dryRun: {
-					title: 'DRY RUN - Domain Delete',
-					message: 'Dry run failed',
-				},
+				success: { title: '', message: () => '' },
+				error: { title: 'Unexpected Error', message: 'An unexpected error occurred' },
+				dryRun: { title: 'DRY RUN Failed', message: 'Dry run failed' },
 			},
 		});
 	}
@@ -85,7 +76,16 @@ async function handleDeleteCommand(options: Record<string, unknown>, command: Co
 
 export const domainDeleteCommand = new Command('delete')
 	.description('Delete a domain by ID using Resend API')
-	.option('--id <id>', 'Domain ID')
-	.option('--output <format>', 'Output format (text, json)', 'text')
-	.option('--dry-run', 'Validate input without calling API', false)
 	.action(handleDeleteCommand);
+
+// Add CLI options
+registerFieldOptions(domainDeleteCommand, fields);
+
+const deleteExamples = [
+	'$ resend-cli domain delete --id="example.com"',
+	'$ resend-cli domain delete --id="example.com" --dry-run',
+	'$ resend-cli domain delete --output json --id="example.com" | jq \'.\'',
+	'$ RESEND_API_KEY="re_xxxxx" resend-cli domain delete --id="example.com"',
+];
+
+configureCustomHelp(domainDeleteCommand, fields, deleteExamples);

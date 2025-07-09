@@ -47,7 +47,7 @@ async function handleListCommand(options: Record<string, unknown>, command: Comm
 						const broadcasts = responseData.data || [];
 
 						if (Array.isArray(broadcasts) && broadcasts.length === 0) {
-							return 'No broadcasts found (0 results). Create your first broadcast to get started.';
+							return 'No broadcasts found (0 results).';
 						}
 						const count = Array.isArray(broadcasts) ? broadcasts.length : 0;
 						return `Found ${count} broadcast${count === 1 ? '' : 's'}`;

@@ -63,33 +63,20 @@ async function handleDeleteCommand(options: Record<string, unknown>, command: Co
 	}
 }
 
-export function registerDeleteBroadcastCommand(broadcastsCommand: Command): void {
-	const deleteCommand = createDeleteBroadcastCommand();
-	broadcastsCommand.addCommand(deleteCommand);
-}
-
-function createDeleteBroadcastCommand(): Command {
-	const deleteCommand = new Command('delete')
-		.alias('d')
-		.description('Delete a broadcast (only draft or scheduled broadcasts)')
-		.action(handleDeleteCommand);
-
-	registerFieldOptions(deleteCommand, fields);
-
-	const deleteExamples = [
-		'$ resend-cli broadcast delete --broadcast-id="559ac32e-9ef5-46fb-82a1-b76b840c0f7b"',
-		'$ resend-cli broadcast delete -b 559ac32e-9ef5-46fb-82a1-b76b840c0f7b',
-		'$ resend-cli broadcast delete --broadcast-id="..." --dry-run',
-		'$ resend-cli broadcast delete --output json --broadcast-id="..." | jq \'.\'',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli broadcast delete --broadcast-id="..."',
-	];
-
-	configureCustomHelp(deleteCommand, fields, deleteExamples);
-
-	return deleteCommand;
-}
-
 export const broadcastDeleteCommand = new Command('delete')
 	.alias('d')
 	.description('Delete a broadcast (only draft or scheduled broadcasts)')
 	.action(handleDeleteCommand);
+
+// Add CLI options
+registerFieldOptions(broadcastDeleteCommand, fields);
+
+const deleteExamples = [
+	'$ resend-cli broadcast delete --broadcast-id="559ac32e-9ef5-46fb-82a1-b76b840c0f7b"',
+	'$ resend-cli broadcast delete -b 559ac32e-9ef5-46fb-82a1-b76b840c0f7b',
+	'$ resend-cli broadcast delete --broadcast-id="..." --dry-run',
+	'$ resend-cli broadcast delete --output json --broadcast-id="..." | jq \'.\'',
+	'$ RESEND_API_KEY="re_xxxxx" resend-cli broadcast delete --broadcast-id="..."',
+];
+
+configureCustomHelp(broadcastDeleteCommand, fields, deleteExamples);

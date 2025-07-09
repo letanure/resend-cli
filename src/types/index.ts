@@ -4,7 +4,7 @@ export enum Module {
 	main = 'main',
 	email = 'email',
 	domains = 'domains',
-	apiKeys = 'apiKeys',
+	apiKeys = 'apikeys',
 	broadcasts = 'broadcasts',
 	audiences = 'audiences',
 	contacts = 'contacts',

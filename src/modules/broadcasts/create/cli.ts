@@ -57,38 +57,36 @@ async function handleCreateCommand(options: Record<string, unknown>, command: Co
 			},
 		});
 	} catch (error) {
-		console.error('Error:', error instanceof Error ? error.message : String(error));
-		process.exit(1);
+		displayResults({
+			data: {},
+			result: { success: false, error: error instanceof Error ? error.message : 'Unknown error occurred' },
+			fields,
+			outputFormat: (allOptions.output as OutputFormat) || 'text',
+			apiKey: '',
+			isDryRun: false,
+			operation: {
+				success: { title: '', message: () => '' },
+				error: { title: 'Unexpected Error', message: 'An unexpected error occurred' },
+				dryRun: { title: 'DRY RUN Failed', message: 'Dry run failed' },
+			},
+		});
 	}
-}
-
-export function registerCreateBroadcastCommand(broadcastsCommand: Command): void {
-	const createCommand = createCreateBroadcastCommand();
-	broadcastsCommand.addCommand(createCommand);
-}
-
-function createCreateBroadcastCommand(): Command {
-	const createCommand = new Command('create')
-		.alias('c')
-		.description('Create a new broadcast to send to your audience')
-		.action(handleCreateCommand);
-
-	registerFieldOptions(createCommand, fields);
-
-	const createExamples = [
-		'$ resend-cli broadcast create --audience-id="78261eea-8f8b-4381-83c6-79fa7120f1cf" --from="Acme <onboarding@resend.dev>" --subject="Weekly Newsletter" --html="<h1>Hello World</h1>"',
-		'$ resend-cli broadcast create -a 78261eea-8f8b-4381-83c6-79fa7120f1cf -f onboarding@resend.dev -s "Product Update" --text="New features available!"',
-		'$ resend-cli broadcast create --audience-id="..." --from="..." --subject="..." --html="..." --name="Campaign Name" --reply-to="support@example.com"',
-		'$ resend-cli broadcast create --output json --audience-id="..." --from="..." --subject="..." --html="..." | jq \'.\'',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli broadcast create --audience-id="..." --from="..." --subject="..." --html="..."',
-	];
-
-	configureCustomHelp(createCommand, fields, createExamples);
-
-	return createCommand;
 }
 
 export const broadcastCreateCommand = new Command('create')
 	.alias('c')
 	.description('Create a new broadcast to send to your audience')
 	.action(handleCreateCommand);
+
+// Add CLI options
+registerFieldOptions(broadcastCreateCommand, fields);
+
+const createExamples = [
+	'$ resend-cli broadcast create --audience-id="78261eea-8f8b-4381-83c6-79fa7120f1cf" --from="Acme <onboarding@resend.dev>" --subject="Weekly Newsletter" --html="<h1>Hello World</h1>"',
+	'$ resend-cli broadcast create -a 78261eea-8f8b-4381-83c6-79fa7120f1cf -f onboarding@resend.dev -s "Product Update" --text="New features available!"',
+	'$ resend-cli broadcast create --audience-id="..." --from="..." --subject="..." --html="..." --name="Campaign Name" --reply-to="support@example.com"',
+	'$ resend-cli broadcast create --output json --audience-id="..." --from="..." --subject="..." --html="..." | jq \'.\'',
+	'$ RESEND_API_KEY="re_xxxxx" resend-cli broadcast create --audience-id="..." --from="..." --subject="..." --html="..."',
+];
+
+configureCustomHelp(broadcastCreateCommand, fields, createExamples);

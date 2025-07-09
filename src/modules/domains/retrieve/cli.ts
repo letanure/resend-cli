@@ -23,13 +23,13 @@ async function handleRetrieveCommand(options: Record<string, unknown>, command: 
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
 		// Validate the data using unified validation
-		const validatedData = validateOptions(
+		const validatedData = validateOptions<RetrieveDomainData>(
 			allOptions,
 			retrieveDomainSchema,
 			outputFormat,
 			fields,
 			command,
-		) as RetrieveDomainData;
+		);
 
 		// Execute action or simulate dry-run
 		const result = isDryRun ? undefined : await retrieveDomain(validatedData, apiKey);
@@ -58,49 +58,35 @@ async function handleRetrieveCommand(options: Record<string, unknown>, command: 
 			},
 		});
 	} catch (error) {
-		const outputFormat = (allOptions.output as OutputFormat) || 'text';
 		displayResults({
 			data: {},
 			result: { success: false, error: error instanceof Error ? error.message : 'Unknown error occurred' },
 			fields,
-			outputFormat,
+			outputFormat: (allOptions.output as OutputFormat) || 'text',
 			apiKey: '',
 			isDryRun: false,
 			operation: {
-				success: {
-					title: 'Domain Retrieved',
-					message: () => '',
-				},
-				error: {
-					title: 'Unexpected Error',
-					message: 'An unexpected error occurred',
-				},
-				dryRun: {
-					title: 'DRY RUN - Domain Retrieve',
-					message: 'Dry run failed',
-				},
+				success: { title: '', message: () => '' },
+				error: { title: 'Unexpected Error', message: 'An unexpected error occurred' },
+				dryRun: { title: 'DRY RUN Failed', message: 'Dry run failed' },
 			},
 		});
 	}
 }
 
-export function createRetrieveDomainCommand(): Command {
-	const retrieveCommand = new Command('retrieve')
-		.description('Retrieve a domain by ID from Resend API')
-		.action(handleRetrieveCommand);
+export const domainRetrieveCommand = new Command('retrieve')
+	.description('Retrieve a domain by ID from Resend API')
+	.action(handleRetrieveCommand);
 
-	registerFieldOptions(retrieveCommand, fields);
+// Add CLI options
+registerFieldOptions(domainRetrieveCommand, fields);
 
-	const retrieveExamples = [
-		'$ resend-cli domains retrieve --id "example.com"',
-		'$ resend-cli domains retrieve --id "example.com" --output json',
-		'$ resend-cli domains retrieve --id "example.com" --dry-run',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli domains retrieve --id "example.com"',
-	];
+const retrieveExamples = [
+	'$ resend-cli domain retrieve --id="example.com"',
+	'$ resend-cli domain retrieve --id="example.com" --output json',
+	'$ resend-cli domain retrieve --id="example.com" --dry-run',
+	'$ RESEND_API_KEY="re_xxxxx" resend-cli domain retrieve --id="example.com"',
+	'$ resend-cli domain retrieve --id="example.com" | jq \'.\'',
+];
 
-	configureCustomHelp(retrieveCommand, fields, retrieveExamples);
-
-	return retrieveCommand;
-}
-
-export const domainRetrieveCommand = createRetrieveDomainCommand();
+configureCustomHelp(domainRetrieveCommand, fields, retrieveExamples);

@@ -77,10 +77,10 @@ function createDeleteApiKeyCommand(): Command {
 	registerFieldOptions(deleteCommand, fields);
 
 	const deleteExamples = [
-		'$ resend-cli apiKeys delete --api-key-id "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"',
-		'$ resend-cli apiKeys delete -i "b6d24b8e-af0b-4c3c-be0c-359bbd97381e" --output json',
-		'$ resend-cli apiKeys delete --api-key-id "b6d24b8e-af0b-4c3c-be0c-359bbd97381e" --dry-run',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli apiKeys delete -i "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"',
+		'$ resend-cli apikeys delete --api-key-id "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"',
+		'$ resend-cli apikeys delete -i "b6d24b8e-af0b-4c3c-be0c-359bbd97381e" --output json',
+		'$ resend-cli apikeys delete --api-key-id "b6d24b8e-af0b-4c3c-be0c-359bbd97381e" --dry-run',
+		'$ RESEND_API_KEY="re_xxxxx" resend-cli apikeys delete -i "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"',
 	];
 
 	configureCustomHelp(deleteCommand, fields, deleteExamples);

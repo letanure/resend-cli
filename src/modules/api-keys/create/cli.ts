@@ -76,12 +76,12 @@ function createCreateApiKeyCommand(): Command {
 	registerFieldOptions(createCommand, fields);
 
 	const createExamples = [
-		'$ resend-cli api-keys create --name "Production" --permission full_access',
-		'$ resend-cli api-keys create -n "Development" -p sending_access',
-		'$ resend-cli api-keys create --name "Domain Specific" --permission sending_access --domain-id "d91cd9bd-1176-453e-8fc1-35364d380206"',
-		'$ resend-cli api-keys create --name "Test Key" --permission full_access --output json | jq \'.\'',
-		'$ resend-cli api-keys create --dry-run --name "Test" --permission sending_access',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli api-keys create --name "Production" --permission full_access',
+		'$ resend-cli apikeys create --name "Production" --permission full_access',
+		'$ resend-cli apikeys create -n "Development" -p sending_access',
+		'$ resend-cli apikeys create --name "Domain Specific" --permission sending_access --domain-id "d91cd9bd-1176-453e-8fc1-35364d380206"',
+		'$ resend-cli apikeys create --name "Test Key" --permission full_access --output json | jq \'.\'',
+		'$ resend-cli apikeys create --dry-run --name "Test" --permission sending_access',
+		'$ RESEND_API_KEY="re_xxxxx" resend-cli apikeys create --name "Production" --permission full_access',
 	];
 	configureCustomHelp(createCommand, fields, createExamples);
 

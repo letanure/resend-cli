@@ -1,4 +1,4 @@
-import type { Command } from 'commander';
+import { Command } from 'commander';
 import { registerFieldOptions, validateOptions } from '@/utils/cli.js';
 import { configureCustomHelp } from '@/utils/cli-help.js';
 import { displayResults } from '@/utils/display-results.js';
@@ -8,20 +8,22 @@ import { updateEmail } from './action.js';
 import { fields } from './fields.js';
 import { UpdateEmailOptionsSchema, type UpdateEmailOptionsType } from './schema.js';
 
-// Main handler for update command
 async function handleUpdateCommand(options: Record<string, unknown>, command: Command): Promise<void> {
+	// Get global options from the root program (need to go up two levels)
+	const rootProgram = command.parent?.parent;
+	const globalOptions = rootProgram?.opts() || {};
+	// Merge local and global options
+	const allOptions = { ...globalOptions, ...options };
+
 	try {
-		const apiKey = getResendApiKey();
-
-		// Get global options from the root program (need to go up two levels)
-		const rootProgram = command.parent?.parent;
-		const globalOptions = rootProgram?.opts() || {};
-		// Merge local and global options
-		const allOptions = { ...globalOptions, ...options };
-
-		// Extract output format and validate update data
 		const outputFormat = (allOptions.output as OutputFormat) || 'text';
-		const updateData = validateOptions<UpdateEmailOptionsType>(
+		const isDryRun = Boolean(allOptions.dryRun);
+
+		// Only get API key if not in dry-run mode
+		const apiKey = isDryRun ? '' : getResendApiKey();
+
+		// Validate the data using unified validation
+		const validatedData = validateOptions<UpdateEmailOptionsType>(
 			allOptions,
 			UpdateEmailOptionsSchema,
 			outputFormat,
@@ -29,14 +31,12 @@ async function handleUpdateCommand(options: Record<string, unknown>, command: Co
 			command,
 		);
 
-		// Check if dry-run mode is enabled
-		const isDryRun = Boolean(allOptions.dryRun);
+		// Execute action or simulate dry-run
+		const result = isDryRun ? undefined : await updateEmail(validatedData, apiKey);
 
-		// Use generic displayResults function
-		const result = isDryRun ? undefined : await updateEmail(updateData, apiKey);
-
+		// Display results
 		displayResults({
-			data: updateData,
+			data: validatedData,
 			result,
 			fields,
 			outputFormat,
@@ -44,42 +44,48 @@ async function handleUpdateCommand(options: Record<string, unknown>, command: Co
 			isDryRun,
 			operation: {
 				success: {
-					title: 'Email Updated Successfully',
-					message: () => `Email ${updateData.id} scheduled time updated to ${updateData.scheduledAt}`,
+					title: 'Email Updated',
+					message: () => `Email ${validatedData.id} scheduled time updated to ${validatedData.scheduledAt}`,
 				},
 				error: {
 					title: 'Failed to Update Email',
-					message: 'Email update failed',
+					message: 'Failed to update email with Resend',
 				},
 				dryRun: {
-					title: 'DRY RUN - Email Update (validation only)',
+					title: 'DRY RUN - Email Update',
 					message: 'Validation successful! (Email not updated due to --dry-run flag)',
 				},
 			},
 		});
 	} catch (error) {
-		console.error('Unexpected error:', error instanceof Error ? error.message : error);
-		process.exit(1);
+		displayResults({
+			data: {},
+			result: { success: false, error: error instanceof Error ? error.message : 'Unknown error occurred' },
+			fields,
+			outputFormat: (allOptions.output as OutputFormat) || 'text',
+			apiKey: '',
+			isDryRun: false,
+			operation: {
+				success: { title: '', message: () => '' },
+				error: { title: 'Unexpected Error', message: 'An unexpected error occurred' },
+				dryRun: { title: 'DRY RUN Failed', message: 'Dry run failed' },
+			},
+		});
 	}
 }
 
-export function registerUpdateCommand(emailCommand: Command): void {
-	// Register the update subcommand
-	const updateCommand = emailCommand
-		.command('update')
-		.description('Update a scheduled email via Resend API')
-		.action(handleUpdateCommand);
+export const emailUpdateCommand = new Command('update')
+	.description('Update a scheduled email via Resend API')
+	.action(handleUpdateCommand);
 
-	// Add all the field options to the update command
-	registerFieldOptions(updateCommand, fields);
+registerFieldOptions(emailUpdateCommand, fields);
 
-	const updateExamples = [
-		'$ resend-cli email update --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" --scheduled-at="2024-08-05T11:52:01.858Z"',
-		'$ resend-cli email update -i "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" -a "2024-12-25T09:00:00.000Z"',
-		'$ resend-cli email update --output json --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" --scheduled-at="2024-08-05T11:52:01.858Z" | jq \'.\'',
-		'$ resend-cli email update --dry-run --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" --scheduled-at="2024-08-05T11:52:01.858Z"',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli email update --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" --scheduled-at="2024-08-05T11:52:01.858Z"',
-	];
+const updateExamples = [
+	'$ resend-cli email update --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" --scheduled-at="2024-08-05T11:52:01.858Z"',
+	'$ resend-cli email update --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" --scheduled-at="2024-08-05T11:52:01.858Z" --output json',
+	'$ resend-cli email update --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" --scheduled-at="2024-08-05T11:52:01.858Z" --dry-run',
+	'$ RESEND_API_KEY="re_xxxxx" resend-cli email update --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" --scheduled-at="2024-08-05T11:52:01.858Z"',
+	'$ resend-cli email update --id="49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" --scheduled-at="2024-08-05T11:52:01.858Z" | jq \'.\'',
+];
 
-	configureCustomHelp(updateCommand, fields, updateExamples);
-}
+configureCustomHelp(emailUpdateCommand, fields, updateExamples);

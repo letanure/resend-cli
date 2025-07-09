@@ -72,10 +72,10 @@ function createListApiKeysCommand(): Command {
 	registerFieldOptions(listCommand, fields);
 
 	const listExamples = [
-		'$ resend-cli api-keys list',
-		"$ resend-cli api-keys list --output json | jq '.'",
-		'$ resend-cli api-keys list --dry-run',
-		'$ RESEND_API_KEY="re_xxxxx" resend-cli api-keys list',
+		'$ resend-cli apikeys list',
+		"$ resend-cli apikeys list --output json | jq '.'",
+		'$ resend-cli apikeys list --dry-run',
+		'$ RESEND_API_KEY="re_xxxxx" resend-cli apikeys list',
 	];
 
 	configureCustomHelp(listCommand, fields, listExamples);
