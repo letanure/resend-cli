@@ -62,8 +62,20 @@ export function displayResults<TData extends Record<string, unknown>, TResult = 
 
 	if (result.success && result.data) {
 		// Success case - only show the API response data, not input data
+		const responseData = result.data as any;
+
+		// Handle list operations - check if the response has a 'data' property with an array
+		let displayData: Record<string, unknown>;
+		if (responseData.data && Array.isArray(responseData.data)) {
+			// For list operations, use the array directly for table display
+			displayData = responseData.data;
+		} else {
+			// For single object operations, use the response as-is
+			displayData = responseData;
+		}
+
 		displayCLIResults(
-			result.data as Record<string, unknown>,
+			displayData,
 			fields,
 			outputFormat,
 			operation.success.title,

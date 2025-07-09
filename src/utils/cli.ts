@@ -3,6 +3,7 @@ import type { Command } from 'commander';
 import type { ZodSchema } from 'zod';
 import type { CliField } from '@/types/index.js';
 import { formatDataWithFields, formatForCLI } from '@/utils/display-formatter.js';
+import { formatAsTable } from '@/utils/table-formatter.js';
 import { displayInvalidOptionError, displayMissingEnvError, displayUnknownOptionError } from './error-formatting.js';
 import { type OutputFormat, outputSuccess, outputValidationErrors } from './output.js';
 
@@ -93,9 +94,44 @@ function logCliResults(
 	}
 }
 
+// Display list results with proper table formatting
+function logCliListResults(
+	data: Array<Record<string, unknown>>,
+	fields: Array<CliField>,
+	title: string,
+	additionalInfo?: Record<string, string | undefined>,
+	successMessage?: string,
+): void {
+	// Show title with colors
+	console.log(chalk.green(`✓ ${title}`));
+
+	// Add a blank line before the table
+	console.log('');
+
+	// Use the table formatter for consistent display
+	const tableOutput = formatAsTable(data, fields);
+	console.log(tableOutput);
+
+	// Add additional info if provided
+	if (additionalInfo) {
+		console.log('');
+		for (const [key, value] of Object.entries(additionalInfo)) {
+			if (value && key !== 'ID') {
+				console.log(` ${key.padEnd(15)}: ${value}`);
+			}
+		}
+	}
+
+	// Always show success message if provided
+	if (successMessage) {
+		console.log('');
+		console.log(chalk.yellow(`${successMessage}`));
+	}
+}
+
 // Display parsed CLI data using field configuration
 export function displayCLIResults(
-	data: Record<string, unknown>,
+	data: Record<string, unknown> | Array<Record<string, unknown>>,
 	fields: Array<CliField>,
 	format: OutputFormat = 'text',
 	title: string = 'Parsed data:',
@@ -112,7 +148,11 @@ export function displayCLIResults(
 
 	// For text output, use formatted display
 	outputSuccess(data, format, () => {
-		logCliResults(data, fields, title, additionalInfo, successMessage);
+		if (Array.isArray(data)) {
+			logCliListResults(data, fields, title, additionalInfo, successMessage);
+		} else {
+			logCliResults(data, fields, title, additionalInfo, successMessage);
+		}
 	});
 }
 

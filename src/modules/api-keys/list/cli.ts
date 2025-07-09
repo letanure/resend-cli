@@ -34,10 +34,14 @@ async function handleListCommand(options: Record<string, unknown>, command: Comm
 				success: {
 					title: 'API Key Search Completed',
 					message: (data: unknown) => {
-						if (Array.isArray(data) && data.length === 0) {
+						// Handle the API response structure - data should have a 'data' property with the array
+						const responseData = data as { data?: Array<unknown> };
+						const apiKeys = responseData.data || [];
+
+						if (Array.isArray(apiKeys) && apiKeys.length === 0) {
 							return 'No API keys found (0 results). Create your first API key to get started.';
 						}
-						const count = Array.isArray(data) ? data.length : 0;
+						const count = Array.isArray(apiKeys) ? apiKeys.length : 0;
 						return `Found ${count} API key${count === 1 ? '' : 's'}`;
 					},
 				},
