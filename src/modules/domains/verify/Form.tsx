@@ -2,7 +2,7 @@ import { Alert, Spinner } from '@inkjs/ui';
 import { Box, Text, useInput } from 'ink';
 import React from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
-import { ErrorDisplay } from '@/components/ui/ErrorDisplay.js';
+import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
@@ -59,18 +59,21 @@ export const Form = ({ onExit }: FormProps) => {
 			return <DomainVerifyDisplay result={result.data} onExit={onExit} />;
 		}
 		return (
-			<Layout
+			<ErrorScreen
+				title="Domain Verification Failed"
+				message={result.error || 'Failed to verify domain'}
+				suggestion="Check the domain ID and ensure DNS records are properly configured."
 				headerText={`${config.baseTitle} - Domains - Verify`}
-				showNavigationInstructions={true}
-				navigationContext="result"
-			>
-				<ErrorDisplay message={result.error || 'Failed to verify domain'} />
-				<Box marginTop={1}>
-					<Text>
-						Press <Text color="yellow">Esc</Text> or <Text color="yellow">q</Text> to go back
-					</Text>
-				</Box>
-			</Layout>
+				onExit={() => {
+					setResult(null);
+					onExit();
+				}}
+				showRetry={true}
+				onRetry={() => {
+					setResult(null);
+					setLoading(false);
+				}}
+			/>
 		);
 	}
 

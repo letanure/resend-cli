@@ -2,7 +2,7 @@ import { Alert, Spinner } from '@inkjs/ui';
 import { Box, Text, useInput } from 'ink';
 import React from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
-import { ErrorDisplay } from '@/components/ui/ErrorDisplay.js';
+import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
@@ -58,18 +58,21 @@ export const Form = ({ onExit }: FormProps) => {
 			return <BroadcastUpdateDisplay result={result.data} onExit={onExit} />;
 		}
 		return (
-			<Layout
+			<ErrorScreen
+				title="Broadcast Update Failed"
+				message={result.error || 'Failed to update broadcast'}
+				suggestion="Check the broadcast ID and ensure it exists in your Resend account."
 				headerText={`${config.baseTitle} - Broadcasts - Update`}
-				showNavigationInstructions={true}
-				navigationContext="result"
-			>
-				<ErrorDisplay message={result.error || 'Failed to update broadcast'} />
-				<Box marginTop={1}>
-					<Text>
-						Press <Text color="yellow">Esc</Text> or <Text color="yellow">q</Text> to go back
-					</Text>
-				</Box>
-			</Layout>
+				onExit={() => {
+					setResult(null);
+					onExit();
+				}}
+				showRetry={true}
+				onRetry={() => {
+					setResult(null);
+					setLoading(false);
+				}}
+			/>
 		);
 	}
 

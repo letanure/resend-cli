@@ -1,7 +1,7 @@
 import { Spinner } from '@inkjs/ui';
 import { Box, Text, useInput } from 'ink';
 import { useEffect, useState } from 'react';
-import { ErrorDisplay } from '@/components/ui/ErrorDisplay.js';
+import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
 import { Table } from '@/components/ui/Table.js';
 import { config } from '@/config/config.js';
@@ -110,17 +110,18 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout
-				headerText={`${config.baseTitle} - API Keys - List - Error`}
-				showNavigationInstructions={true}
-				navigationContext="result"
-			>
-				<Box flexDirection="column">
-					<Box marginBottom={1}>
-						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
-					</Box>
-				</Box>
-			</Layout>
+			<ErrorScreen
+				title={error.title}
+				message={error.message}
+				suggestion={error.suggestion}
+				headerText={`${config.baseTitle} - API Keys - List`}
+				onExit={onExit}
+				showRetry={true}
+				onRetry={() => {
+					setError(null);
+					setIsLoading(true);
+				}}
+			/>
 		);
 	}
 

@@ -3,7 +3,7 @@ import { Box, Text, useInput } from 'ink';
 import { useState } from 'react';
 import { SelectField } from '@/components/forms/SelectField.js';
 import { TextInput } from '@/components/forms/TextInput.js';
-import { ErrorDisplay } from '@/components/ui/ErrorDisplay.js';
+import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
@@ -283,17 +283,20 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout
-				headerText={`${config.baseTitle} - API Keys - Create - Error`}
-				showNavigationInstructions={true}
-				navigationContext="result"
-			>
-				<Box flexDirection="column">
-					<Box marginBottom={1}>
-						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
-					</Box>
-				</Box>
-			</Layout>
+			<ErrorScreen
+				title={error.title}
+				message={error.message}
+				suggestion={error.suggestion}
+				headerText={`${config.baseTitle} - API Keys - Create`}
+				onExit={() => {
+					setError(null);
+					onExit();
+				}}
+				showRetry={true}
+				onRetry={() => {
+					setError(null);
+				}}
+			/>
 		);
 	}
 

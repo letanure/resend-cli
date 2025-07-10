@@ -2,7 +2,7 @@ import { Spinner } from '@inkjs/ui';
 import { Box, Text, useInput } from 'ink';
 import { useState } from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
-import { ErrorDisplay } from '@/components/ui/ErrorDisplay.js';
+import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
@@ -127,20 +127,21 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (error) {
 		return (
-			<Layout
-				headerText={`${config.baseTitle} - Emails - Cancel - Error`}
-				showNavigationInstructions={true}
-				navigationContext="result"
-			>
-				<Box flexDirection="column">
-					<Box marginBottom={1}>
-						<ErrorDisplay title={error.title} message={error.message} suggestion={error.suggestion} />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
-				</Box>
-			</Layout>
+			<ErrorScreen
+				title={error.title}
+				message={error.message}
+				suggestion={error.suggestion}
+				headerText={`${config.baseTitle} - Emails - Cancel`}
+				onExit={() => {
+					setError(null);
+					onExit();
+				}}
+				showRetry={true}
+				onRetry={() => {
+					setError(null);
+					setIsSubmitting(false);
+				}}
+			/>
 		);
 	}
 
