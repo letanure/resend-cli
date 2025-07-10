@@ -1,3 +1,11 @@
+# [0.36.0](https://github.com/letanure/resend-cli/compare/v0.35.0...v0.36.0) (2025-07-10)
+
+
+### Features
+
+* add IDs selectors to all forms ([3a013a7](https://github.com/letanure/resend-cli/commit/3a013a79c095ed1eef9a442fb3c062b6e3dc700c))
+* keep data on form after select if ([68243ea](https://github.com/letanure/resend-cli/commit/68243ea0f578076ee31589053a67d7fb064105ff))
+
 # [0.35.0](https://github.com/letanure/resend-cli/compare/v0.34.0...v0.35.0) (2025-07-10)
 
 
