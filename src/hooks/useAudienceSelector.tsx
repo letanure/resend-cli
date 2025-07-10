@@ -1,5 +1,6 @@
 import { useInputSelector } from '@/components/forms/useInputSelector.js';
 import { listAudiences } from '@/modules/audiences/list/action.js';
+import { displayFields } from '@/modules/audiences/list/fields.js';
 
 export function useAudienceSelector(onSelect: (audienceId: string) => void) {
 	return useInputSelector({
@@ -30,10 +31,9 @@ export function useAudienceSelector(onSelect: (audienceId: string) => void) {
 				created_at: new Date(audience.created_at as string).toLocaleString(),
 			}));
 		},
+		displayFields,
 		loadData: {},
 		noDataMessage: 'No audiences found.',
-		idField: 'id',
-		displayField: 'name',
 		onSelect,
 	});
 }

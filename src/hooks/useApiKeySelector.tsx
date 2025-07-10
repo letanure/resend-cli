@@ -1,5 +1,6 @@
 import { useInputSelector } from '@/components/forms/useInputSelector.js';
 import { listApiKeys } from '@/modules/api-keys/list/action.js';
+import { displayFields } from '@/modules/api-keys/list/fields.js';
 
 export function useApiKeySelector(onSelect: (apiKeyId: string) => void) {
 	return useInputSelector({
@@ -31,10 +32,9 @@ export function useApiKeySelector(onSelect: (apiKeyId: string) => void) {
 				created_at: new Date(key.created_at as string).toLocaleString(),
 			}));
 		},
+		displayFields,
 		loadData: {},
 		noDataMessage: 'No API keys found.',
-		idField: 'id',
-		displayField: 'name',
 		onSelect,
 	});
 }

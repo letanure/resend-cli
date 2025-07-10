@@ -1,5 +1,6 @@
 import { useInputSelector } from '@/components/forms/useInputSelector.js';
 import { listContacts } from '@/modules/contacts/list/action.js';
+import { displayFields } from '@/modules/contacts/list/fields.js';
 
 interface UseContactSelectorProps {
 	audienceId: string;
@@ -35,15 +36,15 @@ export function useContactSelector({ audienceId, onSelect }: UseContactSelectorP
 			return data.data.map((contact) => ({
 				id: contact.id,
 				email: contact.email,
-				name: `${contact.first_name || ''} ${contact.last_name || ''}`.trim() || 'N/A',
+				firstName: contact.first_name || '',
+				lastName: contact.last_name || '',
+				subscribed: contact.unsubscribed ? 'No' : 'Yes',
 				created_at: new Date(contact.created_at as string).toLocaleString(),
-				unsubscribed: contact.unsubscribed ? 'Yes' : 'No',
 			}));
 		},
+		displayFields,
 		loadData: { audienceId },
 		noDataMessage: 'No contacts found in this audience.',
-		idField: 'id',
-		displayField: 'email',
 		onSelect,
 	});
 }

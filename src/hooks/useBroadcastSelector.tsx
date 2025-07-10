@@ -1,5 +1,6 @@
 import { useInputSelector } from '@/components/forms/useInputSelector.js';
 import { listBroadcasts } from '@/modules/broadcasts/list/action.js';
+import { displayFields } from '@/modules/broadcasts/list/fields.js';
 
 export function useBroadcastSelector(onSelect: (broadcastId: string) => void) {
 	return useInputSelector({
@@ -11,8 +12,10 @@ export function useBroadcastSelector(onSelect: (broadcastId: string) => void) {
 				const transformedData = result.data.data.map((broadcast) => ({
 					id: broadcast.id,
 					name: broadcast.name,
+					audienceId: broadcast.audience_id,
 					status: broadcast.status,
 					created_at: broadcast.created_at,
+					scheduled_at: broadcast.scheduled_at,
 					sent_at: broadcast.sent_at,
 				}));
 				return {
@@ -28,16 +31,17 @@ export function useBroadcastSelector(onSelect: (broadcastId: string) => void) {
 		formatData: (data) => {
 			return data.data.map((broadcast) => ({
 				id: broadcast.id,
-				name: broadcast.name,
+				name: broadcast.name || '',
+				audienceId: broadcast.audienceId || '',
 				status: broadcast.status,
 				created_at: new Date(broadcast.created_at as string).toLocaleString(),
-				sent_at: broadcast.sent_at ? new Date(broadcast.sent_at as string).toLocaleString() : 'Not sent',
+				scheduled_at: broadcast.scheduled_at ? new Date(broadcast.scheduled_at as string).toLocaleString() : '',
+				sent_at: broadcast.sent_at ? new Date(broadcast.sent_at as string).toLocaleString() : '',
 			}));
 		},
+		displayFields,
 		loadData: {},
 		noDataMessage: 'No broadcasts found.',
-		idField: 'id',
-		displayField: 'name',
 		onSelect,
 	});
 }

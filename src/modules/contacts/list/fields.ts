@@ -24,7 +24,7 @@ export const listContactFields: Array<FormField> = [
 export const displayFields: Array<CliField> = [
 	{
 		name: 'id',
-		label: 'Contact ID',
+		label: 'ID',
 		placeholder: '',
 		helpText: '',
 		cliFlag: '',
@@ -55,16 +55,16 @@ export const displayFields: Array<CliField> = [
 		cliShortFlag: '',
 	},
 	{
-		name: 'created_at',
-		label: 'Created At',
+		name: 'subscribed',
+		label: 'Subscription Status',
 		placeholder: '',
 		helpText: '',
 		cliFlag: '',
 		cliShortFlag: '',
 	},
 	{
-		name: 'subscribed',
-		label: 'Subscribed',
+		name: 'created_at',
+		label: 'Created At',
 		placeholder: '',
 		helpText: '',
 		cliFlag: '',

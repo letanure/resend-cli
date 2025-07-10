@@ -1,5 +1,6 @@
 import { useInputSelector } from '@/components/forms/useInputSelector.js';
 import { listDomains } from '@/modules/domains/list/action.js';
+import { displayFields } from '@/modules/domains/list/fields.js';
 
 export function useDomainSelector(onSelect: (domainId: string) => void) {
 	return useInputSelector({
@@ -34,10 +35,9 @@ export function useDomainSelector(onSelect: (domainId: string) => void) {
 				created_at: new Date(domain.created_at as string).toLocaleString(),
 			}));
 		},
+		displayFields,
 		loadData: {},
 		noDataMessage: 'No domains found.',
-		idField: 'id',
-		displayField: 'name',
 		onSelect,
 	});
 }

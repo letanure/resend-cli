@@ -72,9 +72,8 @@ export function formatForCLI(formattedFields: Array<FormattedField>, title?: str
 	}
 
 	// Calculate the maximum label width for consistent alignment
-	const maxLabelWidth = formattedFields.length > 0 
-		? Math.max(...formattedFields.map(field => field.label.length))
-		: 15; // fallback to original width
+	const maxLabelWidth =
+		formattedFields.length > 0 ? Math.max(...formattedFields.map((field) => field.label.length)) : 15; // fallback to original width
 
 	for (const field of formattedFields) {
 		lines.push(` ${field.label.padEnd(maxLabelWidth)}: ${field.value}`);

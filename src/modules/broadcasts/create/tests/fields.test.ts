@@ -39,7 +39,7 @@ describe('broadcasts create fields configuration', () => {
 		expect(createBroadcastFields[0]).toEqual({
 			name: 'audienceId',
 			label: 'Audience ID',
-			type: 'text',
+			type: 'input-with-selector',
 			placeholder: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 			helpText: 'Enter the audience ID to send the broadcast to',
 		});
@@ -97,7 +97,7 @@ describe('broadcasts create fields configuration', () => {
 		const textFields = createBroadcastFields.filter((f) => f.type === 'text');
 		const textareaFields = createBroadcastFields.filter((f) => f.type === 'textarea');
 
-		expect(textFields).toHaveLength(5); // audienceId, from, subject, replyTo, name
+		expect(textFields).toHaveLength(4); // from, subject, replyTo, name
 		expect(textareaFields).toHaveLength(2); // html, text
 	});
 

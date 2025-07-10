@@ -1,5 +1,6 @@
 import { Box, Text } from 'ink';
 import type { CliField } from '@/types/index.js';
+import { clipContent } from '@/utils/clipContent.js';
 
 interface TableProps {
 	data: Array<Record<string, unknown>>;
@@ -27,11 +28,12 @@ export const Table = ({ data, fields, title }: TableProps) => {
 		// Start with header width
 		columnWidths[field.name] = field.label.length;
 
-		// Check data widths
+		// Check data widths (using clipped content for width calculation)
 		for (const row of data) {
-			const value = String(row[field.name] || '');
+			const rawValue = String(row[field.name] || '');
+			const clippedValue = clipContent(rawValue, field.name);
 			const currentWidth = columnWidths[field.name] || 0;
-			columnWidths[field.name] = Math.max(currentWidth, value.length);
+			columnWidths[field.name] = Math.max(currentWidth, clippedValue.length);
 		}
 
 		// Add some padding and set minimum width
@@ -78,9 +80,11 @@ export const Table = ({ data, fields, title }: TableProps) => {
 				<Box key={String(row.id || index)}>
 					{fields.map((field) => {
 						const width = columnWidths[field.name] || 8;
+						const rawValue = String(row[field.name] || '');
+						const displayValue = clipContent(rawValue, field.name);
 						return (
 							<Box key={field.name} width={width}>
-								<Text>{String(row[field.name] || '').padEnd(width - 1)}</Text>
+								<Text>{displayValue.padEnd(width - 1)}</Text>
 							</Box>
 						);
 					})}

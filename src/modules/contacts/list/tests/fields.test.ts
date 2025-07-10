@@ -64,12 +64,12 @@ describe('Contact List Fields', () => {
 
 	it('should have correct display field labels', () => {
 		const fieldLabels = displayFields.map((f) => f.label);
-		expect(fieldLabels).toContain('Contact ID');
+		expect(fieldLabels).toContain('ID');
 		expect(fieldLabels).toContain('Email');
 		expect(fieldLabels).toContain('First Name');
 		expect(fieldLabels).toContain('Last Name');
 		expect(fieldLabels).toContain('Created At');
-		expect(fieldLabels).toContain('Subscribed');
+		expect(fieldLabels).toContain('Subscription Status');
 	});
 
 	it('should have display fields with empty placeholders and help text', () => {
@@ -87,6 +87,6 @@ describe('Contact List Fields', () => {
 
 		expect(subscribedField).toBeDefined();
 		expect(unsubscribedField).toBeUndefined();
-		expect(subscribedField?.label).toBe('Subscribed');
+		expect(subscribedField?.label).toBe('Subscription Status');
 	});
 });

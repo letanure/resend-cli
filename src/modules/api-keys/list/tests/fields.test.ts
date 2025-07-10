@@ -10,11 +10,11 @@ describe('API Keys List Fields', () => {
 		expect(displayFields).toHaveLength(3);
 	});
 
-	it('should have API Key ID field', () => {
+	it('should have ID field', () => {
 		const idField = displayFields[0];
 		expect(idField).toBeDefined();
 		expect(idField?.name).toBe('id');
-		expect(idField?.label).toBe('API Key ID');
+		expect(idField?.label).toBe('ID');
 	});
 
 	it('should have name field', () => {

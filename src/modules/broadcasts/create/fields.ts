@@ -63,7 +63,7 @@ export const createBroadcastFields: Array<FormField> = [
 	{
 		name: 'audienceId',
 		label: 'Audience ID',
-		type: 'text',
+		type: 'input-with-selector',
 		placeholder: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 		helpText: 'Enter the audience ID to send the broadcast to',
 	},

@@ -24,7 +24,7 @@ export const Form = ({ onExit }: FormProps) => {
 		return apiKeys.map((key) => ({
 			id: key.id,
 			name: key.name,
-			created_at: key.created_at,
+			created_at: new Date(key.created_at).toLocaleString(),
 		}));
 	};
 

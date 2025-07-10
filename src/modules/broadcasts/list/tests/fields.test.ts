@@ -16,7 +16,7 @@ describe('list broadcasts fields', () => {
 
 	describe('Display fields', () => {
 		it('should have correct number of fields', () => {
-			expect(displayFields).toHaveLength(6);
+			expect(displayFields).toHaveLength(7);
 		});
 
 		it('should have id field', () => {
@@ -51,8 +51,8 @@ describe('list broadcasts fields', () => {
 			expect(createdAtField?.cliShortFlag).toBe('-c');
 		});
 
-		it('should have scheduledAt field', () => {
-			const scheduledAtField = displayFields.find((field) => field.name === 'scheduledAt');
+		it('should have scheduled_at field', () => {
+			const scheduledAtField = displayFields.find((field) => field.name === 'scheduled_at');
 			expect(scheduledAtField).toBeDefined();
 			expect(scheduledAtField?.label).toBe('Scheduled At');
 			expect(scheduledAtField?.cliFlag).toBe('--scheduled-at');

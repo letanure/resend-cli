@@ -5,7 +5,7 @@ export const fields: Array<CliField> = [];
 export const displayFields: Array<CliField> = [
 	{
 		name: 'id',
-		label: 'Audience ID',
+		label: 'ID',
 		placeholder: '',
 		helpText: '',
 		cliFlag: '',
