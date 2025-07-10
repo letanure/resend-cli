@@ -1,6 +1,6 @@
 import { Alert } from '@inkjs/ui';
 import { Box, useInput } from 'ink';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import type { z } from 'zod';
 import type { FormField } from '@/types/index.js';
 import { InputWithSelector } from './InputWithSelector.js';
@@ -12,6 +12,7 @@ interface SimpleFormProps<T = Record<string, unknown>> {
 	onSubmit: (data: T) => void;
 	onCancel: () => void;
 	validateWith?: z.ZodType<T, z.ZodTypeDef, unknown>;
+	initialData?: Partial<T>;
 }
 
 export const SimpleForm = <T = Record<string, unknown>>({
@@ -19,6 +20,7 @@ export const SimpleForm = <T = Record<string, unknown>>({
 	onSubmit,
 	onCancel,
 	validateWith,
+	initialData,
 }: SimpleFormProps<T>) => {
 	const [formData, setFormData] = useState<Record<string, unknown>>(() => {
 		const initial: Record<string, unknown> = {};
@@ -29,6 +31,10 @@ export const SimpleForm = <T = Record<string, unknown>>({
 			} else {
 				initial[field.name] = '';
 			}
+		}
+		// Override with initialData if provided
+		if (initialData) {
+			Object.assign(initial, initialData);
 		}
 		return initial;
 	});
@@ -143,19 +149,22 @@ export const SimpleForm = <T = Record<string, unknown>>({
 		}
 	};
 
-	const handleFieldChange = (fieldName: string, value: unknown) => {
-		setFormData((prev) => ({ ...prev, [fieldName]: value }));
+	const handleFieldChange = useCallback(
+		(fieldName: string, value: unknown) => {
+			setFormData((prev) => ({ ...prev, [fieldName]: value }));
 
-		// Clear error when user starts typing
-		if (errors[fieldName]) {
-			setErrors((prev) => ({ ...prev, [fieldName]: '' }));
-		}
+			// Clear error when user starts typing
+			if (errors[fieldName]) {
+				setErrors((prev) => ({ ...prev, [fieldName]: '' }));
+			}
 
-		// Clear form-level error when user starts typing
-		if (formError) {
-			setFormError('');
-		}
-	};
+			// Clear form-level error when user starts typing
+			if (formError) {
+				setFormError('');
+			}
+		},
+		[errors, formError],
+	);
 
 	const handleSelectToggle = (field: FormField) => {
 		if (field.options && field.options.length > 1) {
@@ -233,6 +242,7 @@ export const SimpleForm = <T = Record<string, unknown>>({
 							helpText={field.helpText}
 							isFocused={currentField === index}
 							error={errors[field.name]}
+							onSelectorOpen={field.onSelectorOpen}
 						/>
 					);
 				}

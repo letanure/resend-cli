@@ -55,6 +55,7 @@ export interface FormField {
 	display?: 'inline' | 'stacked' | 'compact'; // For select fields layout
 	cliFlag?: string; // CLI long flag (--flag)
 	cliShortFlag?: string; // CLI short flag (-f)
+	onSelectorOpen?: () => void; // For input-with-selector fields
 }
 
 /**

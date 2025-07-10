@@ -23,25 +23,25 @@ export function useInputSelector<T extends SelectableItem, D = Record<string, un
 	displayField = 'id',
 	onSelect,
 }: UseInputSelectorProps<T, D>) {
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 
-	const openModal = () => setIsModalOpen(true);
-	const closeModal = () => setIsModalOpen(false);
+	const openSelector = () => setIsOpen(true);
+	const closeSelector = () => setIsOpen(false);
 
 	const handleSelect = (item: T) => {
 		const selectedId = String(item[idField] || '');
 		onSelect(selectedId);
-		closeModal();
+		closeSelector();
 	};
 
 	const handleCancel = () => {
-		closeModal();
+		closeSelector();
 	};
 
-	const modalComponent = isModalOpen ? (
+	const selectorComponent = isOpen ? (
 		<SelectionModal
 			title={title}
-			isOpen={isModalOpen}
+			isOpen={isOpen}
 			onSelect={handleSelect}
 			onCancel={handleCancel}
 			loadFunction={loadFunction}
@@ -54,9 +54,9 @@ export function useInputSelector<T extends SelectableItem, D = Record<string, un
 	) : null;
 
 	return {
-		isModalOpen,
-		openModal,
-		closeModal,
-		modalComponent,
+		isOpen,
+		openSelector,
+		closeSelector,
+		selectorComponent,
 	};
 }

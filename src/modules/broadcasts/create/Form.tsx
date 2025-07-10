@@ -2,12 +2,14 @@ import { Alert, Spinner } from '@inkjs/ui';
 import { Box, Text, useInput } from 'ink';
 import React from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
+import { useInputSelector } from '@/components/forms/useInputSelector.js';
 import { ErrorDisplay } from '@/components/ui/ErrorDisplay.js';
 import { Layout } from '@/components/ui/layout.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
 import type { ApiResult } from '@/types/index.js';
+import { listAudiences } from '../../audiences/list/action.js';
 import { createBroadcast } from './action.js';
 import { createBroadcastFields } from './fields.js';
 import { type CreateBroadcastData, createBroadcastSchema } from './schema.js';
@@ -23,8 +25,67 @@ interface FormProps {
 export const Form = ({ onExit }: FormProps) => {
 	const [result, setResult] = React.useState<ApiResult<CreateBroadcastResponse> | null>(null);
 	const [loading, setLoading] = React.useState(false);
+	const [selectedAudienceId, setSelectedAudienceId] = React.useState<string>('');
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
+
+	// Get initial data from selected audience ID
+	const initialFormData = React.useMemo(() => {
+		return selectedAudienceId ? { audienceId: selectedAudienceId } : undefined;
+	}, [selectedAudienceId]);
+
+	// Selector for audiences
+	const audienceSelector = useInputSelector({
+		title: 'Audiences',
+		loadFunction: async (data: Record<string, unknown>, apiKey: string) => {
+			const result = await listAudiences(data, apiKey);
+			if (result.success && result.data) {
+				// Transform audiences to SelectableItem format
+				const transformedData = result.data.data.map((audience) => ({
+					id: audience.id,
+					name: audience.name,
+					created_at: audience.created_at,
+				}));
+				return {
+					...result,
+					data: { data: transformedData },
+				};
+			}
+			return {
+				success: false,
+				error: result.error || 'Failed to load audiences',
+			};
+		},
+		formatData: (data) => {
+			return data.data.map((audience) => ({
+				id: audience.id,
+				name: audience.name,
+				created_at: new Date(audience.created_at as string).toLocaleString(),
+			}));
+		},
+		loadData: {},
+		noDataMessage: 'No audiences found.',
+		idField: 'id',
+		displayField: 'name',
+		onSelect: (audienceId) => {
+			// Update component state to trigger re-render
+			setSelectedAudienceId(audienceId);
+		},
+	});
+
+	// Create form fields with audience selector
+	const formFields = React.useMemo(() => {
+		return createBroadcastFields.map((field) => {
+			if (field.name === 'audienceId') {
+				return {
+					...field,
+					type: 'input-with-selector' as const,
+					onSelectorOpen: audienceSelector.openSelector,
+				};
+			}
+			return field;
+		});
+	}, [audienceSelector.openSelector]);
 
 	const handleSubmit = async (data: CreateBroadcastData) => {
 		setLoading(true);
@@ -73,6 +134,11 @@ export const Form = ({ onExit }: FormProps) => {
 		);
 	}
 
+	// If the audience selector is open, render it instead of the form
+	if (audienceSelector.isOpen) {
+		return audienceSelector.selectorComponent;
+	}
+
 	return (
 		<Layout
 			headerText={`${config.baseTitle} - Broadcasts - Create`}
@@ -85,10 +151,11 @@ export const Form = ({ onExit }: FormProps) => {
 				</Box>
 			)}
 			<SimpleForm<CreateBroadcastData>
-				fields={createBroadcastFields}
+				fields={formFields}
 				onSubmit={handleSubmit}
 				onCancel={onExit}
 				validateWith={createBroadcastSchema}
+				initialData={initialFormData}
 			/>
 		</Layout>
 	);
