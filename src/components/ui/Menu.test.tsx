@@ -125,15 +125,55 @@ describe('Menu Component', () => {
 		expect(lastFrame()).toBeDefined();
 	});
 
-	it('does not navigate beyond bounds', async () => {
+	it('wraps around when navigating up from first item', async () => {
 		const { stdin, lastFrame } = renderWithProviders(
 			<Menu menuItems={mockMenuItems} onSelect={mockOnSelect} onExit={mockOnExit} />,
 		);
 
-		// Try to go up from first item
+		// Start at first item (Email), go up should wrap to last item (API Keys)
 		await stdin.write('\u001B[A'); // Up arrow
 
 		const output = lastFrame();
 		expect(output).toContain('▶');
+		// Should be on last item now
+	});
+
+	it('wraps around when navigating down from last item', async () => {
+		const { stdin, lastFrame } = renderWithProviders(
+			<Menu menuItems={mockMenuItems} onSelect={mockOnSelect} onExit={mockOnExit} initialSelectedKey="api-keys" />,
+		);
+
+		// Start at last item (API Keys), go down should wrap to first item (Email)
+		await stdin.write('\u001B[B'); // Down arrow
+
+		const output = lastFrame();
+		expect(output).toContain('▶');
+		// Should be on first item now
+	});
+
+	it('circular navigation: up from first goes to last', async () => {
+		const { stdin } = renderWithProviders(
+			<Menu menuItems={mockMenuItems} onSelect={mockOnSelect} onExit={mockOnExit} />,
+		);
+
+		// Start at first item, press up, add a small delay, then Enter to select
+		await stdin.write('\u001B[A'); // Up arrow (should go to last item)
+		await new Promise<void>((resolve) => setTimeout(resolve, 10)); // Small delay for state update
+		await stdin.write('\r'); // Enter
+
+		expect(mockOnSelect).toHaveBeenCalledWith('api-keys'); // Last item should be selected
+	});
+
+	it('circular navigation: down from last goes to first', async () => {
+		const { stdin } = renderWithProviders(
+			<Menu menuItems={mockMenuItems} onSelect={mockOnSelect} onExit={mockOnExit} initialSelectedKey="api-keys" />,
+		);
+
+		// Start at last item, press down, add a small delay, then Enter to select
+		await stdin.write('\u001B[B'); // Down arrow (should go to first item)
+		await new Promise<void>((resolve) => setTimeout(resolve, 10)); // Small delay for state update
+		await stdin.write('\r'); // Enter
+
+		expect(mockOnSelect).toHaveBeenCalledWith('email'); // First item should be selected
 	});
 });

@@ -28,12 +28,14 @@ export const Menu = <T extends string>({
 	const [selectedIndex, setSelectedIndex] = useState(Math.max(0, initialIndex));
 
 	useInput((input, key) => {
-		if (key.upArrow && selectedIndex > 0) {
-			setSelectedIndex(selectedIndex - 1);
+		if (key.upArrow) {
+			// Circular navigation: if at first item, go to last
+			setSelectedIndex(selectedIndex === 0 ? menuItems.length - 1 : selectedIndex - 1);
 		}
 
-		if (key.downArrow && selectedIndex < menuItems.length - 1) {
-			setSelectedIndex(selectedIndex + 1);
+		if (key.downArrow) {
+			// Circular navigation: if at last item, go to first
+			setSelectedIndex(selectedIndex === menuItems.length - 1 ? 0 : selectedIndex + 1);
 		}
 
 		if (key.return || key.rightArrow) {
