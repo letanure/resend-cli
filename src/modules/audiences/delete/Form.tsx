@@ -1,6 +1,6 @@
 import { Spinner } from '@inkjs/ui';
 import { useInput } from 'ink';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
 import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
@@ -8,6 +8,7 @@ import { SuccessScreen } from '@/components/ui/SuccessScreen.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
+import { useAudienceSelector } from '@/hooks/useAudienceSelector.js';
 import { deleteAudience } from './action.js';
 import { fields } from './fields.js';
 import { DeleteAudienceOptionsSchema, type DeleteAudienceOptionsType } from './schema.js';
@@ -23,6 +24,29 @@ export const Form = ({ onExit }: FormProps) => {
 	const [successData, setSuccessData] = useState<Record<string, unknown> | null>(null);
 	const [isDryRunSuccess, setIsDryRunSuccess] = useState(false);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
+	const [selectedAudienceId, setSelectedAudienceId] = useState<string>('');
+
+	const initialFormData = React.useMemo(() => {
+		return selectedAudienceId ? { id: selectedAudienceId } : undefined;
+	}, [selectedAudienceId]);
+
+	const audienceSelector = useAudienceSelector((audienceId) => {
+		setSelectedAudienceId(audienceId);
+	});
+
+	// Create form fields with audience selector
+	const formFields = React.useMemo(() => {
+		return fields.map((field) => {
+			if (field.name === 'id') {
+				return {
+					...field,
+					type: 'input-with-selector' as const,
+					onSelectorOpen: audienceSelector.openSelector,
+				};
+			}
+			return field;
+		});
+	}, [audienceSelector.openSelector]);
 
 	// Handle Esc key to go back from result screens
 	useInput(
@@ -123,6 +147,11 @@ export const Form = ({ onExit }: FormProps) => {
 		);
 	}
 
+	// If the audience selector is open, render it instead of the form
+	if (audienceSelector.isOpen) {
+		return audienceSelector.selectorComponent;
+	}
+
 	return (
 		<Layout
 			headerText={`${config.baseTitle} - Audiences - Delete`}
@@ -130,10 +159,11 @@ export const Form = ({ onExit }: FormProps) => {
 			navigationContext="form-single"
 		>
 			<SimpleForm<DeleteAudienceOptionsType>
-				fields={fields}
+				fields={formFields}
 				onSubmit={handleSubmit}
 				onCancel={onExit}
 				validateWith={DeleteAudienceOptionsSchema}
+				initialData={initialFormData}
 			/>
 		</Layout>
 	);

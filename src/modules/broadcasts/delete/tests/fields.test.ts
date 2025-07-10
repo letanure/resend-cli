@@ -26,7 +26,7 @@ describe('delete broadcast fields', () => {
 			const broadcastIdField = deleteBroadcastFields.find((field) => field.name === 'broadcastId');
 			expect(broadcastIdField).toBeDefined();
 			expect(broadcastIdField?.label).toBe('Broadcast ID');
-			expect(broadcastIdField?.type).toBe('text');
+			expect(broadcastIdField?.type).toBe('input-with-selector');
 			expect(broadcastIdField?.helpText).toContain('delete');
 			expect(broadcastIdField?.helpText).toContain('draft');
 		});

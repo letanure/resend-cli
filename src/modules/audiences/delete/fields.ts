@@ -4,6 +4,7 @@ export const fields: Array<CliField> = [
 	{
 		name: 'id',
 		label: 'Audience ID',
+		type: 'input-with-selector',
 		placeholder: 'Enter audience ID (e.g., 78261eea-8f8b-4381-83c6-79fa7120f1cf)',
 		helpText: 'The unique identifier of the audience to delete',
 		cliFlag: 'id',

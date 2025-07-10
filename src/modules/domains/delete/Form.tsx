@@ -8,6 +8,7 @@ import { SuccessScreen } from '@/components/ui/SuccessScreen.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
+import { useDomainSelector } from '@/hooks/useDomainSelector.js';
 import type { ApiResult } from '@/types/index.js';
 import { deleteDomain } from './action.js';
 import { deleteDomainFields } from './fields.js';
@@ -28,8 +29,31 @@ export const Form = ({ onExit }: FormProps) => {
 	const [loading, setLoading] = React.useState(false);
 	const [successData, setSuccessData] = React.useState<Record<string, unknown> | null>(null);
 	const [isDryRunSuccess, setIsDryRunSuccess] = React.useState(false);
+	const [selectedDomainId, setSelectedDomainId] = React.useState<string>('');
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
+
+	const initialFormData = React.useMemo(() => {
+		return selectedDomainId ? { domainId: selectedDomainId } : undefined;
+	}, [selectedDomainId]);
+
+	const domainSelector = useDomainSelector((domainId) => {
+		setSelectedDomainId(domainId);
+	});
+
+	// Create form fields with domain selector
+	const formFields = React.useMemo(() => {
+		return deleteDomainFields.map((field) => {
+			if (field.name === 'domainId') {
+				return {
+					...field,
+					type: 'input-with-selector' as const,
+					onSelectorOpen: domainSelector.openSelector,
+				};
+			}
+			return field;
+		});
+	}, [domainSelector.openSelector]);
 
 	const handleSubmit = async (data: DeleteDomainData) => {
 		setLoading(true);
@@ -130,6 +154,11 @@ export const Form = ({ onExit }: FormProps) => {
 		);
 	}
 
+	// If the domain selector is open, render it instead of the form
+	if (domainSelector.isOpen) {
+		return domainSelector.selectorComponent;
+	}
+
 	return (
 		<Layout
 			headerText={`${config.baseTitle} - Domains - Delete`}
@@ -142,10 +171,11 @@ export const Form = ({ onExit }: FormProps) => {
 				</Box>
 			)}
 			<SimpleForm<DeleteDomainData>
-				fields={deleteDomainFields}
+				fields={formFields}
 				onSubmit={handleSubmit}
 				onCancel={onExit}
 				validateWith={deleteDomainSchema}
+				initialData={initialFormData}
 			/>
 		</Layout>
 	);

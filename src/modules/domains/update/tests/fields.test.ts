@@ -43,7 +43,7 @@ describe('domains update fields configuration', () => {
 		expect(updateDomainFields[0]).toEqual({
 			name: 'domainId',
 			label: 'Domain ID',
-			type: 'text',
+			type: 'input-with-selector',
 			placeholder: 'b8617ad3-b712-41d9-81a0-f7c3d879314e',
 			helpText: 'Enter the domain ID to update',
 		});
@@ -116,7 +116,7 @@ describe('domains update fields configuration', () => {
 	});
 
 	it('should have proper field types', () => {
-		expect(updateDomainFields[0]?.type).toBe('text');
+		expect(updateDomainFields[0]?.type).toBe('input-with-selector');
 		expect(updateDomainFields[1]?.type).toBe('select');
 		expect(updateDomainFields[2]?.type).toBe('select');
 		expect(updateDomainFields[3]?.type).toBe('select');

@@ -1,6 +1,6 @@
 import { Spinner } from '@inkjs/ui';
 import { useInput } from 'ink';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
 import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
@@ -8,6 +8,7 @@ import { SuccessScreen } from '@/components/ui/SuccessScreen.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
+import { useAudienceSelector, useContactSelector } from '@/hooks/index.js';
 import { retrieveContact } from './action.js';
 import { fields } from './fields.js';
 import { RetrieveContactOptionsSchema, type RetrieveContactOptionsType } from './schema.js';
@@ -23,6 +24,54 @@ export const Form = ({ onExit }: FormProps) => {
 	const [successData, setSuccessData] = useState<Record<string, unknown> | null>(null);
 	const [isDryRunSuccess, setIsDryRunSuccess] = useState(false);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
+	const [selectedAudienceId, setSelectedAudienceId] = useState<string>('');
+	const [selectedContactId, setSelectedContactId] = useState<string>('');
+
+	const initialFormData = React.useMemo(() => {
+		const data: Partial<RetrieveContactOptionsType> = {};
+		if (selectedAudienceId) {
+			data.audienceId = selectedAudienceId;
+		}
+		if (selectedContactId) {
+			data.id = selectedContactId;
+		}
+		return Object.keys(data).length > 0 ? data : undefined;
+	}, [selectedAudienceId, selectedContactId]);
+
+	const audienceSelector = useAudienceSelector((audienceId) => {
+		setSelectedAudienceId(audienceId);
+		// Clear contact selection when audience changes
+		setSelectedContactId('');
+	});
+
+	const contactSelector = useContactSelector({
+		audienceId: selectedAudienceId,
+		onSelect: (contactId) => {
+			setSelectedContactId(contactId);
+		},
+	});
+
+	// Create form fields with selectors
+	const formFields = React.useMemo(() => {
+		return fields.map((field) => {
+			if (field.name === 'audienceId') {
+				return {
+					...field,
+					type: 'input-with-selector' as const,
+					onSelectorOpen: audienceSelector.openSelector,
+				};
+			}
+			if (field.name === 'id') {
+				return {
+					...field,
+					type: 'input-with-selector' as const,
+					onSelectorOpen: selectedAudienceId ? contactSelector.openSelector : undefined,
+					disabled: !selectedAudienceId,
+				};
+			}
+			return field;
+		});
+	}, [audienceSelector.openSelector, contactSelector.openSelector, selectedAudienceId]);
 
 	// Handle Esc key to go back from result screens
 	useInput(
@@ -130,6 +179,16 @@ export const Form = ({ onExit }: FormProps) => {
 		);
 	}
 
+	// If the audience selector is open, render it instead of the form
+	if (audienceSelector.isOpen) {
+		return audienceSelector.selectorComponent;
+	}
+
+	// If the contact selector is open, render it instead of the form
+	if (contactSelector.isOpen) {
+		return contactSelector.selectorComponent;
+	}
+
 	return (
 		<Layout
 			headerText={`${config.baseTitle} - Contacts - Retrieve`}
@@ -137,10 +196,11 @@ export const Form = ({ onExit }: FormProps) => {
 			navigationContext="form"
 		>
 			<SimpleForm<RetrieveContactOptionsType>
-				fields={fields}
+				fields={formFields}
 				onSubmit={handleSubmit}
 				onCancel={onExit}
 				validateWith={RetrieveContactOptionsSchema}
+				initialData={initialFormData}
 			/>
 		</Layout>
 	);

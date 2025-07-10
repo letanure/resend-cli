@@ -19,7 +19,7 @@ describe('domains delete fields configuration', () => {
 		expect(deleteDomainFields[0]).toEqual({
 			name: 'domainId',
 			label: 'Domain ID',
-			type: 'text',
+			type: 'input-with-selector',
 			placeholder: 'd91cd9bd-1176-453e-8fc1-35364d380206',
 			helpText: 'Enter the domain ID to delete',
 		});
@@ -61,7 +61,7 @@ describe('domains delete fields configuration', () => {
 
 	it('should have proper field types', () => {
 		const formField = deleteDomainFields[0];
-		expect(formField?.type).toBe('text');
+		expect(formField?.type).toBe('input-with-selector');
 	});
 
 	it('should have consistent placeholders', () => {

@@ -8,6 +8,7 @@ import { SuccessScreen } from '@/components/ui/SuccessScreen.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
+import { useBroadcastSelector } from '@/hooks/index.js';
 import type { ApiResult } from '@/types/index.js';
 import { sendBroadcast } from './action.js';
 import { sendBroadcastFields } from './fields.js';
@@ -26,8 +27,34 @@ export const Form = ({ onExit }: FormProps) => {
 	const [loading, setLoading] = React.useState(false);
 	const [successData, setSuccessData] = React.useState<Record<string, unknown> | null>(null);
 	const [isDryRunSuccess, setIsDryRunSuccess] = React.useState(false);
+	const [selectedBroadcastId, setSelectedBroadcastId] = React.useState<string>('');
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
+
+	// Get initial data from selected IDs
+	const initialFormData = React.useMemo(() => {
+		const data: Record<string, unknown> = {};
+		if (selectedBroadcastId) {
+			data.broadcastId = selectedBroadcastId;
+		}
+		return Object.keys(data).length > 0 ? data : undefined;
+	}, [selectedBroadcastId]);
+
+	// Selector for broadcasts
+	const broadcastSelector = useBroadcastSelector((broadcastId: string) => setSelectedBroadcastId(broadcastId));
+
+	// Create form fields with selector callbacks
+	const formFields = React.useMemo(() => {
+		return sendBroadcastFields.map((field) => {
+			if (field.name === 'broadcastId') {
+				return {
+					...field,
+					onSelectorOpen: () => broadcastSelector.openSelector(),
+				};
+			}
+			return field;
+		});
+	}, [broadcastSelector]);
 
 	const handleSubmit = async (data: SendBroadcastData) => {
 		setLoading(true);
@@ -110,6 +137,11 @@ export const Form = ({ onExit }: FormProps) => {
 		);
 	}
 
+	// Show selector when open
+	if (broadcastSelector.isOpen) {
+		return broadcastSelector.selectorComponent;
+	}
+
 	return (
 		<Layout
 			headerText={`${config.baseTitle} - Broadcasts - Send`}
@@ -122,10 +154,11 @@ export const Form = ({ onExit }: FormProps) => {
 				</Box>
 			)}
 			<SimpleForm<SendBroadcastData>
-				fields={sendBroadcastFields}
+				fields={formFields}
 				onSubmit={handleSubmit}
 				onCancel={onExit}
 				validateWith={sendBroadcastSchema}
+				initialData={initialFormData}
 			/>
 		</Layout>
 	);

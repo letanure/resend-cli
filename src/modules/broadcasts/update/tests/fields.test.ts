@@ -39,9 +39,17 @@ describe('broadcasts update fields configuration', () => {
 		expect(updateBroadcastFields[0]).toEqual({
 			name: 'broadcastId',
 			label: 'Broadcast ID',
-			type: 'text',
+			type: 'input-with-selector',
 			placeholder: '49a3999c-0ce1-4ea6-ab68-afcd6dc2e794',
 			helpText: 'Enter the broadcast ID to update',
+		});
+
+		expect(updateBroadcastFields[1]).toEqual({
+			name: 'audienceId',
+			label: 'Audience ID',
+			type: 'input-with-selector',
+			placeholder: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
+			helpText: 'The ID of the audience you want to send to (optional)',
 		});
 
 		expect(updateBroadcastFields[5]).toEqual({
@@ -97,9 +105,11 @@ describe('broadcasts update fields configuration', () => {
 	it('should have proper field types', () => {
 		const textFields = updateBroadcastFields.filter((f) => f.type === 'text');
 		const textareaFields = updateBroadcastFields.filter((f) => f.type === 'textarea');
+		const selectorFields = updateBroadcastFields.filter((f) => f.type === 'input-with-selector');
 
-		expect(textFields).toHaveLength(6); // broadcastId, audienceId, from, subject, replyTo, name
+		expect(textFields).toHaveLength(4); // from, subject, replyTo, name
 		expect(textareaFields).toHaveLength(2); // html, text
+		expect(selectorFields).toHaveLength(2); // broadcastId, audienceId
 	});
 
 	it('should have all required fields for broadcast update', () => {

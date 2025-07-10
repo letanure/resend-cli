@@ -65,14 +65,14 @@ describe('update contact fields', () => {
 			const audienceIdField = updateContactFields.find((field) => field.name === 'audienceId');
 			expect(audienceIdField).toBeDefined();
 			expect(audienceIdField?.label).toBe('Audience ID');
-			expect(audienceIdField?.type).toBe('text');
+			expect(audienceIdField?.type).toBe('input-with-selector');
 		});
 
 		it('should have id field', () => {
 			const idField = updateContactFields.find((field) => field.name === 'id');
 			expect(idField).toBeDefined();
 			expect(idField?.label).toBe('Contact ID');
-			expect(idField?.type).toBe('text');
+			expect(idField?.type).toBe('input-with-selector');
 		});
 
 		it('should have email field', () => {

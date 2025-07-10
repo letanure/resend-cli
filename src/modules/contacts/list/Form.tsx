@@ -1,6 +1,6 @@
 import { Alert, Spinner } from '@inkjs/ui';
 import { Box, Text, useInput } from 'ink';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
 import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
@@ -8,8 +8,9 @@ import { Table } from '@/components/ui/Table.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
+import { useAudienceSelector } from '@/hooks/index.js';
 import { listContacts } from './action.js';
-import { displayFields, fields } from './fields.js';
+import { displayFields, listContactFields } from './fields.js';
 import { ListContactsOptionsSchema, type ListContactsOptionsType } from './schema.js';
 
 interface FormProps {
@@ -23,6 +24,32 @@ export const Form = ({ onExit }: FormProps) => {
 	const [contactsList, setContactsList] = useState<Array<Record<string, unknown>> | null>(null);
 	const [showDryRunData, setShowDryRunData] = useState<Array<Record<string, unknown>> | null>(null);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
+	const [selectedAudienceId, setSelectedAudienceId] = useState<string>('');
+
+	// Get initial data from selected IDs
+	const initialFormData = React.useMemo(() => {
+		const data: Record<string, unknown> = {};
+		if (selectedAudienceId) {
+			data.audienceId = selectedAudienceId;
+		}
+		return Object.keys(data).length > 0 ? data : undefined;
+	}, [selectedAudienceId]);
+
+	// Selector for audiences
+	const audienceSelector = useAudienceSelector((audienceId: string) => setSelectedAudienceId(audienceId));
+
+	// Create form fields with selector callbacks
+	const formFields = React.useMemo(() => {
+		return listContactFields.map((field) => {
+			if (field.name === 'audienceId') {
+				return {
+					...field,
+					onSelectorOpen: () => audienceSelector.openSelector(),
+				};
+			}
+			return field;
+		});
+	}, [audienceSelector]);
 
 	// Handle Esc key to go back from result screens
 	useInput(
@@ -160,6 +187,11 @@ export const Form = ({ onExit }: FormProps) => {
 		);
 	}
 
+	// Show selector when open
+	if (audienceSelector.isOpen) {
+		return audienceSelector.selectorComponent;
+	}
+
 	return (
 		<Layout
 			headerText={`${config.baseTitle} - Contacts - List`}
@@ -167,10 +199,11 @@ export const Form = ({ onExit }: FormProps) => {
 			navigationContext="form-single"
 		>
 			<SimpleForm<ListContactsOptionsType>
-				fields={fields}
+				fields={formFields}
 				onSubmit={handleSubmit}
 				onCancel={onExit}
 				validateWith={ListContactsOptionsSchema}
+				initialData={initialFormData}
 			/>
 		</Layout>
 	);

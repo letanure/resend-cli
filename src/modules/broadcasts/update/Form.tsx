@@ -8,6 +8,7 @@ import { SuccessScreen } from '@/components/ui/SuccessScreen.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
+import { useAudienceSelector, useBroadcastSelector } from '@/hooks/index.js';
 import type { ApiResult } from '@/types/index.js';
 import { updateBroadcast } from './action.js';
 import { updateBroadcastFields } from './fields.js';
@@ -26,8 +27,47 @@ export const Form = ({ onExit }: FormProps) => {
 	const [loading, setLoading] = React.useState(false);
 	const [successData, setSuccessData] = React.useState<Record<string, unknown> | null>(null);
 	const [isDryRunSuccess, setIsDryRunSuccess] = React.useState(false);
+	const [selectedBroadcastId, setSelectedBroadcastId] = React.useState<string>('');
+	const [selectedAudienceId, setSelectedAudienceId] = React.useState<string>('');
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
+
+	// Get initial data from selected IDs
+	const initialFormData = React.useMemo(() => {
+		const data: Record<string, unknown> = {};
+		if (selectedBroadcastId) {
+			data.broadcastId = selectedBroadcastId;
+		}
+		if (selectedAudienceId) {
+			data.audienceId = selectedAudienceId;
+		}
+		return Object.keys(data).length > 0 ? data : undefined;
+	}, [selectedBroadcastId, selectedAudienceId]);
+
+	// Selector for broadcasts
+	const broadcastSelector = useBroadcastSelector((broadcastId: string) => setSelectedBroadcastId(broadcastId));
+
+	// Selector for audiences
+	const audienceSelector = useAudienceSelector((audienceId: string) => setSelectedAudienceId(audienceId));
+
+	// Create form fields with selector callbacks
+	const formFields = React.useMemo(() => {
+		return updateBroadcastFields.map((field) => {
+			if (field.name === 'broadcastId') {
+				return {
+					...field,
+					onSelectorOpen: () => broadcastSelector.openSelector(),
+				};
+			}
+			if (field.name === 'audienceId') {
+				return {
+					...field,
+					onSelectorOpen: () => audienceSelector.openSelector(),
+				};
+			}
+			return field;
+		});
+	}, [broadcastSelector, audienceSelector]);
 
 	const handleSubmit = async (data: UpdateBroadcastData) => {
 		setLoading(true);
@@ -112,6 +152,15 @@ export const Form = ({ onExit }: FormProps) => {
 		);
 	}
 
+	// Show selectors when open
+	if (broadcastSelector.isOpen) {
+		return broadcastSelector.selectorComponent;
+	}
+
+	if (audienceSelector.isOpen) {
+		return audienceSelector.selectorComponent;
+	}
+
 	return (
 		<Layout
 			headerText={`${config.baseTitle} - Broadcasts - Update`}
@@ -124,10 +173,11 @@ export const Form = ({ onExit }: FormProps) => {
 				</Box>
 			)}
 			<SimpleForm<UpdateBroadcastData>
-				fields={updateBroadcastFields}
+				fields={formFields}
 				onSubmit={handleSubmit}
 				onCancel={onExit}
 				validateWith={updateBroadcastSchema}
+				initialData={initialFormData}
 			/>
 		</Layout>
 	);

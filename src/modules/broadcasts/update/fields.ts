@@ -71,14 +71,14 @@ export const updateBroadcastFields: Array<FormField> = [
 	{
 		name: 'broadcastId',
 		label: 'Broadcast ID',
-		type: 'text',
+		type: 'input-with-selector',
 		placeholder: '49a3999c-0ce1-4ea6-ab68-afcd6dc2e794',
 		helpText: 'Enter the broadcast ID to update',
 	},
 	{
 		name: 'audienceId',
 		label: 'Audience ID',
-		type: 'text',
+		type: 'input-with-selector',
 		placeholder: '78261eea-8f8b-4381-83c6-79fa7120f1cf',
 		helpText: 'The ID of the audience you want to send to (optional)',
 	},

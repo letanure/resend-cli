@@ -1,6 +1,6 @@
 import { Spinner } from '@inkjs/ui';
 import { Box, useInput } from 'ink';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
 import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
@@ -8,6 +8,7 @@ import { SuccessScreen } from '@/components/ui/SuccessScreen.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
+import { useApiKeySelector } from '@/hooks/useApiKeySelector.js';
 import { deleteApiKey } from './action.js';
 import { fields } from './fields.js';
 import { type DeleteApiKeyData, deleteApiKeySchema } from './schema.js';
@@ -23,6 +24,29 @@ export const Form = ({ onExit }: FormProps) => {
 	const [successData, setSuccessData] = useState<Record<string, unknown> | null>(null);
 	const [isDryRunSuccess, setIsDryRunSuccess] = useState(false);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
+	const [selectedApiKeyId, setSelectedApiKeyId] = useState<string>('');
+
+	const initialFormData = React.useMemo(() => {
+		return selectedApiKeyId ? { api_key_id: selectedApiKeyId } : undefined;
+	}, [selectedApiKeyId]);
+
+	const apiKeySelector = useApiKeySelector((apiKeyId) => {
+		setSelectedApiKeyId(apiKeyId);
+	});
+
+	// Create form fields with API key selector
+	const formFields = React.useMemo(() => {
+		return fields.map((field) => {
+			if (field.name === 'api_key_id') {
+				return {
+					...field,
+					type: 'input-with-selector' as const,
+					onSelectorOpen: apiKeySelector.openSelector,
+				};
+			}
+			return field;
+		});
+	}, [apiKeySelector.openSelector]);
 
 	// Handle Esc/Left arrow key to go back from result screens
 	useInput(
@@ -123,6 +147,11 @@ export const Form = ({ onExit }: FormProps) => {
 		);
 	}
 
+	// If the API key selector is open, render it instead of the form
+	if (apiKeySelector.isOpen) {
+		return apiKeySelector.selectorComponent;
+	}
+
 	return (
 		<Layout
 			headerText={`${config.baseTitle} - API Keys - Delete`}
@@ -131,10 +160,11 @@ export const Form = ({ onExit }: FormProps) => {
 		>
 			<Box flexDirection="column">
 				<SimpleForm<DeleteApiKeyData>
-					fields={fields}
+					fields={formFields}
 					onSubmit={handleSubmit}
 					onCancel={onExit}
 					validateWith={deleteApiKeySchema}
+					initialData={initialFormData}
 				/>
 			</Box>
 		</Layout>

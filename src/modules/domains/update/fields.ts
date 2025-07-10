@@ -39,7 +39,7 @@ export const updateDomainFields: Array<FormField> = [
 	{
 		name: 'domainId',
 		label: 'Domain ID',
-		type: 'text',
+		type: 'input-with-selector',
 		placeholder: 'b8617ad3-b712-41d9-81a0-f7c3d879314e',
 		helpText: 'Enter the domain ID to update',
 	},

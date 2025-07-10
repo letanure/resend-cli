@@ -1,4 +1,4 @@
-import type { CliField } from '@/types/index.js';
+import type { CliField, FormField } from '@/types/index.js';
 
 export const fields: Array<CliField> = [
 	{
@@ -24,6 +24,30 @@ export const fields: Array<CliField> = [
 		helpText: 'The email address of the contact to delete',
 		cliFlag: 'email',
 		cliShortFlag: 'e',
+	},
+];
+
+export const deleteContactFields: Array<FormField> = [
+	{
+		name: 'audienceId',
+		label: 'Audience ID',
+		type: 'input-with-selector',
+		placeholder: 'Enter audience ID (e.g., 78261eea-8f8b-4381-83c6-79fa7120f1cf)',
+		helpText: 'The unique identifier of the audience containing the contact',
+	},
+	{
+		name: 'id',
+		label: 'Contact ID',
+		type: 'input-with-selector',
+		placeholder: 'Enter contact ID (e.g., 479e3145-dd38-476b-932c-529ceb705947)',
+		helpText: 'The unique identifier of the contact to delete (optional if email is provided)',
+	},
+	{
+		name: 'email',
+		label: 'Contact Email',
+		type: 'text',
+		placeholder: 'Enter contact email (e.g., contact@example.com)',
+		helpText: 'The email address of the contact to delete (optional if ID is provided)',
 	},
 ];
 

@@ -33,7 +33,7 @@ describe('send broadcast fields', () => {
 			const broadcastIdField = sendBroadcastFields.find((field) => field.name === 'broadcastId');
 			expect(broadcastIdField).toBeDefined();
 			expect(broadcastIdField?.label).toBe('Broadcast ID');
-			expect(broadcastIdField?.type).toBe('text');
+			expect(broadcastIdField?.type).toBe('input-with-selector');
 		});
 
 		it('should have scheduledAt field', () => {

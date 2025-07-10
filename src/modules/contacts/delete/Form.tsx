@@ -1,6 +1,6 @@
 import { Spinner } from '@inkjs/ui';
 import { Box, useInput } from 'ink';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
 import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
@@ -8,8 +8,9 @@ import { SuccessScreen } from '@/components/ui/SuccessScreen.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
+import { useAudienceSelector, useContactSelector } from '@/hooks/index.js';
 import { deleteContact } from './action.js';
-import { fields } from './fields.js';
+import { deleteContactFields } from './fields.js';
 import { DeleteContactOptionsSchema, type DeleteContactOptionsType } from './schema.js';
 
 interface FormProps {
@@ -23,6 +24,48 @@ export const Form = ({ onExit }: FormProps) => {
 	const [successData, setSuccessData] = useState<Record<string, unknown> | null>(null);
 	const [isDryRunSuccess, setIsDryRunSuccess] = useState(false);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
+	const [selectedAudienceId, setSelectedAudienceId] = useState<string>('');
+	const [selectedContactId, setSelectedContactId] = useState<string>('');
+
+	// Get initial data from selected IDs
+	const initialFormData = React.useMemo(() => {
+		const data: Record<string, unknown> = {};
+		if (selectedAudienceId) {
+			data.audienceId = selectedAudienceId;
+		}
+		if (selectedContactId) {
+			data.id = selectedContactId;
+		}
+		return Object.keys(data).length > 0 ? data : undefined;
+	}, [selectedAudienceId, selectedContactId]);
+
+	// Selector for audiences
+	const audienceSelector = useAudienceSelector((audienceId: string) => setSelectedAudienceId(audienceId));
+
+	// Selector for contacts
+	const contactSelector = useContactSelector({
+		audienceId: selectedAudienceId,
+		onSelect: (contactId: string) => setSelectedContactId(contactId),
+	});
+
+	// Create form fields with selector callbacks
+	const formFields = React.useMemo(() => {
+		return deleteContactFields.map((field) => {
+			if (field.name === 'audienceId') {
+				return {
+					...field,
+					onSelectorOpen: () => audienceSelector.openSelector(),
+				};
+			}
+			if (field.name === 'id') {
+				return {
+					...field,
+					onSelectorOpen: () => contactSelector.openSelector(),
+				};
+			}
+			return field;
+		});
+	}, [audienceSelector, contactSelector]);
 
 	// Handle Esc key to go back from result screens
 	useInput(
@@ -127,6 +170,15 @@ export const Form = ({ onExit }: FormProps) => {
 		);
 	}
 
+	// Show selectors when open
+	if (audienceSelector.isOpen) {
+		return audienceSelector.selectorComponent;
+	}
+
+	if (contactSelector.isOpen) {
+		return contactSelector.selectorComponent;
+	}
+
 	return (
 		<Layout
 			headerText={`${config.baseTitle} - Contacts - Delete`}
@@ -135,10 +187,11 @@ export const Form = ({ onExit }: FormProps) => {
 		>
 			<Box flexDirection="column">
 				<SimpleForm<DeleteContactOptionsType>
-					fields={fields}
+					fields={formFields}
 					onSubmit={handleSubmit}
 					onCancel={onExit}
 					validateWith={DeleteContactOptionsSchema}
+					initialData={initialFormData}
 				/>
 			</Box>
 		</Layout>

@@ -15,7 +15,7 @@ export const deleteDomainFields: Array<FormField> = [
 	{
 		name: 'domainId',
 		label: 'Domain ID',
-		type: 'text',
+		type: 'input-with-selector',
 		placeholder: 'd91cd9bd-1176-453e-8fc1-35364d380206',
 		helpText: 'Enter the domain ID to delete',
 	},
