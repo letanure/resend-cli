@@ -62,7 +62,6 @@
   "type": "module",
   "dependencies": {
     "@inkjs/ui": "^2.0.0",
-    "@types/react": "^19.1.8",
     "chalk": "^5.4.1",
     "commander": "^14.0.0",
     "ink": "^6.0.1",
@@ -71,6 +70,7 @@
     "zod": "^3.25.74"
   },
   "devDependencies": {
+    "@types/react": "^19.1.8",
     "@biomejs/biome": "^2.0.6",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
