@@ -13,6 +13,7 @@ interface SimpleFormProps<T = Record<string, unknown>> {
 	onCancel: () => void;
 	validateWith?: z.ZodType<T, z.ZodTypeDef, unknown>;
 	initialData?: Partial<T>;
+	onFormDataChange?: (data: Record<string, unknown>) => void;
 }
 
 export const SimpleForm = <T = Record<string, unknown>>({
@@ -21,6 +22,7 @@ export const SimpleForm = <T = Record<string, unknown>>({
 	onCancel,
 	validateWith,
 	initialData,
+	onFormDataChange,
 }: SimpleFormProps<T>) => {
 	const [formData, setFormData] = useState<Record<string, unknown>>(() => {
 		const initial: Record<string, unknown> = {};
@@ -151,7 +153,11 @@ export const SimpleForm = <T = Record<string, unknown>>({
 
 	const handleFieldChange = useCallback(
 		(fieldName: string, value: unknown) => {
-			setFormData((prev) => ({ ...prev, [fieldName]: value }));
+			const newFormData = { ...formData, [fieldName]: value };
+			setFormData(newFormData);
+
+			// Notify parent of form data changes
+			onFormDataChange?.(newFormData);
 
 			// Clear error when user starts typing
 			if (errors[fieldName]) {
@@ -163,7 +169,7 @@ export const SimpleForm = <T = Record<string, unknown>>({
 				setFormError('');
 			}
 		},
-		[errors, formError],
+		[formData, onFormDataChange, errors, formError],
 	);
 
 	const handleSelectToggle = (field: FormField) => {

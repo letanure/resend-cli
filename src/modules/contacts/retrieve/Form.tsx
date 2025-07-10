@@ -91,8 +91,8 @@ export const Form = ({ onExit }: FormProps) => {
 			if (isDryRun) {
 				setSuccessData({
 					'Audience ID': data.audienceId,
-					'Contact ID': data.id || 'Not specified',
-					Email: data.email || 'Not specified',
+					'Contact ID': data.id || '',
+					Email: data.email || '',
 					'API Key': apiKey ? `${apiKey.substring(0, 10)}...` : 'Not set',
 					'Dry Run': 'true',
 					Status: 'Validation successful! (Contact not retrieved due to dry-run mode)',
@@ -106,8 +106,8 @@ export const Form = ({ onExit }: FormProps) => {
 						'Contact ID': result.data.id,
 						'Object Type': result.data.object,
 						Email: result.data.email,
-						'First Name': result.data.first_name || 'Not specified',
-						'Last Name': result.data.last_name || 'Not specified',
+						'First Name': result.data.first_name || '',
+						'Last Name': result.data.last_name || '',
 						'Created At': result.data.created_at,
 						'Subscription Status': result.data.unsubscribed ? 'Unsubscribed' : 'Subscribed',
 					});

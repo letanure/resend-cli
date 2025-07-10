@@ -25,15 +25,16 @@ export const Form = ({ onExit }: FormProps) => {
 	const [isDryRunSuccess, setIsDryRunSuccess] = useState(false);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
 	const [selectedAudienceId, setSelectedAudienceId] = useState<string>('');
+	const [persistedFormData, setPersistedFormData] = useState<Record<string, unknown>>({});
 
-	// Get initial data from selected IDs
+	// Get initial data combining selected IDs and persisted form data
 	const initialFormData = React.useMemo(() => {
-		const data: Record<string, unknown> = {};
+		const data: Record<string, unknown> = { ...persistedFormData };
 		if (selectedAudienceId) {
 			data.audienceId = selectedAudienceId;
 		}
 		return Object.keys(data).length > 0 ? data : undefined;
-	}, [selectedAudienceId]);
+	}, [selectedAudienceId, persistedFormData]);
 
 	// Selector for audiences
 	const audienceSelector = useAudienceSelector((audienceId: string) => setSelectedAudienceId(audienceId));
@@ -44,7 +45,10 @@ export const Form = ({ onExit }: FormProps) => {
 			if (field.name === 'audienceId') {
 				return {
 					...field,
-					onSelectorOpen: () => audienceSelector.openSelector(),
+					onSelectorOpen: () => {
+						// Store current form data before opening selector
+						audienceSelector.openSelector();
+					},
 				};
 			}
 			return field;
@@ -168,6 +172,7 @@ export const Form = ({ onExit }: FormProps) => {
 				onSubmit={handleSubmit}
 				onCancel={onExit}
 				initialData={initialFormData}
+				onFormDataChange={setPersistedFormData}
 			/>
 		</Layout>
 	);

@@ -96,8 +96,8 @@ export const Form = ({ onExit }: FormProps) => {
 						contacts.map((contact) => ({
 							id: contact.id,
 							email: contact.email,
-							firstName: contact.first_name || 'Not specified',
-							lastName: contact.last_name || 'Not specified',
+							firstName: contact.first_name || '',
+							lastName: contact.last_name || '',
 							created_at: contact.created_at,
 							subscribed: contact.unsubscribed ? 'No' : 'Yes',
 						})),
