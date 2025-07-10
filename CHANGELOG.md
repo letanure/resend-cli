@@ -1,3 +1,11 @@
+# [0.39.0](https://github.com/letanure/resend-cli/compare/v0.38.0...v0.39.0) (2025-07-10)
+
+
+### Features
+
+* add better padding for display data label : value ([5ada999](https://github.com/letanure/resend-cli/commit/5ada9997f9843e5fffee0d0810d77e9eb6496da3))
+* case insentive version cli param ([bb3d368](https://github.com/letanure/resend-cli/commit/bb3d36830fafe5a4edd4aaed4cdf2965d28376fb))
+
 # [0.38.0](https://github.com/letanure/resend-cli/compare/v0.37.0...v0.38.0) (2025-07-10)
 
 
