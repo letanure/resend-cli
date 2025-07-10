@@ -35,7 +35,14 @@
       "@/modules/*": ["src/modules/*"],
       "@/types": ["src/types"],
       "@/types/*": ["src/types/*"],
-      "@/utils/*": ["src/utils/*"]
+      "@/utils/*": ["src/utils/*"],
+      // Module aliases - treat modules like npm packages
+      "@api-keys/*": ["src/modules/api-keys/*"],
+      "@audiences/*": ["src/modules/audiences/*"],
+      "@broadcasts/*": ["src/modules/broadcasts/*"],
+      "@contacts/*": ["src/modules/contacts/*"],
+      "@domains/*": ["src/modules/domains/*"],
+      "@emails/*": ["src/modules/emails/*"]
     }
   },
   "include": ["src/**/*"],

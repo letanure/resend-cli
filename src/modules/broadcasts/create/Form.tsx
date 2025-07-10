@@ -1,3 +1,4 @@
+import { listAudiences } from '@audiences/list/action.js';
 import { Alert, Spinner } from '@inkjs/ui';
 import { Box, Text, useInput } from 'ink';
 import React from 'react';
@@ -9,7 +10,6 @@ import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
 import type { ApiResult } from '@/types/index.js';
-import { listAudiences } from '../../audiences/list/action.js';
 import { createBroadcast } from './action.js';
 import { createBroadcastFields } from './fields.js';
 import { type CreateBroadcastData, createBroadcastSchema } from './schema.js';
