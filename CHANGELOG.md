@@ -1,3 +1,11 @@
+# [0.34.0](https://github.com/letanure/resend-cli/compare/v0.33.0...v0.34.0) (2025-07-10)
+
+
+### Features
+
+* add data display componnet ([404c180](https://github.com/letanure/resend-cli/commit/404c18025e3f36457196a599fd635477ca7c2fe2))
+* add error display component ([580f835](https://github.com/letanure/resend-cli/commit/580f835f35a97057d7ffd27d31fd156750ec9479))
+
 # [0.33.0](https://github.com/letanure/resend-cli/compare/v0.32.0...v0.33.0) (2025-07-10)
 
 
