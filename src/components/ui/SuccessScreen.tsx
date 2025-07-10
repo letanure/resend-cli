@@ -41,10 +41,8 @@ export const SuccessScreen = ({
 		}
 	});
 
-	// Format the data using the utility function
 	const formattedFields = formatDataWithFields(data, fields, fieldsToShow);
 
-	// Determine alert variant and message based on dry run mode
 	const alertVariant = isDryRun ? 'warning' : 'success';
 	const displayMessage = isDryRun ? `DRY RUN - ${successMessage} (validation only)` : successMessage;
 

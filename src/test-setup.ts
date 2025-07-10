@@ -1,9 +1,7 @@
 import { vi } from 'vitest';
 
-// Mock RESEND_API_KEY for all tests
 vi.stubEnv('RESEND_API_KEY', 'test-api-key');
 
-// Mock the email send action
 vi.mock('./modules/emails/send/action.js', () => ({
 	sendEmail: vi.fn(() =>
 		Promise.resolve({
@@ -13,7 +11,6 @@ vi.mock('./modules/emails/send/action.js', () => ({
 	),
 }));
 
-// Mock the email retrieve action
 vi.mock('./modules/emails/retrieve/action.js', () => ({
 	getEmail: vi.fn(() =>
 		Promise.resolve({
@@ -23,7 +20,6 @@ vi.mock('./modules/emails/retrieve/action.js', () => ({
 	),
 }));
 
-// Mock the email update action
 vi.mock('./modules/emails/update/action.js', () => ({
 	updateEmail: vi.fn(() =>
 		Promise.resolve({
@@ -33,7 +29,6 @@ vi.mock('./modules/emails/update/action.js', () => ({
 	),
 }));
 
-// Mock the email cancel action
 vi.mock('./modules/emails/cancel/action.js', () => ({
 	cancelEmail: vi.fn(() =>
 		Promise.resolve({
@@ -43,7 +38,6 @@ vi.mock('./modules/emails/cancel/action.js', () => ({
 	),
 }));
 
-// Mock the audience create action
 vi.mock('./modules/audiences/create/action.js', () => ({
 	createAudience: vi.fn(() =>
 		Promise.resolve({
@@ -57,7 +51,6 @@ vi.mock('./modules/audiences/create/action.js', () => ({
 	),
 }));
 
-// Mock the audience retrieve action
 vi.mock('./modules/audiences/retrieve/action.js', () => ({
 	retrieveAudience: vi.fn(() =>
 		Promise.resolve({
@@ -72,7 +65,6 @@ vi.mock('./modules/audiences/retrieve/action.js', () => ({
 	),
 }));
 
-// Mock the audience delete action
 vi.mock('./modules/audiences/delete/action.js', () => ({
 	deleteAudience: vi.fn(() =>
 		Promise.resolve({
@@ -86,7 +78,6 @@ vi.mock('./modules/audiences/delete/action.js', () => ({
 	),
 }));
 
-// Mock the audience list action
 vi.mock('./modules/audiences/list/action.js', () => ({
 	listAudiences: vi.fn(() =>
 		Promise.resolve({
@@ -110,7 +101,6 @@ vi.mock('./modules/audiences/list/action.js', () => ({
 	),
 }));
 
-// Mock the contact delete action
 vi.mock('./modules/contacts/delete/action.js', () => ({
 	deleteContact: vi.fn(() =>
 		Promise.resolve({

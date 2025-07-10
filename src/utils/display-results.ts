@@ -49,7 +49,6 @@ export function displayResults<TData extends Record<string, unknown>, TResult = 
 		return;
 	}
 
-	// Handle actual operation results
 	if (!result) {
 		throw new Error('Result is required when not in dry-run mode');
 	}

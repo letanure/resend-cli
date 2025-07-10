@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { deleteApiKey } from '../action.js';
 
-// Mock the Resend module
 const mockRemove = vi.fn();
 vi.mock('resend', () => ({
 	Resend: vi.fn().mockImplementation(() => ({

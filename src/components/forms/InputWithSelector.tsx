@@ -11,7 +11,6 @@ interface InputWithSelectorProps {
 	error?: string;
 	labelWidth?: number;
 	disabled?: boolean;
-	// Modal state management
 	onSelectorOpen?: () => void;
 }
 

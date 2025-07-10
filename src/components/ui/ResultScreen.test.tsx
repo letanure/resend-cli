@@ -75,7 +75,6 @@ describe('ResultScreen Component', () => {
 			<ResultScreen type="success" message="Success message" onContinue={mockOnContinue} headerText="Success" />,
 		);
 
-		// Success alerts typically have different styling/color
 		expect(lastFrame()).toContain('Success message');
 	});
 
@@ -84,7 +83,6 @@ describe('ResultScreen Component', () => {
 			<ResultScreen type="error" message="Error message" onContinue={mockOnContinue} headerText="Error" />,
 		);
 
-		// Error alerts typically have different styling/color
 		expect(lastFrame()).toContain('Error message');
 	});
 });

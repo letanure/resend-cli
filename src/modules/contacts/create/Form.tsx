@@ -48,10 +48,8 @@ export const Form = ({ onExit }: FormProps) => {
 				});
 				setIsDryRunSuccess(true);
 			} else {
-				// Call the API to create contact
 				const result = await createContact(validatedData, apiKey);
 				if (result.success && result.data) {
-					// Show success data
 					setSuccessData({
 						...validatedData,
 						'Contact ID': (result.data as { id: string })?.id || 'Unknown',
@@ -60,7 +58,6 @@ export const Form = ({ onExit }: FormProps) => {
 					});
 					setIsDryRunSuccess(false);
 				} else {
-					// Show error
 					setError({
 						title: 'Failed to Create Contact',
 						message: result.error || 'Unknown error occurred',
@@ -107,7 +104,6 @@ export const Form = ({ onExit }: FormProps) => {
 		);
 	}
 
-	// Show error
 	if (error) {
 		return (
 			<ErrorScreen

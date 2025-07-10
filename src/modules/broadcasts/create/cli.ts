@@ -20,7 +20,6 @@ async function handleCreateCommand(options: Record<string, unknown>, command: Co
 		// Only get API key if not in dry-run mode
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
-		// Validate the data using unified validation
 		const validatedData = validateOptions<CreateBroadcastData>(
 			allOptions,
 			createBroadcastSchema,
@@ -78,7 +77,6 @@ export const broadcastCreateCommand = new Command('create')
 	.description('Create a new broadcast to send to your audience')
 	.action(handleCreateCommand);
 
-// Add CLI options
 registerFieldOptions(broadcastCreateCommand, fields);
 
 const createExamples = [

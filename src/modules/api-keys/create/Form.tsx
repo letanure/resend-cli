@@ -199,7 +199,6 @@ export const Form = ({ onExit }: FormProps) => {
 			setFormError('');
 		}
 
-		// When permission changes, check if we need to move focus away from disabled field
 		if (fieldName === 'permission') {
 			const currentFieldData = visibleFields[currentField];
 			if (currentFieldData?.name === 'domain_id' && value === 'full_access') {

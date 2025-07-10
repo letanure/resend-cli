@@ -18,7 +18,6 @@ async function handleListCommand(options: Record<string, unknown>, command: Comm
 		const outputFormat = (allOptions.output as OutputFormat) || 'text';
 		const isDryRun = Boolean(allOptions.dryRun);
 
-		// Only get API key if not in dry-run mode
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
 		const result = isDryRun ? undefined : await listApiKeys(apiKey);

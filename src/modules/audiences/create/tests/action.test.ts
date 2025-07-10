@@ -26,7 +26,6 @@ describe('createAudience', () => {
 	});
 
 	it('requires api key parameter', async () => {
-		// Function should accept any string as API key
 		const result = await createAudience(testAudienceData, 'any-key');
 		expect(result).toBeDefined();
 	});

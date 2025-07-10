@@ -9,7 +9,7 @@ export const RetrieveContactOptionsSchema = z
 	})
 	.refine((data) => data.id || data.email, {
 		message: 'Either id or email must be provided',
-		path: ['id'], // Show error on the id field
+		path: ['id'],
 	});
 
 export type RetrieveContactOptionsType = z.infer<typeof RetrieveContactOptionsSchema>;

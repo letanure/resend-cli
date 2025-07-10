@@ -8,7 +8,6 @@ import { deleteAudience } from './action.js';
 import { displayFields, fields } from './fields.js';
 import { DeleteAudienceOptionsSchema, type DeleteAudienceOptionsType } from './schema.js';
 
-// Main handler for delete command
 async function handleDeleteCommand(options: Record<string, unknown>, command: Command): Promise<void> {
 	try {
 		const apiKey = getResendApiKey();
@@ -29,10 +28,8 @@ async function handleDeleteCommand(options: Record<string, unknown>, command: Co
 			command,
 		);
 
-		// Check if dry-run mode is enabled
 		const isDryRun = Boolean(allOptions.dryRun);
 
-		// Use generic displayResults function
 		const result = isDryRun ? undefined : await deleteAudience(deleteData, apiKey);
 
 		displayResults({

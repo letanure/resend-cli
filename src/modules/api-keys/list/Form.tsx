@@ -22,7 +22,6 @@ export const Form = ({ onExit }: FormProps) => {
 	const [showDryRunData, setShowDryRunData] = useState<Array<Record<string, unknown>> | null>(null);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
 
-	// Handle Esc key to go back
 	useInput(
 		(_input, key) => {
 			if (key.escape || key.leftArrow) {
@@ -32,13 +31,11 @@ export const Form = ({ onExit }: FormProps) => {
 		{ isActive: true },
 	);
 
-	// Load API keys on mount
 	useEffect(() => {
 		const loadApiKeys = async () => {
 			setIsLoading(true);
 			try {
 				if (isDryRun) {
-					// Show mock data for dry run
 					setShowDryRunData([
 						{
 							id: 'dry-run-api-key-1',

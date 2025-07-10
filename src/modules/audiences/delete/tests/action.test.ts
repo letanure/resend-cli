@@ -26,7 +26,6 @@ describe('deleteAudience', () => {
 	});
 
 	it('requires api key parameter', async () => {
-		// Function should accept any string as API key
 		const result = await deleteAudience(testAudienceData, 'any-key');
 		expect(result).toBeDefined();
 	});

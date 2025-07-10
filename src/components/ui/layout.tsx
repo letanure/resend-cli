@@ -57,7 +57,6 @@ const getNavigationInstructions = (context: NavigationContext): React.ReactNode 
 		case 'none':
 			return null;
 		default:
-			// Legacy fallback for backward compatibility
 			return (
 				<Text dimColor={true}>
 					Use <Text color="yellow">↑/↓</Text> to navigate, <Text color="yellow">Enter/→</Text> to select{' '}

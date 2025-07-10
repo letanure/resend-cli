@@ -20,7 +20,6 @@ async function handleListCommand(options: Record<string, unknown>, command: Comm
 		// Only get API key if not in dry-run mode
 		const apiKey = isDryRun ? '' : getResendApiKey();
 
-		// Validate the data using unified validation
 		const validatedData = validateOptions<ListBroadcastsData>(
 			allOptions,
 			listBroadcastsSchema,

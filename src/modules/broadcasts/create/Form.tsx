@@ -27,12 +27,10 @@ export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 
-	// Get initial data from selected audience ID
 	const initialFormData = React.useMemo(() => {
 		return selectedAudienceId ? { audienceId: selectedAudienceId } : undefined;
 	}, [selectedAudienceId]);
 
-	// Selector for audiences
 	const audienceSelector = useInputSelector({
 		title: 'Audiences',
 		loadFunction: async (data: Record<string, unknown>, apiKey: string) => {

@@ -8,7 +8,6 @@ import { createAudience } from './action.js';
 import { fields } from './fields.js';
 import { CreateAudienceOptionsSchema, type CreateAudienceOptionsType } from './schema.js';
 
-// Main handler for create audience command
 async function handleCreateAudienceCommand(options: Record<string, unknown>, command: Command): Promise<void> {
 	try {
 		const apiKey = getResendApiKey();

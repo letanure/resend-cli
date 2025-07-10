@@ -65,7 +65,6 @@ const registerModules = (program: Command, modules: Array<ModuleConfig>): void =
 	}
 };
 
-// Entry point
 const main = (): void => {
 	// Check if only the binary name is provided, OR if --dry-run is the only flag
 	const args = process.argv.slice(2);

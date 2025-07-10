@@ -1,6 +1,5 @@
 import type { CliField } from '@/types/index.js';
 
-// Input fields (for CLI)
 export const fields: Array<CliField> = [
 	{
 		name: 'id',
@@ -12,7 +11,6 @@ export const fields: Array<CliField> = [
 	},
 ];
 
-// Display fields (for results)
 export const displayFields: Array<CliField> = [
 	{
 		name: 'id',

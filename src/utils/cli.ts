@@ -81,17 +81,13 @@ function logCliListResults(
 	additionalInfo?: Record<string, string | undefined>,
 	successMessage?: string,
 ): void {
-	// Show title with colors
 	console.log(chalk.green(`✓ ${title}`));
 
-	// Add a blank line before the table
 	console.log('');
 
-	// Use the table formatter for consistent display
 	const tableOutput = formatAsTable(data, fields);
 	console.log(tableOutput);
 
-	// Add additional info if provided
 	if (additionalInfo) {
 		console.log('');
 		for (const [key, value] of Object.entries(additionalInfo)) {
@@ -101,7 +97,6 @@ function logCliListResults(
 		}
 	}
 
-	// Always show success message if provided
 	if (successMessage) {
 		console.log('');
 		console.log(chalk.yellow(`${successMessage}`));
@@ -125,7 +120,6 @@ export function displayCLIResults(
 		return;
 	}
 
-	// For text output, use formatted display
 	outputSuccess(data, format, () => {
 		if (Array.isArray(data)) {
 			logCliListResults(data, fields, title, additionalInfo, successMessage);
@@ -155,17 +149,12 @@ export function displayCLIError(
 		return;
 	}
 
-	// For text output, use colors
-
-	// Show error title with colors
 	console.error(chalk.red(`✗ ${title}`));
 
-	// Show error message if provided
 	if (errorMessage) {
 		console.error(chalk.red(errorMessage));
 	}
 
-	// Show additional error info
 	if (additionalInfo) {
 		for (const [key, value] of Object.entries(additionalInfo)) {
 			if (value) {

@@ -83,7 +83,6 @@ function extractCommandOptions(fieldsPath) {
 				.filter((name) => name);
 
 			// For each field name, we'll create basic options
-			// In a real implementation, you'd want to read the actual field metadata
 			for (const fieldName of fieldNames) {
 				options.push({
 					name: fieldName,

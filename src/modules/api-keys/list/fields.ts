@@ -1,9 +1,7 @@
 import type { CliField } from '@/types/index.js';
 
-// No input fields for list (it takes no parameters)
 export const fields: Array<CliField> = [];
 
-// Display fields (for table columns)
 export const displayFields: Array<CliField> = [
 	{
 		name: 'id',

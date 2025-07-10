@@ -37,7 +37,6 @@ export const DataDisplay = ({
 		}
 	});
 
-	// Format the data using the utility function
 	const formattedFields = formatDataWithFields(data, fields, fieldsToShow);
 
 	return (

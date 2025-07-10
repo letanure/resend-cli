@@ -1,6 +1,5 @@
 import type { CliField } from '@/types/index.js';
 
-// Input fields (for CLI)
 export const fields: Array<CliField> = [
 	{
 		name: 'audienceId',
