@@ -1,3 +1,15 @@
+# [0.37.0](https://github.com/letanure/resend-cli/compare/v0.36.0...v0.37.0) (2025-07-10)
+
+
+### Bug Fixes
+
+* update tests menu ([de4b65d](https://github.com/letanure/resend-cli/commit/de4b65db767afcff8ab8cda530d02c0b4ca7e928))
+
+
+### Features
+
+* add circular navigation for menu ([1c30734](https://github.com/letanure/resend-cli/commit/1c30734b9089ddaa383cc3e956498ad88eb5bef5))
+
 # [0.36.0](https://github.com/letanure/resend-cli/compare/v0.35.0...v0.36.0) (2025-07-10)
 
 
