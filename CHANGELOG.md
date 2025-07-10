@@ -1,3 +1,11 @@
+# [0.33.0](https://github.com/letanure/resend-cli/compare/v0.32.0...v0.33.0) (2025-07-10)
+
+
+### Features
+
+* add audience id selector ([74961b5](https://github.com/letanure/resend-cli/commit/74961b56a627b6b33a287106c7867f41dd4f4001))
+* add select broadcast ([40d1958](https://github.com/letanure/resend-cli/commit/40d19587c46c80a9fb1e224b0d62033a4b40fe8d))
+
 # [0.32.0](https://github.com/letanure/resend-cli/compare/v0.31.2...v0.32.0) (2025-07-09)
 
 
