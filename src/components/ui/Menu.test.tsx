@@ -156,9 +156,13 @@ describe('Menu Component', () => {
 			<Menu menuItems={mockMenuItems} onSelect={mockOnSelect} onExit={mockOnExit} />,
 		);
 
-		// Start at first item, press up, add a small delay, then Enter to select
-		await stdin.write('\u001B[A'); // Up arrow (should go to last item)
-		await new Promise<void>((resolve) => setTimeout(resolve, 10)); // Small delay for state update
+		// Navigate down to second item, then up twice to test wrap-around
+		await stdin.write('\u001B[B'); // Down arrow (go to second item)
+		await new Promise<void>((resolve) => setTimeout(resolve, 10));
+		await stdin.write('\u001B[A'); // Up arrow (back to first item)
+		await new Promise<void>((resolve) => setTimeout(resolve, 10));
+		await stdin.write('\u001B[A'); // Up arrow (should wrap to last item)
+		await new Promise<void>((resolve) => setTimeout(resolve, 10));
 		await stdin.write('\r'); // Enter
 
 		expect(mockOnSelect).toHaveBeenCalledWith('api-keys'); // Last item should be selected
