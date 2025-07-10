@@ -50,7 +50,7 @@ export interface FormField {
 	label: string;
 	placeholder?: string;
 	helpText?: string;
-	type?: 'text' | 'textarea' | 'select';
+	type?: 'text' | 'textarea' | 'select' | 'input-with-selector';
 	options?: Array<SelectOption>; // For select fields
 	display?: 'inline' | 'stacked' | 'compact'; // For select fields layout
 	cliFlag?: string; // CLI long flag (--flag)

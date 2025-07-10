@@ -1,16 +1,17 @@
 import { Alert, Spinner } from '@inkjs/ui';
 import { Box, Text, useInput } from 'ink';
 import React from 'react';
-import { SimpleForm } from '@/components/forms/SimpleForm.js';
+import { InputWithSelector } from '@/components/forms/InputWithSelector.js';
+import { useInputSelector } from '@/components/forms/useInputSelector.js';
 import { ErrorDisplay } from '@/components/ui/ErrorDisplay.js';
 import { Layout } from '@/components/ui/layout.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
 import type { ApiResult } from '@/types/index.js';
+import { listBroadcasts } from '../list/action.js';
 import { retrieveBroadcast } from './action.js';
-import { retrieveBroadcastFields } from './fields.js';
-import { type RetrieveBroadcastData, retrieveBroadcastSchema } from './schema.js';
+import type { RetrieveBroadcastData } from './schema.js';
 
 interface RetrieveBroadcastResponse {
 	object: 'broadcast';
@@ -34,8 +35,32 @@ interface FormProps {
 export const Form = ({ onExit }: FormProps) => {
 	const [result, setResult] = React.useState<ApiResult<RetrieveBroadcastResponse> | null>(null);
 	const [loading, setLoading] = React.useState(false);
+	const [formData, setFormData] = React.useState<RetrieveBroadcastData>({ broadcastId: '' });
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
+
+	// Selector for broadcasts
+	const broadcastSelector = useInputSelector({
+		title: 'Broadcasts',
+		loadFunction: listBroadcasts,
+		formatData: (data) => {
+			return data.data.map((broadcast) => ({
+				id: broadcast.id,
+				audience_id: broadcast.audience_id || '',
+				status: broadcast.status,
+				created_at: new Date(broadcast.created_at).toLocaleString(),
+				scheduled_at: broadcast.scheduled_at ? new Date(broadcast.scheduled_at).toLocaleString() : '',
+				sent_at: broadcast.sent_at ? new Date(broadcast.sent_at).toLocaleString() : '',
+			}));
+		},
+		loadData: {},
+		noDataMessage: 'No broadcasts found.',
+		idField: 'id',
+		displayField: 'id',
+		onSelect: (broadcastId) => {
+			setFormData((prev) => ({ ...prev, broadcastId }));
+		},
+	});
 
 	const handleSubmit = async (data: RetrieveBroadcastData) => {
 		setLoading(true);
@@ -45,10 +70,19 @@ export const Form = ({ onExit }: FormProps) => {
 	};
 
 	useInput((input, key) => {
-		if ((input === 'q' || key.escape) && !loading) {
+		if ((input === 'q' || key.escape) && !loading && !broadcastSelector.isModalOpen) {
 			onExit();
 		}
+
+		if (key.return && !loading && !broadcastSelector.isModalOpen && formData.broadcastId.trim()) {
+			handleSubmit(formData);
+		}
 	});
+
+	// If the broadcast selector modal is open, render it instead of the form
+	if (broadcastSelector.isModalOpen) {
+		return broadcastSelector.modalComponent;
+	}
 
 	if (loading) {
 		return (
@@ -95,12 +129,23 @@ export const Form = ({ onExit }: FormProps) => {
 					<Alert variant="warning">DRY RUN MODE - No API calls will be made</Alert>
 				</Box>
 			)}
-			<SimpleForm<RetrieveBroadcastData>
-				fields={retrieveBroadcastFields}
-				onSubmit={handleSubmit}
-				onCancel={onExit}
-				validateWith={retrieveBroadcastSchema}
-			/>
+			<Box flexDirection="column" marginTop={1}>
+				<InputWithSelector
+					label="Broadcast ID"
+					value={formData.broadcastId}
+					onChange={(value) => setFormData((prev) => ({ ...prev, broadcastId: value }))}
+					placeholder="559ac32e-9ef5-46fb-82a1-b76b840c0f7b"
+					helpText="Enter the broadcast ID or select from list"
+					isFocused={true}
+					onSelectorOpen={broadcastSelector.openModal}
+				/>
+
+				<Box marginTop={2}>
+					<Text>
+						Press <Text color="yellow">Enter</Text> to retrieve • <Text color="yellow">Esc</Text> to cancel
+					</Text>
+				</Box>
+			</Box>
 		</Layout>
 	);
 };

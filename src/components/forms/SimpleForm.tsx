@@ -3,6 +3,7 @@ import { Box, useInput } from 'ink';
 import { useState } from 'react';
 import type { z } from 'zod';
 import type { FormField } from '@/types/index.js';
+import { InputWithSelector } from './InputWithSelector.js';
 import { SelectField } from './SelectField.js';
 import { TextInput } from './TextInput.js';
 
@@ -39,13 +40,14 @@ export const SimpleForm = <T = Record<string, unknown>>({
 	useInput((input, key) => {
 		const currentFieldData = fields[currentField];
 		const isSelectField = currentFieldData?.type === 'select';
+		const isInputWithSelector = currentFieldData?.type === 'input-with-selector';
 		const isStackedSelect = isSelectField && currentFieldData?.display === 'stacked';
 		const isInlineSelect = isSelectField && currentFieldData?.display !== 'stacked';
 
 		const keyHandlers: Array<{ condition: () => boolean; action: () => void }> = [
 			{ condition: () => key.escape, action: onCancel },
-			// Left arrow to exit form - only if NOT on an inline select field
-			{ condition: () => key.leftArrow && !isInlineSelect, action: onCancel },
+			// Left arrow to exit form - only if NOT on an inline select field or input-with-selector
+			{ condition: () => key.leftArrow && !isInlineSelect && !isInputWithSelector, action: onCancel },
 			{ condition: () => key.shift && key.tab, action: () => setCurrentField(Math.max(currentField - 1, 0)) },
 			{
 				condition: () => key.tab && !key.shift,
@@ -216,6 +218,21 @@ export const SimpleForm = <T = Record<string, unknown>>({
 							errorMessage={errors[field.name]}
 							display={field.display}
 							onToggle={() => handleSelectToggle(field)}
+						/>
+					);
+				}
+
+				if (field.type === 'input-with-selector') {
+					return (
+						<InputWithSelector
+							key={field.name}
+							label={field.label}
+							value={String(formData[field.name] || '')}
+							onChange={(value) => handleFieldChange(field.name, value)}
+							placeholder={field.placeholder}
+							helpText={field.helpText}
+							isFocused={currentField === index}
+							error={errors[field.name]}
 						/>
 					);
 				}

@@ -18,13 +18,13 @@ describe('broadcasts retrieve fields configuration', () => {
 	it('should have form fields configured', () => {
 		expect(retrieveBroadcastFields).toHaveLength(1);
 
-		expect(retrieveBroadcastFields[0]).toEqual({
-			name: 'broadcastId',
-			label: 'Broadcast ID',
-			type: 'text',
-			placeholder: '559ac32e-9ef5-46fb-82a1-b76b840c0f7b',
-			helpText: 'Enter the broadcast ID to retrieve',
-		});
+		const field = retrieveBroadcastFields[0];
+		expect(field).toBeDefined();
+		expect(field?.name).toBe('broadcastId');
+		expect(field?.label).toBe('Broadcast ID');
+		expect(field?.type).toBe('input-with-selector');
+		expect(field?.placeholder).toBe('559ac32e-9ef5-46fb-82a1-b76b840c0f7b');
+		expect(field?.helpText).toBe('Enter the broadcast ID or select from list');
 	});
 
 	it('should have display fields configured', () => {
@@ -73,10 +73,10 @@ describe('broadcasts retrieve fields configuration', () => {
 	});
 
 	it('should have proper field types', () => {
-		const textFields = retrieveBroadcastFields.filter((f) => f.type === 'text');
+		const inputWithSelectorFields = retrieveBroadcastFields.filter((f) => f.type === 'input-with-selector');
 
-		expect(textFields).toHaveLength(1); // broadcastId
-		expect(textFields[0]?.name).toBe('broadcastId');
+		expect(inputWithSelectorFields).toHaveLength(1); // broadcastId
+		expect(inputWithSelectorFields[0]?.name).toBe('broadcastId');
 	});
 
 	it('should have all required fields for broadcast retrieval', () => {

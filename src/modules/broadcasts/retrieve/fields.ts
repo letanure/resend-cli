@@ -15,9 +15,9 @@ export const retrieveBroadcastFields: Array<FormField> = [
 	{
 		name: 'broadcastId',
 		label: 'Broadcast ID',
-		type: 'text',
+		type: 'input-with-selector',
 		placeholder: '559ac32e-9ef5-46fb-82a1-b76b840c0f7b',
-		helpText: 'Enter the broadcast ID to retrieve',
+		helpText: 'Enter the broadcast ID or select from list',
 	},
 ];
 
