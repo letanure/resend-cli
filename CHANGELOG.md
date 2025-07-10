@@ -1,3 +1,15 @@
+# [0.35.0](https://github.com/letanure/resend-cli/compare/v0.34.0...v0.35.0) (2025-07-10)
+
+
+### Bug Fixes
+
+* remove duplicated nav info on  success and error ([2cc4b3b](https://github.com/letanure/resend-cli/commit/2cc4b3bb3a6ee5cfb28d2e7db7c592e7d29a0977))
+
+
+### Features
+
+* add single success creeen componnet and update forms ([2da258d](https://github.com/letanure/resend-cli/commit/2da258dfc7c5ad362797c9e905a1afa5bd0a2a37))
+
 # [0.34.0](https://github.com/letanure/resend-cli/compare/v0.33.0...v0.34.0) (2025-07-10)
 
 
