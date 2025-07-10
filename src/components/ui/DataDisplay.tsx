@@ -61,7 +61,6 @@ export const DataDisplay = ({
 						))}
 					</Box>
 				)}
-
 			</Box>
 		</Layout>
 	);

@@ -43,10 +43,10 @@ export const ErrorScreen = ({
 	});
 
 	return (
-		<Layout 
-			headerText={headerText} 
-			showNavigationInstructions={true} 
-			navigationContext={showRetry && onRetry ? "error-retry" : "result"}
+		<Layout
+			headerText={headerText}
+			showNavigationInstructions={true}
+			navigationContext={showRetry && onRetry ? 'error-retry' : 'result'}
 		>
 			<Box flexDirection="column">
 				<Box marginBottom={1}>
