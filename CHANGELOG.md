@@ -1,3 +1,10 @@
+# [0.32.0](https://github.com/letanure/resend-cli/compare/v0.31.2...v0.32.0) (2025-07-09)
+
+
+### Features
+
+* update roadmap ([cffd7e8](https://github.com/letanure/resend-cli/commit/cffd7e874d4882cc9e99cf4fe0220685e044a3a7))
+
 ## [0.31.2](https://github.com/letanure/resend-cli/compare/v0.31.1...v0.31.2) (2025-07-09)
 
 
