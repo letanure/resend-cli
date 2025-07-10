@@ -1,13 +1,13 @@
 import { Spinner } from '@inkjs/ui';
-import { Box, Text, useInput } from 'ink';
+import { useInput } from 'ink';
 import { useState } from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
 import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
+import { SuccessScreen } from '@/components/ui/SuccessScreen.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
-import { EmailDisplay } from '../shared/EmailDisplay.js';
 import { updateEmail } from './action.js';
 import { fields } from './fields.js';
 import { UpdateEmailOptionsSchema, type UpdateEmailOptionsType } from './schema.js';
@@ -20,44 +20,46 @@ export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [updateResult, setUpdateResult] = useState<Record<string, unknown> | null>(null);
-	const [showDryRunData, setShowDryRunData] = useState<Record<string, unknown> | null>(null);
+	const [successData, setSuccessData] = useState<Record<string, unknown> | null>(null);
+	const [isDryRunSuccess, setIsDryRunSuccess] = useState(false);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
 
 	// Handle Esc key to go back from result screens
 	useInput(
 		(_input, key) => {
-			if (key.escape && (updateResult || showDryRunData || error)) {
-				setUpdateResult(null);
-				setShowDryRunData(null);
+			if (key.escape && (successData || error)) {
+				setSuccessData(null);
+				setIsDryRunSuccess(false);
 				setError(null);
 			}
 		},
-		{ isActive: !!(updateResult || showDryRunData || error) },
+		{ isActive: !!(successData || error) },
 	);
 
 	const handleSubmit = async (data: UpdateEmailOptionsType) => {
 		setIsSubmitting(true);
 		try {
 			if (isDryRun) {
-				setShowDryRunData({
+				setSuccessData({
 					'Email ID': data.id,
 					'New Scheduled Date': data.scheduledAt,
 					'API Key': apiKey ? `${apiKey.substring(0, 10)}...` : 'Not set',
 					'Dry Run': 'true',
 					Status: 'Validation successful! (Email not updated due to dry-run mode)',
 				});
+				setIsDryRunSuccess(true);
 			} else {
 				const result = await updateEmail(data, apiKey);
 
 				if (result.success && result.data) {
-					setUpdateResult({
+					setSuccessData({
 						'Email ID': data.id,
 						'New Scheduled Date': data.scheduledAt,
 						'Update Status': 'Successfully updated',
 						'Object Type': result.data.object,
 						'Updated At': new Date().toISOString(),
 					});
+					setIsDryRunSuccess(false);
 				} else {
 					setError({
 						title: 'Email Update Failed',
@@ -89,41 +91,19 @@ export const Form = ({ onExit }: FormProps) => {
 		);
 	}
 
-	if (updateResult) {
+	if (successData) {
 		return (
-			<Layout
-				headerText={`${config.baseTitle} - Emails - Update - Success`}
-				showNavigationInstructions={true}
-				navigationContext="result"
-			>
-				<Box flexDirection="column">
-					<Box marginBottom={1}>
-						<EmailDisplay data={updateResult} title="Email Updated Successfully" />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
-				</Box>
-			</Layout>
-		);
-	}
-
-	if (showDryRunData) {
-		return (
-			<Layout
-				headerText={`${config.baseTitle} - Emails - Update - Dry Run`}
-				showNavigationInstructions={true}
-				navigationContext="result"
-			>
-				<Box flexDirection="column">
-					<Box marginBottom={1}>
-						<EmailDisplay data={showDryRunData} title="DRY RUN - Email update data (validation only)" />
-					</Box>
-					<Box>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
-				</Box>
-			</Layout>
+			<SuccessScreen
+				data={successData}
+				successMessage="Email Updated Successfully"
+				headerText={`${config.baseTitle} - Emails - Update`}
+				isDryRun={isDryRunSuccess}
+				onExit={() => {
+					setSuccessData(null);
+					setIsDryRunSuccess(false);
+					onExit();
+				}}
+			/>
 		);
 	}
 

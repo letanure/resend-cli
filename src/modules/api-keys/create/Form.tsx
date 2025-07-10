@@ -1,10 +1,11 @@
 import { Alert } from '@inkjs/ui';
-import { Box, Text, useInput } from 'ink';
+import { Box, useInput } from 'ink';
 import { useState } from 'react';
 import { SelectField } from '@/components/forms/SelectField.js';
 import { TextInput } from '@/components/forms/TextInput.js';
 import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
+import { SuccessScreen } from '@/components/ui/SuccessScreen.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
@@ -15,39 +16,6 @@ import { CreateApiKeyOptionsSchema, type CreateApiKeyOptionsType } from './schem
 interface FormProps {
 	onExit: () => void;
 }
-
-interface ApiKeyDisplayProps {
-	data: Record<string, unknown>;
-	title: string;
-}
-
-const ApiKeyDisplay = ({ data, title }: ApiKeyDisplayProps) => {
-	return (
-		<Box flexDirection="column">
-			<Box marginBottom={1}>
-				<Text bold={true} color="green">
-					{title}
-				</Text>
-			</Box>
-			{displayFields.map((field) => {
-				const value = data[field.name];
-				if (value === undefined) {
-					return null;
-				}
-				return (
-					<Box key={field.name}>
-						<Box width={15}>
-							<Text bold={true} color="cyan">
-								{field.label}:
-							</Text>
-						</Box>
-						<Text>{String(value)}</Text>
-					</Box>
-				);
-			})}
-		</Box>
-	);
-};
 
 export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
@@ -61,8 +29,8 @@ export const Form = ({ onExit }: FormProps) => {
 	const [currentField, setCurrentField] = useState(0);
 	const [errors, setErrors] = useState<Record<string, string>>({});
 	const [formError, setFormError] = useState<string>('');
-	const [createResult, setCreateResult] = useState<Record<string, unknown> | null>(null);
-	const [showDryRunData, setShowDryRunData] = useState<Record<string, unknown> | null>(null);
+	const [successData, setSuccessData] = useState<Record<string, unknown> | null>(null);
+	const [isDryRunSuccess, setIsDryRunSuccess] = useState(false);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
 
 	const visibleFields = fields;
@@ -94,17 +62,17 @@ export const Form = ({ onExit }: FormProps) => {
 	// Handle Esc/Left arrow key to go back from result screens
 	useInput(
 		(_input, key) => {
-			if ((key.escape || key.leftArrow) && (createResult || showDryRunData || error)) {
-				setCreateResult(null);
-				setShowDryRunData(null);
+			if ((key.escape || key.leftArrow) && (successData || error)) {
+				setSuccessData(null);
+				setIsDryRunSuccess(false);
 				setError(null);
 			}
 		},
-		{ isActive: !!(createResult || showDryRunData || error) },
+		{ isActive: !!(successData || error) },
 	);
 
 	useInput((input, key) => {
-		if (createResult || showDryRunData || error) {
+		if (successData || error) {
 			return; // Don't handle input when showing result
 		}
 
@@ -177,14 +145,16 @@ export const Form = ({ onExit }: FormProps) => {
 			if (validatedData) {
 				try {
 					if (isDryRun) {
-						setShowDryRunData({
+						setSuccessData({
 							id: 'dry-run-api-key-id',
 							token: 'dry-run-token-re_xxxxx',
 						});
+						setIsDryRunSuccess(true);
 					} else {
 						const apiResult = await createApiKey(validatedData as CreateApiKeyOptionsType, apiKey);
 						if (apiResult.success && apiResult.data) {
-							setCreateResult(apiResult.data as unknown as Record<string, unknown>);
+							setSuccessData(apiResult.data as unknown as Record<string, unknown>);
+							setIsDryRunSuccess(false);
 						} else {
 							setError({
 								title: 'API Key Creation Failed',
@@ -249,35 +219,20 @@ export const Form = ({ onExit }: FormProps) => {
 		}
 	};
 
-	if (createResult) {
+	if (successData) {
 		return (
-			<Layout
-				headerText={`${config.baseTitle} - API Keys - Create - Success`}
-				showNavigationInstructions={true}
-				navigationContext="result"
-			>
-				<Box flexDirection="column">
-					<Box marginBottom={1}>
-						<ApiKeyDisplay data={createResult} title="API Key Created Successfully" />
-					</Box>
-				</Box>
-			</Layout>
-		);
-	}
-
-	if (showDryRunData) {
-		return (
-			<Layout
-				headerText={`${config.baseTitle} - API Keys - Create - Dry Run`}
-				showNavigationInstructions={true}
-				navigationContext="result"
-			>
-				<Box flexDirection="column">
-					<Box marginBottom={1}>
-						<ApiKeyDisplay data={showDryRunData} title="DRY RUN - API key creation data (validation only)" />
-					</Box>
-				</Box>
-			</Layout>
+			<SuccessScreen
+				data={successData}
+				successMessage="API Key Created Successfully"
+				headerText={`${config.baseTitle} - API Keys - Create`}
+				fields={displayFields}
+				isDryRun={isDryRunSuccess}
+				onExit={() => {
+					setSuccessData(null);
+					setIsDryRunSuccess(false);
+					onExit();
+				}}
+			/>
 		);
 	}
 

@@ -99,9 +99,9 @@ These features are being considered but not yet committed to the roadmap:
 - [ ] email send tag
 - [ ] email send header
 - [ ] component select date
-- [ ] component select audience ID
+- [x] component select audience ID
 - [ ] component select domain ID
-- [ ] component select broadcast ID
+- [x] component select broadcast ID
 - [ ] lists with actions
 - [ ] file selector for react component, validated
 - [ ] validate html field

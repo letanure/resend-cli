@@ -1,9 +1,10 @@
 import { Spinner } from '@inkjs/ui';
-import { Box, Text, useInput } from 'ink';
+import { useInput } from 'ink';
 import { useState } from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
 import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
+import { SuccessScreen } from '@/components/ui/SuccessScreen.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
@@ -19,27 +20,27 @@ export const Form = ({ onExit }: FormProps) => {
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [contactData, setContactData] = useState<Record<string, unknown> | null>(null);
-	const [showDryRunData, setShowDryRunData] = useState<Record<string, unknown> | null>(null);
+	const [successData, setSuccessData] = useState<Record<string, unknown> | null>(null);
+	const [isDryRunSuccess, setIsDryRunSuccess] = useState(false);
 	const [error, setError] = useState<{ title: string; message: string; suggestion?: string } | null>(null);
 
 	// Handle Esc key to go back from result screens
 	useInput(
 		(_input, key) => {
-			if (key.escape && (contactData || showDryRunData || error)) {
-				setContactData(null);
-				setShowDryRunData(null);
+			if (key.escape && (successData || error)) {
+				setSuccessData(null);
+				setIsDryRunSuccess(false);
 				setError(null);
 			}
 		},
-		{ isActive: !!(contactData || showDryRunData || error) },
+		{ isActive: !!(successData || error) },
 	);
 
 	const handleSubmit = async (data: RetrieveContactOptionsType) => {
 		setIsSubmitting(true);
 		try {
 			if (isDryRun) {
-				setShowDryRunData({
+				setSuccessData({
 					'Audience ID': data.audienceId,
 					'Contact ID': data.id || 'Not specified',
 					Email: data.email || 'Not specified',
@@ -47,11 +48,12 @@ export const Form = ({ onExit }: FormProps) => {
 					'Dry Run': 'true',
 					Status: 'Validation successful! (Contact not retrieved due to dry-run mode)',
 				});
+				setIsDryRunSuccess(true);
 			} else {
 				const result = await retrieveContact(data, apiKey);
 
 				if (result.success && result.data) {
-					setContactData({
+					setSuccessData({
 						'Contact ID': result.data.id,
 						'Object Type': result.data.object,
 						Email: result.data.email,
@@ -60,6 +62,7 @@ export const Form = ({ onExit }: FormProps) => {
 						'Created At': result.data.created_at,
 						'Subscription Status': result.data.unsubscribed ? 'Unsubscribed' : 'Subscribed',
 					});
+					setIsDryRunSuccess(false);
 				} else {
 					setError({
 						title: 'Contact Retrieval Failed',
@@ -91,55 +94,19 @@ export const Form = ({ onExit }: FormProps) => {
 		);
 	}
 
-	if (contactData) {
+	if (successData) {
 		return (
-			<Layout
-				headerText={`${config.baseTitle} - Contacts - Retrieve - Success`}
-				showNavigationInstructions={true}
-				navigationContext="result"
-			>
-				<Box flexDirection="column">
-					<Box marginBottom={1}>
-						<Text bold={true}>Contact Retrieved Successfully</Text>
-					</Box>
-					{Object.entries(contactData).map(([key, value]) => (
-						<Box key={key} marginBottom={0}>
-							<Text>
-								<Text bold={true}>{key}:</Text> {String(value)}
-							</Text>
-						</Box>
-					))}
-					<Box marginTop={1}>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
-				</Box>
-			</Layout>
-		);
-	}
-
-	if (showDryRunData) {
-		return (
-			<Layout
-				headerText={`${config.baseTitle} - Contacts - Retrieve - Dry Run`}
-				showNavigationInstructions={true}
-				navigationContext="result"
-			>
-				<Box flexDirection="column">
-					<Box marginBottom={1}>
-						<Text bold={true}>DRY RUN - Contact retrieval data (validation only)</Text>
-					</Box>
-					{Object.entries(showDryRunData).map(([key, value]) => (
-						<Box key={key} marginBottom={0}>
-							<Text>
-								<Text bold={true}>{key}:</Text> {String(value)}
-							</Text>
-						</Box>
-					))}
-					<Box marginTop={1}>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
-				</Box>
-			</Layout>
+			<SuccessScreen
+				data={successData}
+				successMessage="Contact Retrieved Successfully"
+				headerText={`${config.baseTitle} - Contacts - Retrieve`}
+				isDryRun={isDryRunSuccess}
+				onExit={() => {
+					setSuccessData(null);
+					setIsDryRunSuccess(false);
+					onExit();
+				}}
+			/>
 		);
 	}
 

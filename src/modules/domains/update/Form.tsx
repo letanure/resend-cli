@@ -1,9 +1,10 @@
 import { Alert, Spinner } from '@inkjs/ui';
-import { Box, Text, useInput } from 'ink';
+import { Box, useInput } from 'ink';
 import React from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
 import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
+import { SuccessScreen } from '@/components/ui/SuccessScreen.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
@@ -24,19 +25,55 @@ interface FormProps {
 export const Form = ({ onExit }: FormProps) => {
 	const [result, setResult] = React.useState<ApiResult<UpdateDomainResponse> | null>(null);
 	const [loading, setLoading] = React.useState(false);
+	const [successData, setSuccessData] = React.useState<Record<string, unknown> | null>(null);
+	const [isDryRunSuccess, setIsDryRunSuccess] = React.useState(false);
 	const { isDryRun } = useDryRun();
 	const { apiKey } = useResend();
 
 	const handleSubmit = async (data: UpdateDomainData) => {
 		setLoading(true);
-		const result = await updateDomain(data, apiKey);
-		setResult(result);
-		setLoading(false);
+		try {
+			if (isDryRun) {
+				setSuccessData({
+					'Domain ID': data.domainId,
+					'Click Tracking': data.clickTracking ? 'Enabled' : 'Disabled',
+					'Open Tracking': data.openTracking ? 'Enabled' : 'Disabled',
+					'API Key': apiKey ? `${apiKey.substring(0, 10)}...` : 'Not set',
+					Status: 'Validation successful! (Domain not updated due to dry-run mode)',
+				});
+				setIsDryRunSuccess(true);
+			} else {
+				const result = await updateDomain(data, apiKey);
+				if (result.success && result.data) {
+					setSuccessData({
+						'Domain ID': result.data.id,
+						'Object Type': result.data.object,
+						Status: 'Updated successfully',
+					});
+					setIsDryRunSuccess(false);
+				} else {
+					// Handle API error case
+					setResult(result);
+				}
+			}
+		} catch (error) {
+			setResult({
+				success: false,
+				error: error instanceof Error ? error.message : 'Unknown error',
+				data: undefined,
+			});
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	useInput((input, key) => {
-		if ((input === 'q' || key.escape) && !loading) {
+		if ((input === 'q' || key.escape) && !loading && !successData) {
 			onExit();
+		}
+		if ((input === 'q' || key.escape) && successData) {
+			setSuccessData(null);
+			setIsDryRunSuccess(false);
 		}
 	});
 
@@ -54,9 +91,26 @@ export const Form = ({ onExit }: FormProps) => {
 		);
 	}
 
+	if (successData) {
+		return (
+			<SuccessScreen
+				data={successData}
+				successMessage="Domain Updated Successfully"
+				headerText={`${config.baseTitle} - Domains - Update`}
+				isDryRun={isDryRunSuccess}
+				onExit={() => {
+					setSuccessData(null);
+					setIsDryRunSuccess(false);
+					onExit();
+				}}
+			/>
+		);
+	}
+
 	if (result) {
 		if (result.success && result.data) {
-			return <DomainUpdateDisplay result={result.data} onExit={onExit} />;
+			// This case is now handled by successData above
+			return null;
 		}
 		return (
 			<ErrorScreen
@@ -94,59 +148,6 @@ export const Form = ({ onExit }: FormProps) => {
 				onCancel={onExit}
 				validateWith={updateDomainSchema}
 			/>
-		</Layout>
-	);
-};
-
-interface DomainUpdateDisplayProps {
-	result: UpdateDomainResponse;
-	onExit: () => void;
-}
-
-const DomainUpdateDisplay = ({ result, onExit }: DomainUpdateDisplayProps) => {
-	useInput((input, key) => {
-		if (input === 'q' || key.escape) {
-			onExit();
-		}
-	});
-
-	return (
-		<Layout
-			headerText={`${config.baseTitle} - Domains - Update`}
-			showNavigationInstructions={true}
-			navigationContext="result"
-		>
-			<Box flexDirection="column" gap={1}>
-				<Box>
-					<Alert variant="success">Domain updated successfully</Alert>
-				</Box>
-
-				<Box flexDirection="column">
-					<Box>
-						<Box width={20}>
-							<Text bold={true} color="cyan">
-								Domain ID:
-							</Text>
-						</Box>
-						<Text color="gray">{result.id}</Text>
-					</Box>
-
-					<Box>
-						<Box width={20}>
-							<Text bold={true} color="cyan">
-								Object:
-							</Text>
-						</Box>
-						<Text>{result.object}</Text>
-					</Box>
-				</Box>
-
-				<Box marginTop={1}>
-					<Text>
-						Press <Text color="yellow">Esc</Text> or <Text color="yellow">q</Text> to go back
-					</Text>
-				</Box>
-			</Box>
 		</Layout>
 	);
 };
