@@ -219,6 +219,8 @@ MIT License - see [LICENSE](./LICENSE) file for details.
 
 See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development setup.
 
+
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=letanure/resend-cli)
 ---
 
 *README is auto-generated based on CLI commands and modules*
