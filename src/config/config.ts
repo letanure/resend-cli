@@ -1,3 +1,3 @@
 export const config = {
-	baseTitle: '📧 Resend CLI',
+	baseTitle: 'Resend CLI',
 };

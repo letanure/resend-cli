@@ -7,7 +7,7 @@ describe('App Component', () => {
 		const { lastFrame } = renderWithProviders(<AppMain />);
 		const output = lastFrame() ?? '';
 
-		expect(output).toContain('📧 Resend CLI');
+		expect(output).toContain('Resend CLI');
 	});
 
 	it('shows all menu options', () => {

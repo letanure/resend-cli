@@ -2,7 +2,7 @@
 
 exports[`Email Send Form > matches snapshot in dry-run mode 1`] = `
 "
- 📧 Resend CLI - Emails - Send
+ Resend CLI - Emails - Send
 
  ╭────────────────────────────────────────────────────────────────────────────────────────────────╮
  │ ⚠  DRY RUN MODE: Operations will be validated but not executed.                                │
@@ -44,7 +44,7 @@ exports[`Email Send Form > matches snapshot in dry-run mode 1`] = `
 
 exports[`Email Send Form > matches snapshot in normal mode 1`] = `
 "
- 📧 Resend CLI - Emails - Send
+ Resend CLI - Emails - Send
 
 
  From                  │our Name <sender@domain.com>
