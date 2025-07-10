@@ -1,4 +1,4 @@
-import { Spinner } from '@inkjs/ui';
+import { Alert, Spinner } from '@inkjs/ui';
 import { Box, Text, useInput } from 'ink';
 import { useState } from 'react';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
@@ -129,20 +129,15 @@ export const Form = ({ onExit }: FormProps) => {
 	if (showDryRunData) {
 		return (
 			<Layout
-				headerText={`${config.baseTitle} - Contacts - List - Dry Run`}
+				headerText={`${config.baseTitle} - Contacts - List`}
 				showNavigationInstructions={true}
 				navigationContext="result"
 			>
 				<Box flexDirection="column">
 					<Box marginBottom={1}>
-						<Text bold={true} color="yellow">
-							DRY RUN - Sample contact list data (not from API)
-						</Text>
+						<Alert variant="warning">DRY RUN MODE - Sample data (no API calls made)</Alert>
 					</Box>
 					<Table data={showDryRunData} fields={displayFields} title="Contacts" />
-					<Box marginTop={1}>
-						<Text dimColor={true}>Press Esc to go back</Text>
-					</Box>
 				</Box>
 			</Layout>
 		);
