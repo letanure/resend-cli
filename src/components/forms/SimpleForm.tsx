@@ -56,10 +56,13 @@ export const SimpleForm = <T = Record<string, unknown>>({
 			{ condition: () => key.escape, action: onCancel },
 			// Left arrow to exit form - only if NOT on an inline select field or input-with-selector
 			{ condition: () => key.leftArrow && !isInlineSelect && !isInputWithSelector, action: onCancel },
-			{ condition: () => key.shift && key.tab, action: () => setCurrentField(Math.max(currentField - 1, 0)) },
+			{
+				condition: () => key.shift && key.tab,
+				action: () => setCurrentField(currentField === 0 ? fields.length - 1 : currentField - 1),
+			},
 			{
 				condition: () => key.tab && !key.shift,
-				action: () => setCurrentField(Math.min(currentField + 1, fields.length - 1)),
+				action: () => setCurrentField(currentField === fields.length - 1 ? 0 : currentField + 1),
 			},
 			// Special handling for stacked select fields
 			{
@@ -70,14 +73,14 @@ export const SimpleForm = <T = Record<string, unknown>>({
 				condition: () => key.upArrow && isStackedSelect,
 				action: () => handleStackedSelectNavigation('up'),
 			},
-			// Default field navigation for non-stacked selects
+			// Default field navigation for non-stacked selects (circular)
 			{
 				condition: () => key.downArrow && !isStackedSelect,
-				action: () => setCurrentField(Math.min(currentField + 1, fields.length - 1)),
+				action: () => setCurrentField(currentField === fields.length - 1 ? 0 : currentField + 1),
 			},
 			{
 				condition: () => key.upArrow && !isStackedSelect,
-				action: () => setCurrentField(Math.max(currentField - 1, 0)),
+				action: () => setCurrentField(currentField === 0 ? fields.length - 1 : currentField - 1),
 			},
 			// Left/Right arrow for inline select fields only
 			{
@@ -201,7 +204,7 @@ export const SimpleForm = <T = Record<string, unknown>>({
 				handleFieldChange(currentFieldData.name, nextValue);
 				setCurrentSelectOption(nextIndex);
 			} else {
-				// Move to next field when on last option
+				// Move to next field when on last option (non-circular for stacked selects)
 				setCurrentField(Math.min(currentField + 1, fields.length - 1));
 			}
 		} else if (direction === 'up') {
@@ -212,7 +215,7 @@ export const SimpleForm = <T = Record<string, unknown>>({
 				handleFieldChange(currentFieldData.name, prevValue);
 				setCurrentSelectOption(prevIndex);
 			} else {
-				// Move to previous field when on first option
+				// Move to previous field when on first option (non-circular for stacked selects)
 				setCurrentField(Math.max(currentField - 1, 0));
 			}
 		}
