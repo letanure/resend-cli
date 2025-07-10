@@ -12,7 +12,7 @@ test('ErrorScreen renders error message with navigation', () => {
 
 	expect(lastFrame()).toContain('Test Error');
 	expect(lastFrame()).toContain('Something went wrong');
-	expect(lastFrame()).toContain('Press Esc or q to go back');
+	expect(lastFrame()).toContain('Press Esc/← to go back');
 });
 
 test('ErrorScreen shows suggestion when provided', () => {
@@ -41,8 +41,8 @@ test('ErrorScreen shows retry option when enabled', () => {
 		/>,
 	);
 
-	expect(lastFrame()).toContain('Press Enter or r to retry');
-	expect(lastFrame()).toContain('Esc or q to go back');
+	expect(lastFrame()).toContain('Press Enter/r to retry');
+	expect(lastFrame()).toContain('Esc/← to go back');
 });
 
 test('ErrorScreen uses default title when not provided', () => {

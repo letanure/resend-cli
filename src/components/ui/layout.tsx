@@ -3,7 +3,7 @@ import { Box, Text } from 'ink';
 import type React from 'react';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 
-export type NavigationContext = 'menu' | 'form' | 'form-single' | 'result' | 'root-menu' | 'none';
+export type NavigationContext = 'menu' | 'form' | 'form-single' | 'result' | 'error-retry' | 'root-menu' | 'none';
 
 interface LayoutProps {
 	children: React.ReactNode;
@@ -46,6 +46,12 @@ const getNavigationInstructions = (context: NavigationContext): React.ReactNode 
 			return (
 				<Text dimColor={true}>
 					Press <Text color="yellow">Esc/←</Text> to go back
+				</Text>
+			);
+		case 'error-retry':
+			return (
+				<Text dimColor={true}>
+					Press <Text color="yellow">Enter/r</Text> to retry • <Text color="yellow">Esc/←</Text> to go back
 				</Text>
 			);
 		case 'none':

@@ -1,4 +1,4 @@
-import { Box, Text, useInput } from 'ink';
+import { Box, useInput } from 'ink';
 import { ErrorDisplay } from './ErrorDisplay.js';
 import { Layout } from './layout.js';
 
@@ -43,25 +43,14 @@ export const ErrorScreen = ({
 	});
 
 	return (
-		<Layout headerText={headerText} showNavigationInstructions={true} navigationContext="result">
+		<Layout 
+			headerText={headerText} 
+			showNavigationInstructions={true} 
+			navigationContext={showRetry && onRetry ? "error-retry" : "result"}
+		>
 			<Box flexDirection="column">
 				<Box marginBottom={1}>
 					<ErrorDisplay title={title} message={message} suggestion={suggestion} />
-				</Box>
-
-				<Box marginTop={1}>
-					{showRetry && onRetry ? (
-						<Box flexDirection="column">
-							<Text>
-								Press <Text color="yellow">Enter</Text> or <Text color="yellow">r</Text> to retry •{' '}
-								<Text color="yellow">Esc</Text> or <Text color="yellow">q</Text> to go back
-							</Text>
-						</Box>
-					) : (
-						<Text>
-							Press <Text color="yellow">Esc</Text> or <Text color="yellow">q</Text> to go back
-						</Text>
-					)}
 				</Box>
 			</Box>
 		</Layout>

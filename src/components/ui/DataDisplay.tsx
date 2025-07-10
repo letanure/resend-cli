@@ -62,11 +62,6 @@ export const DataDisplay = ({
 					</Box>
 				)}
 
-				<Box marginTop={1}>
-					<Text>
-						Press <Text color="yellow">Esc</Text> or <Text color="yellow">q</Text> to go back
-					</Text>
-				</Box>
 			</Box>
 		</Layout>
 	);
