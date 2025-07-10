@@ -5,9 +5,9 @@ import React from 'react';
 import type { CreateBroadcastResponseSuccess } from 'resend';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
 import { useInputSelector } from '@/components/forms/useInputSelector.js';
-import { DataDisplay } from '@/components/ui/DataDisplay.js';
 import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
+import { SuccessScreen } from '@/components/ui/SuccessScreen.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
 import { useResend } from '@/contexts/ResendProvider.js';
@@ -113,11 +113,12 @@ export const Form = ({ onExit }: FormProps) => {
 	if (result) {
 		if (result.success && result.data) {
 			return (
-				<DataDisplay
+				<SuccessScreen
 					data={result.data as unknown as Record<string, unknown>}
-					successMessage="Broadcast created successfully"
+					successMessage="Broadcast Created Successfully"
 					headerText={`${config.baseTitle} - Broadcasts - Create`}
 					fieldsToShow={['id']}
+					isDryRun={false}
 					onExit={onExit}
 				/>
 			);
