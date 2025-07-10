@@ -1,3 +1,10 @@
+# [0.38.0](https://github.com/letanure/resend-cli/compare/v0.37.0...v0.38.0) (2025-07-10)
+
+
+### Features
+
+* add circular navigation for form fields ([3c8162d](https://github.com/letanure/resend-cli/commit/3c8162d85797c2589d822cc0809fc698e1fcfa6a))
+
 # [0.37.0](https://github.com/letanure/resend-cli/compare/v0.36.0...v0.37.0) (2025-07-10)
 
 
