@@ -27,7 +27,7 @@ const createRootCommand = (): Command => {
 			console.log(getVersion());
 			process.exit(0);
 		});
-	
+
 	return program;
 };
 

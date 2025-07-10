@@ -43,6 +43,11 @@ export const SuccessScreen = ({
 
 	const formattedFields = formatDataWithFields(data, fields, fieldsToShow);
 
+	// Calculate the maximum label width for dynamic spacing
+	const maxLabelWidth = formattedFields.length > 0 
+		? Math.max(...formattedFields.map(field => field.label.length)) + 1 // +1 for the colon
+		: 20; // fallback to original width
+
 	const alertVariant = isDryRun ? 'warning' : 'success';
 	const displayMessage = isDryRun ? `DRY RUN - ${successMessage} (validation only)` : successMessage;
 
@@ -57,7 +62,7 @@ export const SuccessScreen = ({
 					<Box flexDirection="column">
 						{formattedFields.map((field) => (
 							<Box key={field.label}>
-								<Box width={20}>
+								<Box width={maxLabelWidth + 2}>
 									<Text bold={true} color="cyan">
 										{field.label}:
 									</Text>

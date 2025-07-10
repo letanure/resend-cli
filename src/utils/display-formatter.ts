@@ -61,7 +61,7 @@ export function formatDataWithFields(
 }
 
 /**
- * Format fields for CLI display with consistent padding
+ * Format fields for CLI display with dynamic padding based on longest label
  */
 export function formatForCLI(formattedFields: Array<FormattedField>, title?: string): string {
 	const lines: Array<string> = [];
@@ -71,8 +71,13 @@ export function formatForCLI(formattedFields: Array<FormattedField>, title?: str
 		lines.push('');
 	}
 
+	// Calculate the maximum label width for consistent alignment
+	const maxLabelWidth = formattedFields.length > 0 
+		? Math.max(...formattedFields.map(field => field.label.length))
+		: 15; // fallback to original width
+
 	for (const field of formattedFields) {
-		lines.push(` ${field.label.padEnd(15)}: ${field.value}`);
+		lines.push(` ${field.label.padEnd(maxLabelWidth)}: ${field.value}`);
 	}
 
 	lines.push('');
