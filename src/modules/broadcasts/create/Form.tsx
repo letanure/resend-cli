@@ -1,10 +1,12 @@
 import { listAudiences } from '@audiences/list/action.js';
 import { Alert, Spinner } from '@inkjs/ui';
-import { Box, Text, useInput } from 'ink';
+import { Box, useInput } from 'ink';
 import React from 'react';
+import type { CreateBroadcastResponseSuccess } from 'resend';
 import { SimpleForm } from '@/components/forms/SimpleForm.js';
 import { useInputSelector } from '@/components/forms/useInputSelector.js';
-import { ErrorDisplay } from '@/components/ui/ErrorDisplay.js';
+import { DataDisplay } from '@/components/ui/DataDisplay.js';
+import { ErrorScreen } from '@/components/ui/ErrorScreen.js';
 import { Layout } from '@/components/ui/layout.js';
 import { config } from '@/config/config.js';
 import { useDryRun } from '@/contexts/DryRunProvider.js';
@@ -14,16 +16,12 @@ import { createBroadcast } from './action.js';
 import { createBroadcastFields } from './fields.js';
 import { type CreateBroadcastData, createBroadcastSchema } from './schema.js';
 
-interface CreateBroadcastResponse {
-	id: string;
-}
-
 interface FormProps {
 	onExit: () => void;
 }
 
 export const Form = ({ onExit }: FormProps) => {
-	const [result, setResult] = React.useState<ApiResult<CreateBroadcastResponse> | null>(null);
+	const [result, setResult] = React.useState<ApiResult<CreateBroadcastResponseSuccess> | null>(null);
 	const [loading, setLoading] = React.useState(false);
 	const [selectedAudienceId, setSelectedAudienceId] = React.useState<string>('');
 	const { isDryRun } = useDryRun();
@@ -116,21 +114,29 @@ export const Form = ({ onExit }: FormProps) => {
 
 	if (result) {
 		if (result.success && result.data) {
-			return <BroadcastCreateDisplay result={result.data} onExit={onExit} />;
+			return (
+				<DataDisplay
+					data={result.data as unknown as Record<string, unknown>}
+					successMessage="Broadcast created successfully"
+					headerText={`${config.baseTitle} - Broadcasts - Create`}
+					fieldsToShow={['id']}
+					onExit={onExit}
+				/>
+			);
 		}
 		return (
-			<Layout
+			<ErrorScreen
+				title="Broadcast Creation Failed"
+				message={result.error || 'Failed to create broadcast'}
+				suggestion="Check your API key and broadcast data"
 				headerText={`${config.baseTitle} - Broadcasts - Create`}
-				showNavigationInstructions={true}
-				navigationContext="result"
-			>
-				<ErrorDisplay message={result.error || 'Failed to create broadcast'} />
-				<Box marginTop={1}>
-					<Text>
-						Press <Text color="yellow">Esc</Text> or <Text color="yellow">q</Text> to go back
-					</Text>
-				</Box>
-			</Layout>
+				onExit={onExit}
+				showRetry={true}
+				onRetry={() => {
+					setResult(null);
+					setLoading(false);
+				}}
+			/>
 		);
 	}
 
@@ -157,50 +163,6 @@ export const Form = ({ onExit }: FormProps) => {
 				validateWith={createBroadcastSchema}
 				initialData={initialFormData}
 			/>
-		</Layout>
-	);
-};
-
-interface BroadcastCreateDisplayProps {
-	result: CreateBroadcastResponse;
-	onExit: () => void;
-}
-
-const BroadcastCreateDisplay = ({ result, onExit }: BroadcastCreateDisplayProps) => {
-	useInput((input, key) => {
-		if (input === 'q' || key.escape) {
-			onExit();
-		}
-	});
-
-	return (
-		<Layout
-			headerText={`${config.baseTitle} - Broadcasts - Create`}
-			showNavigationInstructions={true}
-			navigationContext="result"
-		>
-			<Box flexDirection="column" gap={1}>
-				<Box>
-					<Alert variant="success">Broadcast created successfully</Alert>
-				</Box>
-
-				<Box flexDirection="column">
-					<Box>
-						<Box width={20}>
-							<Text bold={true} color="cyan">
-								Broadcast ID:
-							</Text>
-						</Box>
-						<Text color="gray">{result.id}</Text>
-					</Box>
-				</Box>
-
-				<Box marginTop={1}>
-					<Text>
-						Press <Text color="yellow">Esc</Text> or <Text color="yellow">q</Text> to go back
-					</Text>
-				</Box>
-			</Box>
 		</Layout>
 	);
 };
