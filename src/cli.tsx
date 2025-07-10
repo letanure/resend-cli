@@ -17,12 +17,18 @@ const getVersion = (): string => {
 // Setup functions
 const createRootCommand = (): Command => {
 	const program = new Command();
-	return program
+	program
 		.name('resend-cli')
 		.description(
 			'Resend CLI - Send emails, manage domains, and more\n\nAPI Key: Set RESEND_API_KEY environment variable or use --api-key option',
 		)
-		.version(getVersion());
+		.version(getVersion(), '-V, --version', 'output the version number')
+		.option('-v', 'output the version number', () => {
+			console.log(getVersion());
+			process.exit(0);
+		});
+	
+	return program;
 };
 
 // Handle unknown command errors consistently

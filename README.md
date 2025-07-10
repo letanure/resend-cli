@@ -120,6 +120,7 @@ API Key: Set RESEND_API_KEY environment variable or use --api-key option
 
 Options:
   -V, --version    output the version number
+  -v               output the version number
   --dry-run        Enable dry-run mode for all operations (default: false)
   --api-key <key>  Resend API key (overrides RESEND_API_KEY environment
                    variable)
